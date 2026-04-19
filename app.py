@@ -42,6 +42,8 @@ html, body, .stApp {
 .stApp > div:first-child { padding-top: 0 !important; }
 div[data-testid="stAppViewContainer"] { padding-top: 0 !important; }
 div[data-testid="stVerticalBlock"] { gap: 0 !important; }
+div[data-testid="stVerticalBlock"] > div { display:flex; flex-direction:column; align-items:center; }
+div[data-testid="stMarkdownContainer"] { width:100%; text-align:center; }
 
 /* Particles */
 .particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
@@ -236,17 +238,11 @@ div[data-testid="stHorizontalBlock"] {
   <div class="p" style="width:7px;height:7px;left:42%;animation-duration:13s;animation-delay:5s;"></div>
 </div>
 
-<!-- Top nav -->
-<div class="lnav">
-    <div class="lnav-logo">🎓 Skill<em>Gap</em></div>
-    <div class="lnav-tag">✨ AI-Powered Career Intelligence</div>
-</div>
-
 <!-- Hero -->
 <div class="hero">
     <div class="hero-badge">✨ AI-Powered Career Intelligence</div>
     <span class="hero-icon">🎓</span>
-    <h1 class="hero-h1">Bridge Your<br><span>Skill Gap</span></h1>
+    <h1 class="hero-h1">Bridge Your <span>Skill Gap</span></h1>
     <p class="hero-sub">
         Upload your resume, discover exactly what skills you're missing,
         and get a personalized step-by-step roadmap to land your dream tech job.
@@ -254,8 +250,8 @@ div[data-testid="stHorizontalBlock"] {
 </div>
 """, unsafe_allow_html=True)
 
-# ── CTA Buttons — centered ────────────────────────────────
-_, c1, c2, _ = st.columns([3, 1, 1, 3])
+# ── CTA Buttons ──────────────────────────────────────────
+_, c1, c2, _ = st.columns([2.5, 1.4, 0.8, 2.5])
 with c1:
     if st.button("🚀 Get Started — Free", use_container_width=True, type="primary", key="cta_signup"):
         st.switch_page("pages/2_Signup.py")
@@ -296,6 +292,6 @@ st.markdown("""
 </div>
 
 <div class="lfoot">
-    © 2025 SkillGap Analyzer &nbsp;·&nbsp; Built with ❤️ using Streamlit &nbsp;·&nbsp; Helping students land their dream jobs
+    © 2025 SkillGap Analyzer  
 </div>
 """, unsafe_allow_html=True)

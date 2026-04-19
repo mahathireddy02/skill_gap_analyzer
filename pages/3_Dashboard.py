@@ -47,7 +47,7 @@ show_navbar("Dashboard")
 user         = st.session_state.user
 email        = st.session_state.email
 db_user      = get_user(email)
-name         = user.get("name", "Student")
+name         = db_user.get("name", "").strip() or user.get("name", "Student")
 resume_score = db_user.get("resume_score", 0)
 skills       = db_user.get("skills", [])
 missing      = db_user.get("missing_skills", [])

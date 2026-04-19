@@ -1,0 +1,17 @@
+{
+  "Data Scientist": ["Python", "Machine Learning", "Deep Learning", "Pandas", "NumPy", "Scikit-learn", "SQL", "TensorFlow", "Data Analysis", "Matplotlib"],
+  "Web Developer": ["HTML", "CSS", "JavaScript", "React", "Node", "REST API", "Git", "SQL", "TypeScript", "Docker"],
+  "Backend Developer": ["Python", "Java", "SQL", "REST API", "Docker", "Git", "PostgreSQL", "Redis", "Microservices", "CI/CD"],
+  "Frontend Developer": ["HTML", "CSS", "JavaScript", "React", "TypeScript", "Git", "Vue", "Angular", "GraphQL", "Figma"],
+  "DevOps Engineer": ["Docker", "Kubernetes", "AWS", "CI/CD", "Linux", "Git", "Terraform", "Python", "Ansible", "Monitoring"],
+  "Data Engineer": ["Python", "SQL", "Spark", "Airflow", "AWS", "Data Pipelines", "PostgreSQL", "Kafka", "Docker", "Git"],
+  "ML Engineer": ["Python", "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "Docker", "AWS", "MLOps", "Git", "SQL"],
+  "Full Stack Developer": ["HTML", "CSS", "JavaScript", "React", "Node", "Python", "SQL", "Docker", "Git", "REST API"],
+  "Android Developer": ["Java", "Kotlin", "Android SDK", "Git", "REST API", "Firebase", "SQL", "MVVM", "Jetpack Compose", "Testing"],
+  "Cloud Engineer": ["AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform", "Linux", "Python", "CI/CD", "Networking"],
+  "Flutter Developer": ["Dart", "Flutter", "Firebase", "REST API", "Git", "State Management", "UI/UX", "Android SDK", "iOS", "Testing"],
+  "Data Analyst": ["Python", "SQL", "Excel", "Power BI", "Statistics", "Tableau", "Data Visualization", "Pandas", "R", "Business Intelligence"],
+  "Cybersecurity Engineer": ["Networking", "Linux", "Python", "Penetration Testing", "SIEM", "Firewalls", "Cryptography", "Incident Response", "Git", "Cloud Security"],
+  "iOS Developer": ["Swift", "Objective-C", "Xcode", "REST API", "Git", "Firebase", "CoreData", "UIKit", "SwiftUI", "Testing"],
+  "QA Engineer": ["Manual Testing", "Selenium", "Python", "SQL", "Git", "API Testing", "JIRA", "Test Automation", "CI/CD", "Performance Testing"]
+}

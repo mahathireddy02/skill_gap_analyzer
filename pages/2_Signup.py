@@ -116,8 +116,12 @@ with center:
     """, unsafe_allow_html=True)
 
     st.markdown('<div class="sec-lbl">👤 Personal Info</div>', unsafe_allow_html=True)
-    name  = st.text_input("Full Name",      placeholder="John Doe",           key="su_name")
-    email = st.text_input("Email Address",  placeholder="you@example.com",    key="su_email")
+    nc1, nc2 = st.columns(2)
+    with nc1:
+        first_name = st.text_input("First Name", placeholder="John", key="su_fname")
+    with nc2:
+        last_name  = st.text_input("Last Name",  placeholder="Doe",  key="su_lname")
+    email = st.text_input("Email Address", placeholder="you@example.com", key="su_email")
 
     st.markdown('<div class="sec-lbl">🔑 Password</div>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
@@ -138,7 +142,8 @@ with center:
 
     st.markdown("")
     if st.button("🚀 Create My Account", use_container_width=True, type="primary", key="su_btn"):
-        if not all([name, email, password, confirm, sec_a]):
+        name = f"{first_name.strip()} {last_name.strip()}".strip()
+        if not all([first_name, last_name, email, password, confirm, sec_a]):
             st.error("Please fill in all fields.")
         elif len(password) < 6:
             st.error("Password must be at least 6 characters.")

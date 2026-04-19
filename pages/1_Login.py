@@ -1,7 +1,7 @@
 import streamlit as st
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from utils.auth import login, get_security_question, reset_password
+from utils.auth import login, send_reset_email, verify_reset_token, reset_password_with_token
 
 st.set_page_config(page_title="Login · SkillGap", page_icon="🔐", layout="wide", initial_sidebar_state="collapsed")
 
@@ -115,6 +115,14 @@ if st.session_state.get("user"):
 if "auth_mode" not in st.session_state:
     st.session_state.auth_mode = "login"
 
+# Handle reset link token from email
+params = st.query_params
+if "token" in params and "email" in params and st.session_state.auth_mode != "forgot2":
+    st.session_state.reset_token = params["token"]
+    st.session_state.reset_email = params["email"]
+    st.session_state.auth_mode   = "forgot2"
+    st.query_params.clear()
+
 # Back to home
 _, back_col, _ = st.columns([1, 6, 1])
 with back_col:
@@ -165,68 +173,69 @@ with center:
             st.switch_page("pages/2_Signup.py")
 
     # ══════════════════════════════════════════════════════
-    # FORGOT — Step 1: enter email
+    # FORGOT — Step 1: enter email, send reset link
     # ══════════════════════════════════════════════════════
     elif st.session_state.auth_mode == "forgot1":
         st.markdown("""
         <div class="auth-card">
             <span class="auth-icon">🔑</span>
-            <div class="auth-title">Reset Password</div>
-            <div class="auth-sub">Enter your registered email address</div>
+            <div class="auth-title">Forgot Password?</div>
+            <div class="auth-sub">Enter your email and we'll send you a reset link</div>
         </div>
         """, unsafe_allow_html=True)
 
         fe = st.text_input("Email Address", placeholder="you@example.com", key="fp_email")
 
-        if st.button("Continue →", use_container_width=True, type="primary", key="fp_next"):
+        if st.button("Send Reset Link →", use_container_width=True, type="primary", key="fp_send"):
             if not fe:
                 st.error("Please enter your email.")
             else:
-                q = get_security_question(fe)
-                if q is None:
-                    st.error("No account found with that email.")
-                elif not q:
-                    st.error("No security question set for this account.")
+                ok, result = send_reset_email(fe.strip().lower())
+                if not ok:
+                    st.error(f"❌ {result}")
+                elif result.startswith("DEV_LINK:"):
+                    # Dev mode: no SMTP configured, show link directly
+                    link = result.replace("DEV_LINK:", "")
+                    st.success("✅ Reset link generated (dev mode — no SMTP configured):")
+                    st.code(link)
+                    st.info("💡 To enable real emails, set SMTP_EMAIL and SMTP_PASSWORD environment variables.")
                 else:
-                    st.session_state.fp_email = fe
-                    st.session_state.fp_q     = q
-                    st.session_state.auth_mode = "forgot2"
-                    st.rerun()
+                    st.success(f"✅ Reset link sent to **{fe}**. Check your inbox!")
 
         if st.button("← Back to Login", key="fp_back1"):
             st.session_state.auth_mode = "login"
             st.rerun()
 
     # ══════════════════════════════════════════════════════
-    # FORGOT — Step 2: answer + new password
+    # RESET — arrived via token link (?token=...&email=...)
     # ══════════════════════════════════════════════════════
     elif st.session_state.auth_mode == "forgot2":
-        q = st.session_state.get("fp_q", "")
+        token = st.session_state.get("reset_token", "")
+        email = st.session_state.get("reset_email", "")
+
         st.markdown("""
         <div class="auth-card">
-            <span class="auth-icon">🛡️</span>
-            <div class="auth-title">Security Check</div>
-            <div class="auth-sub">Answer your security question to reset your password</div>
+            <span class="auth-icon">🔒</span>
+            <div class="auth-title">Set New Password</div>
+            <div class="auth-sub">Choose a strong new password</div>
         </div>
         """, unsafe_allow_html=True)
 
-        st.info(f"🔒 **Security Question:** {q}")
-        ans    = st.text_input("Your Answer", placeholder="Case-insensitive", key="fp_ans")
-        new_pw = st.text_input("New Password", type="password", placeholder="Min 6 characters", key="fp_npw")
-        cnf_pw = st.text_input("Confirm New Password", type="password", placeholder="Repeat password", key="fp_cpw")
+        new_pw = st.text_input("New Password",     type="password", placeholder="Min 6 characters", key="fp_npw")
+        cnf_pw = st.text_input("Confirm Password", type="password", placeholder="Repeat password",  key="fp_cpw")
 
         if st.button("🔄 Reset Password", use_container_width=True, type="primary", key="fp_reset"):
-            if not all([ans, new_pw, cnf_pw]):
-                st.error("Please fill in all fields.")
+            if not new_pw or not cnf_pw:
+                st.error("Please fill in both fields.")
             elif len(new_pw) < 6:
                 st.error("Password must be at least 6 characters.")
             elif new_pw != cnf_pw:
                 st.error("Passwords do not match.")
             else:
-                ok, msg = reset_password(st.session_state.fp_email, ans, new_pw)
+                ok, msg = reset_password_with_token(email, token, new_pw)
                 if ok:
-                    st.success(f"✅ {msg} You can now login.")
-                    for k in ["fp_email", "fp_q"]:
+                    st.success("✅ Password reset! You can now login.")
+                    for k in ["reset_token", "reset_email"]:
                         st.session_state.pop(k, None)
                     st.session_state.auth_mode = "login"
                     st.rerun()
@@ -234,5 +243,5 @@ with center:
                     st.error(f"❌ {msg}")
 
         if st.button("← Back", key="fp_back2"):
-            st.session_state.auth_mode = "forgot1"
+            st.session_state.auth_mode = "login"
             st.rerun()
