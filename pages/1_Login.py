@@ -163,6 +163,7 @@ with center:
                 if ok:
                     st.session_state.user  = result
                     st.session_state.email = email
+                    st.query_params["session"] = email
                     st.switch_page("pages/3_Dashboard.py")
                 else:
                     st.error(f"❌ {result}")

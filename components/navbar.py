@@ -1,21 +1,32 @@
 import streamlit as st
 
 def show_navbar(active="Dashboard"):
-    name    = st.session_state.get("user", {}).get("name", "User")
-    first   = name.split()[0]
+    name  = st.session_state.get("user", {}).get("name", "User")
+    first = name.split()[0]
 
-    # ── Apply saved theme ─────────────────────────────────────────────────────
+    # ── Load theme ────────────────────────────────────────────────────────────
     if st.session_state.get("email"):
         import sys, os
         sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-        from utils.auth import get_user as _get_user
-        _u = _get_user(st.session_state.email) or {}
+        from utils.auth import get_user as _gu, update_user as _upd
+        _u     = _gu(st.session_state.email) or {}
         _theme = _u.get("theme", "dark")
     else:
         _theme = "dark"
 
+    # ── Handle toggle click BEFORE rendering ──────────────────────────────────
+    st.session_state.pop("_do_theme_toggle", False)
+    _just_changed = st.session_state.pop("_theme_just_changed", False)
+
+    # ── Theme colours ─────────────────────────────────────────────────────────
     if _theme == "light":
-        _theme_css = """
+        _bg          = "#f5f4ff"
+        _nav_bg      = "#ede9fe"
+        _nav_border  = "#c4b5fd"
+        _btn_color   = "rgba(30,27,75,0.85)"
+        _btn_hover   = "rgba(124,58,237,0.12)"
+        _text_color  = "#1a1a2e"
+        _theme_css   = """
         html,body,.stApp{background:#f5f4ff!important;color:#1a1a2e!important;}
         div[data-testid="stMarkdownContainer"] p,
         div[data-testid="stMarkdownContainer"] h1,
@@ -24,8 +35,7 @@ def show_navbar(active="Dashboard"):
         div[data-testid="stMarkdownContainer"] li,
         div[data-testid="stMarkdownContainer"] span,
         label,.stTextInput label,.stSelectbox label,
-        .stRadio label,.stCheckbox label,
-        p,h1,h2,h3,h4,span
+        .stRadio label,.stCheckbox label,p,h1,h2,h3,h4,span
         {color:#1a1a2e!important;}
         div[data-testid="stTextInput"] input,div[data-testid="stTextArea"] textarea
         {background:#fff!important;color:#1a1a2e!important;border-color:#d1d5db!important;}
@@ -38,14 +48,16 @@ def show_navbar(active="Dashboard"):
         .stTabs [data-baseweb="tab"]{color:#4b5563!important;}
         .stTabs [aria-selected="true"]{background:#7c3aed!important;color:#fff!important;border-radius:10px;}
         .stat-card,.feat-card{background:#fff!important;border-color:#e5e7eb!important;}
-        .fct{color:#1a1a2e!important;} .fcd{color:#4b5563!important;}
+        .fct{color:#1a1a2e!important;}.fcd{color:#4b5563!important;}
         """
-        _nav_btn_color = "rgba(30,27,75,0.85)"
-        _nav_btn_hover_bg = "rgba(124,58,237,0.12)"
-        _nav_bg = "#ede9fe"
-        _nav_border = "#c4b5fd"
     else:
-        _theme_css = """
+        _bg          = "#0f0c29"
+        _nav_bg      = "#0d0b1e"
+        _nav_border  = "rgba(255,255,255,0.08)"
+        _btn_color   = "rgba(255,255,255,0.65)"
+        _btn_hover   = "rgba(255,255,255,0.08)"
+        _text_color  = "#ffffff"
+        _theme_css   = """
         html,body,.stApp{background:linear-gradient(-45deg,#0f0c29,#1a1a2e,#0f0c29)!important;color:#fff!important;}
         div[data-testid="stMarkdownContainer"] p,
         div[data-testid="stMarkdownContainer"] li,
@@ -61,11 +73,21 @@ def show_navbar(active="Dashboard"):
         div[data-testid="stMetricLabel"]{color:rgba(255,255,255,0.5)!important;}
         div[data-testid="stMetricValue"]{color:#fff!important;}
         """
-        _nav_btn_color = "rgba(255,255,255,0.65)"
-        _nav_btn_hover_bg = "rgba(255,255,255,0.08)"
-        _nav_bg = "#0d0b1e"
-        _nav_border = "rgba(255,255,255,0.08)"
 
+    # ── Bottom-to-top reveal animation (only fires right after toggle) ────────
+    _anim_css = ""
+    if _just_changed:
+        _anim_css = """
+        @keyframes wipeUp {
+            0%   { clip-path: inset(100% 0% 0% 0%); }
+            100% { clip-path: inset(0% 0% 0% 0%); }
+        }
+        .stApp {
+            animation: wipeUp 0.55s cubic-bezier(0.4,0,0.2,1) forwards !important;
+        }
+        """
+
+    # ── Inject all CSS ────────────────────────────────────────────────────────
     st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -77,34 +99,34 @@ html,body{{margin:0!important;padding:0!important;font-family:'Inter',sans-serif
 .block-container{{padding:0!important;margin:0!important;max-width:100%!important;}}
 div[data-testid="stAppViewContainer"]>section{{padding-top:0!important;}}
 {_theme_css}
+{_anim_css}
+
+/* ── Navbar row ── */
 div[data-testid="stHorizontalBlock"]:first-of-type{{
     background:{_nav_bg};
     border-bottom:1px solid {_nav_border};
-    padding:0.45rem 1.2rem!important;
+    padding:0.3rem 1.2rem!important;
     margin:0!important;
     align-items:center!important;
-    gap:0.2rem!important;
+    gap:0.15rem!important;
     position:sticky;top:0;z-index:9999;
 }}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button{{
     background:transparent!important;
     border:1px solid transparent!important;
-    color:{_nav_btn_color}!important;
-    font-size:0.8rem!important;
+    color:{_btn_color}!important;
+    font-size:0.78rem!important;
     font-weight:500!important;
-    padding:0.28rem 0.4rem!important;
+    padding:0.22rem 0.35rem!important;
     border-radius:8px!important;
     white-space:nowrap!important;
-    height:auto!important;
-    min-height:unset!important;
-    line-height:1.4!important;
-    box-shadow:none!important;
-    transition:all 0.15s!important;
-    width:100%!important;
+    height:auto!important;min-height:unset!important;
+    line-height:1.3!important;box-shadow:none!important;
+    transition:all 0.15s!important;width:100%!important;
 }}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button:hover{{
-    background:{_nav_btn_hover_bg}!important;
-    color:{'#1a1a2e' if _theme == 'light' else '#fff'}!important;
+    background:{_btn_hover}!important;
+    color:{_text_color}!important;
 }}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button[kind="primary"]{{
     background:rgba(124,58,237,0.18)!important;
@@ -112,48 +134,65 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>b
     border-color:rgba(124,58,237,0.4)!important;
     font-weight:700!important;
 }}
+
+/* ── Profile+theme mini block ── */
+.profile-block{{
+    display:flex;flex-direction:column;align-items:flex-end;gap:1px;
+    padding:0.1rem 0;
+}}
+.theme-sub-btn{{
+    background:none;border:none;cursor:pointer;
+    font-size:0.68rem;color:{_btn_color};
+    font-family:'Inter',sans-serif;
+    padding:0 0.35rem;opacity:0.65;
+    transition:opacity 0.15s;line-height:1.4;
+    text-align:right;width:100%;
+}}
+.theme-sub-btn:hover{{opacity:1;}}
+
 .page-body{{padding:1.6rem 2rem 2rem;}}
 </style>
 """, unsafe_allow_html=True)
 
+    # ── Nav items ─────────────────────────────────────────────────────────────
     nav_items = [
-        ("🏠 Home",      "Dashboard",       "pages/3_Dashboard.py"),
-        ("📄 Resume",    "Resume Score",    "pages/4_Resume_Score.py"),
-        ("🧠 Skill Gap", "Skill Gap",       "pages/5_Skill_Gap.py"),
-        ("🛤️ Roadmap",   "Roadmap",         "pages/6_Roadmap.py"),
-        ("📊 Analytics", "Analytics",       "pages/7_Analytics.py"),
-        ("📝 Builder",   "Resume Builder",  "pages/10_Resume_Builder.py"),
-        ("🤖 Chatbot",   "Chatbot",         "pages/9_Chatbot.py"),
+        ("🏠 Home",      "Dashboard",      "pages/3_Dashboard.py"),
+        ("📄 Resume",    "Resume Score",   "pages/4_Resume_Score.py"),
+        ("🧠 Skill Gap", "Skill Gap",      "pages/5_Skill_Gap.py"),
+        ("🛤️ Roadmap",   "Roadmap",        "pages/6_Roadmap.py"),
+        ("📊 Analytics", "Analytics",      "pages/7_Analytics.py"),
+        ("📝 Builder",   "Resume Builder", "pages/10_Resume_Builder.py"),
+        ("🤖 Chatbot",   "Chatbot",        "pages/9_Chatbot.py"),
     ]
 
-    # logo(1.2) + 7 nav(1.0 each) + spacer(0.5) + profile(1.0) + logout(0.5)
-    cols = st.columns([1.2, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 0.5])
+    # logo + 7 nav + spacer + theme + profile
+    cols = st.columns([1.2, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.3, 0.5, 1.0])
 
     with cols[0]:
         st.markdown(
-            '<p style="color:#fff;font-size:1.05rem;font-weight:800;margin:0;'
-            'padding:0.3rem 0.4rem;white-space:nowrap;">🎓 Skill'
-            '<span style="color:#a78bfa;">Gap</span></p>',
+            f'<p style="color:{_text_color};font-size:1.05rem;font-weight:800;margin:0;'
+            f'padding:0.3rem 0.4rem;white-space:nowrap;">🎓 Skill'
+            f'<span style="color:#a78bfa;">Gap</span></p>',
             unsafe_allow_html=True
         )
 
     for i, (label, key, path) in enumerate(nav_items):
         with cols[i + 1]:
             is_active = active.lower() == key.lower()
-            if st.button(label, key=f"nb_{key}",
-                         use_container_width=True,
+            if st.button(label, key=f"nb_{key}", use_container_width=True,
                          type="primary" if is_active else "secondary"):
                 st.switch_page(path)
 
-    # cols[6] = spacer, leave empty
-
     with cols[9]:
-        if st.button(f"👤 {first}", key="nb_profile", use_container_width=True):
-            st.switch_page("pages/8_Profile.py")
+        _icon = "☀️" if _theme == "dark" else "🌙"
+        if st.button(_icon, key="nb_theme", use_container_width=True):
+            _new = "light" if _theme == "dark" else "dark"
+            _upd(st.session_state.email, {"theme": _new})
+            st.session_state["_theme_just_changed"] = True
+            st.rerun()
 
     with cols[10]:
-        if st.button("🚪", key="nb_logout", use_container_width=True):
-            st.session_state.clear()
-            st.switch_page("app.py")
+        if st.button(f"👤 {first}", key="nb_profile", use_container_width=True):
+            st.switch_page("pages/8_Profile.py")
 
     st.markdown('<div class="page-body">', unsafe_allow_html=True)

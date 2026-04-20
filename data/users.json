@@ -34,24 +34,770 @@
       "docker"
     ]
   },
-  "gurrammadhuri4444@gmail.com": {
-    "name": "Madhuri Reddy Gurram",
-    "password": "ffcb4495352d3c3cad818f1abe7508db6a5f551eb53a80610dafd586ad455e87",
-    "skills": [],
-    "resume_score": 0,
-    "security_q": "What was the name of your first school?",
-    "security_a": "7fff36d2db80e6d7e7593a9f7b133c8e7415c8c761c2befe0a19e01d6cc5d9ae",
-    "reset_token": "AnLuHoux8dEGOIWFYaspACXi8SGiga2zncNGOrf_YTk",
-    "reset_expiry": 1776535468.7881758
-  },
   "madhurigurram.g@gmail.com": {
     "name": "Madhuri Reddy Gurram",
-    "password": "ffcb4495352d3c3cad818f1abe7508db6a5f551eb53a80610dafd586ad455e87",
+    "password": "8a9bcf1e51e812d0af8465a8dbcc9f741064bf0af3b3d08e6b0246437c19f7fb",
     "skills": [],
     "resume_score": 0,
     "security_q": "What was the name of your first school?",
     "security_a": "7fff36d2db80e6d7e7593a9f7b133c8e7415c8c761c2befe0a19e01d6cc5d9ae",
-    "target_role": "",
-    "theme": "dark"
+    "target_role": "Android Developer",
+    "theme": "dark",
+    "bio": "",
+    "missing_skills": [
+      "kotlin",
+      "android",
+      "git",
+      "rest api",
+      "java",
+      "jetpack compose",
+      "firebase",
+      "mvvm",
+      "sql",
+      "testing",
+      "flutter",
+      "dart",
+      "ci/cd",
+      "kotlin coroutines",
+      "dagger"
+    ],
+    "roadmap_result": {
+      "role": "Full Stack Developer",
+      "skill_level": "beginner",
+      "summary": "Personalized roadmap for **Full Stack Developer** | Level: Beginner | 16 skills to learn | ~11.9 months at 10.5h/week",
+      "timeline": {
+        "total_hours": 530,
+        "total_weeks": 51,
+        "total_months": 11.9,
+        "hours_per_week": 10.5
+      },
+      "phase_plan": [
+        {
+          "phase_num": 1,
+          "skill": "javascript",
+          "start_week": 1,
+          "end_week": 5,
+          "hours": 50,
+          "phases": {
+            "beginner": "Variables, functions, DOM manipulation, events, ES6 basics",
+            "intermediate": "Async/await, fetch API, modules, closures, prototypes",
+            "advanced": "Design patterns, performance optimization, TypeScript migration"
+          },
+          "resources": [
+            "javascript.info",
+            "freeCodeCamp JS (YouTube)",
+            "MDN Web Docs"
+          ],
+          "project": "Build a weather app or quiz game with API integration"
+        },
+        {
+          "phase_num": 2,
+          "skill": "react",
+          "start_week": 6,
+          "end_week": 10,
+          "hours": 50,
+          "phases": {
+            "beginner": "Components, JSX, props, state, event handling",
+            "intermediate": "Hooks (useState, useEffect, useContext), React Router, forms",
+            "advanced": "Redux/Zustand, performance (memo, lazy), testing with Jest"
+          },
+          "resources": [
+            "Official React Docs (react.dev)",
+            "Traversy Media React (YouTube)",
+            "freeCodeCamp React"
+          ],
+          "project": "Build a task manager or e-commerce product listing app"
+        },
+        {
+          "phase_num": 3,
+          "skill": "node",
+          "start_week": 11,
+          "end_week": 14,
+          "hours": 40,
+          "phases": {
+            "beginner": "Node.js basics, npm, modules, file system, HTTP module",
+            "intermediate": "Express.js, middleware, routing, REST APIs, authentication",
+            "advanced": "Streams, clustering, performance, microservices, WebSockets"
+          },
+          "resources": [
+            "Node.js official docs",
+            "Traversy Media Node (YouTube)",
+            "The Odin Project"
+          ],
+          "project": "Build a REST API with Express + JWT authentication"
+        },
+        {
+          "phase_num": 4,
+          "skill": "sql",
+          "start_week": 15,
+          "end_week": 17,
+          "hours": 30,
+          "phases": {
+            "beginner": "SELECT, WHERE, ORDER BY, INSERT, UPDATE, DELETE, JOINs",
+            "intermediate": "Aggregations, GROUP BY, subqueries, window functions, indexes",
+            "advanced": "Query optimization, stored procedures, transactions, normalization"
+          },
+          "resources": [
+            "SQLZoo",
+            "Mode Analytics SQL Tutorial",
+            "W3Schools SQL"
+          ],
+          "project": "Analyze a public dataset (e.g., Netflix, COVID) with SQL queries"
+        },
+        {
+          "phase_num": 5,
+          "skill": "git",
+          "start_week": 18,
+          "end_week": 19,
+          "hours": 15,
+          "phases": {
+            "beginner": "init, add, commit, push, pull, clone, status",
+            "intermediate": "Branching, merging, rebasing, pull requests, resolving conflicts",
+            "advanced": "Git hooks, workflows (GitFlow), CI/CD integration, monorepo strategies"
+          },
+          "resources": [
+            "GitHub Hello World guide",
+            "Atlassian Git tutorials",
+            "Learn Git Branching (interactive)"
+          ],
+          "project": "Contribute to an open-source project on GitHub"
+        },
+        {
+          "phase_num": 6,
+          "skill": "typescript",
+          "start_week": 20,
+          "end_week": 22,
+          "hours": 25,
+          "phases": {
+            "beginner": "Types, interfaces, enums, type inference, tsconfig basics",
+            "intermediate": "Generics, utility types, decorators, strict mode",
+            "advanced": "Advanced generics, conditional types, module augmentation"
+          },
+          "resources": [
+            "TypeScript Handbook (typescriptlang.org)",
+            "Matt Pocock TS tutorials (YouTube)"
+          ],
+          "project": "Rewrite a JavaScript project in TypeScript"
+        },
+        {
+          "phase_num": 7,
+          "skill": "rest api",
+          "start_week": 23,
+          "end_week": 25,
+          "hours": 30,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 8,
+          "skill": "docker",
+          "start_week": 26,
+          "end_week": 28,
+          "hours": 25,
+          "phases": {
+            "beginner": "Containers vs VMs, Docker CLI, Dockerfile, images, containers",
+            "intermediate": "Docker Compose, volumes, networking, multi-container apps",
+            "advanced": "Multi-stage builds, Docker Swarm, security scanning, CI/CD integration"
+          },
+          "resources": [
+            "Play with Docker (labs.play-with-docker.com)",
+            "TechWorld with Nana Docker (YouTube)",
+            "Docker Docs"
+          ],
+          "project": "Containerize a Python Flask/FastAPI app with Docker Compose"
+        },
+        {
+          "phase_num": 9,
+          "skill": "postgresql",
+          "start_week": 29,
+          "end_week": 31,
+          "hours": 25,
+          "phases": {
+            "beginner": "Setup, psql CLI, basic CRUD, data types",
+            "intermediate": "Indexes, foreign keys, transactions, views, functions",
+            "advanced": "Query optimization, EXPLAIN ANALYZE, partitioning, replication"
+          },
+          "resources": [
+            "PostgreSQL official tutorial",
+            "Hussein Nasser DB (YouTube)"
+          ],
+          "project": "Design and query a relational database for a real app"
+        },
+        {
+          "phase_num": 10,
+          "skill": "python",
+          "start_week": 32,
+          "end_week": 35,
+          "hours": 40,
+          "phases": {
+            "beginner": "Variables, data types, loops, functions, lists, dicts",
+            "intermediate": "OOP, file I/O, error handling, modules, virtual envs",
+            "advanced": "Decorators, generators, async/await, packaging, testing"
+          },
+          "resources": [
+            "Python.org tutorial",
+            "freeCodeCamp Python (YouTube)",
+            "Automate the Boring Stuff (book)"
+          ],
+          "project": "Build a CLI task manager or web scraper"
+        },
+        {
+          "phase_num": 11,
+          "skill": "next",
+          "start_week": 36,
+          "end_week": 38,
+          "hours": 30,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 12,
+          "skill": "graphql",
+          "start_week": 39,
+          "end_week": 41,
+          "hours": 30,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 13,
+          "skill": "redis",
+          "start_week": 42,
+          "end_week": 44,
+          "hours": 30,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 14,
+          "skill": "aws",
+          "start_week": 45,
+          "end_week": 50,
+          "hours": 60,
+          "phases": {
+            "beginner": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+            "intermediate": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
+            "advanced": "Well-Architected Framework, cost optimization, security, certifications"
+          },
+          "resources": [
+            "AWS Free Tier (aws.amazon.com)",
+            "freeCodeCamp AWS (YouTube)",
+            "AWS Skill Builder"
+          ],
+          "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
+        },
+        {
+          "phase_num": 15,
+          "skill": "ci/cd",
+          "start_week": 51,
+          "end_week": 52,
+          "hours": 20,
+          "phases": {
+            "beginner": "CI/CD concepts, GitHub Actions basics, automated testing",
+            "intermediate": "Multi-stage pipelines, Docker integration, deployment automation",
+            "advanced": "GitOps, ArgoCD, advanced workflows, secrets management"
+          },
+          "resources": [
+            "GitHub Actions docs",
+            "TechWorld with Nana CI/CD (YouTube)",
+            "GitLab CI docs"
+          ],
+          "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
+        },
+        {
+          "phase_num": 16,
+          "skill": "mongodb",
+          "start_week": 53,
+          "end_week": 55,
+          "hours": 30,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        }
+      ],
+      "weekly_plan": [
+        {
+          "week": 1,
+          "skill": "javascript",
+          "focus": "Beginner - Javascript",
+          "tasks": "Variables, functions, DOM manipulation, events, ES6 basics",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 2,
+          "skill": "javascript",
+          "focus": "Beginner - Javascript",
+          "tasks": "Variables, functions, DOM manipulation, events, ES6 basics",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 3,
+          "skill": "javascript",
+          "focus": "Intermediate - Javascript",
+          "tasks": "Async/await, fetch API, modules, closures, prototypes",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 4,
+          "skill": "javascript",
+          "focus": "Intermediate - Javascript",
+          "tasks": "Async/await, fetch API, modules, closures, prototypes",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 5,
+          "skill": "javascript",
+          "focus": "Advanced - Javascript",
+          "tasks": "Design patterns, performance optimization, TypeScript migration",
+          "hours": 10.5,
+          "project": "Build a weather app or quiz game with API integration"
+        },
+        {
+          "week": 6,
+          "skill": "react",
+          "focus": "Beginner - React",
+          "tasks": "Components, JSX, props, state, event handling",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 7,
+          "skill": "react",
+          "focus": "Beginner - React",
+          "tasks": "Components, JSX, props, state, event handling",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 8,
+          "skill": "react",
+          "focus": "Intermediate - React",
+          "tasks": "Hooks (useState, useEffect, useContext), React Router, forms",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 9,
+          "skill": "react",
+          "focus": "Intermediate - React",
+          "tasks": "Hooks (useState, useEffect, useContext), React Router, forms",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 10,
+          "skill": "react",
+          "focus": "Advanced - React",
+          "tasks": "Redux/Zustand, performance (memo, lazy), testing with Jest",
+          "hours": 10.5,
+          "project": "Build a task manager or e-commerce product listing app"
+        },
+        {
+          "week": 11,
+          "skill": "node",
+          "focus": "Beginner - Node",
+          "tasks": "Node.js basics, npm, modules, file system, HTTP module",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 12,
+          "skill": "node",
+          "focus": "Beginner - Node",
+          "tasks": "Node.js basics, npm, modules, file system, HTTP module",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 13,
+          "skill": "node",
+          "focus": "Intermediate - Node",
+          "tasks": "Express.js, middleware, routing, REST APIs, authentication",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 14,
+          "skill": "node",
+          "focus": "Advanced - Node",
+          "tasks": "Streams, clustering, performance, microservices, WebSockets",
+          "hours": 10.5,
+          "project": "Build a REST API with Express + JWT authentication"
+        },
+        {
+          "week": 15,
+          "skill": "sql",
+          "focus": "Beginner - Sql",
+          "tasks": "SELECT, WHERE, ORDER BY, INSERT, UPDATE, DELETE, JOINs",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 16,
+          "skill": "sql",
+          "focus": "Intermediate - Sql",
+          "tasks": "Aggregations, GROUP BY, subqueries, window functions, indexes",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 17,
+          "skill": "sql",
+          "focus": "Advanced - Sql",
+          "tasks": "Query optimization, stored procedures, transactions, normalization",
+          "hours": 10.5,
+          "project": "Analyze a public dataset (e.g., Netflix, COVID) with SQL queries"
+        },
+        {
+          "week": 18,
+          "skill": "git",
+          "focus": "Beginner - Git",
+          "tasks": "init, add, commit, push, pull, clone, status",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 19,
+          "skill": "git",
+          "focus": "Intermediate - Git",
+          "tasks": "Branching, merging, rebasing, pull requests, resolving conflicts",
+          "hours": 10.5,
+          "project": "Contribute to an open-source project on GitHub"
+        },
+        {
+          "week": 20,
+          "skill": "typescript",
+          "focus": "Beginner - Typescript",
+          "tasks": "Types, interfaces, enums, type inference, tsconfig basics",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 21,
+          "skill": "typescript",
+          "focus": "Intermediate - Typescript",
+          "tasks": "Generics, utility types, decorators, strict mode",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 22,
+          "skill": "typescript",
+          "focus": "Advanced - Typescript",
+          "tasks": "Advanced generics, conditional types, module augmentation",
+          "hours": 10.5,
+          "project": "Rewrite a JavaScript project in TypeScript"
+        },
+        {
+          "week": 23,
+          "skill": "rest api",
+          "focus": "Beginner - Rest Api",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 24,
+          "skill": "rest api",
+          "focus": "Intermediate - Rest Api",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 25,
+          "skill": "rest api",
+          "focus": "Advanced - Rest Api",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 10.5,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 26,
+          "skill": "docker",
+          "focus": "Beginner - Docker",
+          "tasks": "Containers vs VMs, Docker CLI, Dockerfile, images, containers",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 27,
+          "skill": "docker",
+          "focus": "Intermediate - Docker",
+          "tasks": "Docker Compose, volumes, networking, multi-container apps",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 28,
+          "skill": "docker",
+          "focus": "Advanced - Docker",
+          "tasks": "Multi-stage builds, Docker Swarm, security scanning, CI/CD integration",
+          "hours": 10.5,
+          "project": "Containerize a Python Flask/FastAPI app with Docker Compose"
+        },
+        {
+          "week": 29,
+          "skill": "postgresql",
+          "focus": "Beginner - Postgresql",
+          "tasks": "Setup, psql CLI, basic CRUD, data types",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 30,
+          "skill": "postgresql",
+          "focus": "Intermediate - Postgresql",
+          "tasks": "Indexes, foreign keys, transactions, views, functions",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 31,
+          "skill": "postgresql",
+          "focus": "Advanced - Postgresql",
+          "tasks": "Query optimization, EXPLAIN ANALYZE, partitioning, replication",
+          "hours": 10.5,
+          "project": "Design and query a relational database for a real app"
+        },
+        {
+          "week": 32,
+          "skill": "python",
+          "focus": "Beginner - Python",
+          "tasks": "Variables, data types, loops, functions, lists, dicts",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 33,
+          "skill": "python",
+          "focus": "Beginner - Python",
+          "tasks": "Variables, data types, loops, functions, lists, dicts",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 34,
+          "skill": "python",
+          "focus": "Intermediate - Python",
+          "tasks": "OOP, file I/O, error handling, modules, virtual envs",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 35,
+          "skill": "python",
+          "focus": "Advanced - Python",
+          "tasks": "Decorators, generators, async/await, packaging, testing",
+          "hours": 10.5,
+          "project": "Build a CLI task manager or web scraper"
+        },
+        {
+          "week": 36,
+          "skill": "next",
+          "focus": "Beginner - Next",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 37,
+          "skill": "next",
+          "focus": "Intermediate - Next",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 38,
+          "skill": "next",
+          "focus": "Advanced - Next",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 10.5,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 39,
+          "skill": "graphql",
+          "focus": "Beginner - Graphql",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 40,
+          "skill": "graphql",
+          "focus": "Intermediate - Graphql",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 41,
+          "skill": "graphql",
+          "focus": "Advanced - Graphql",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 10.5,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 42,
+          "skill": "redis",
+          "focus": "Beginner - Redis",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 43,
+          "skill": "redis",
+          "focus": "Intermediate - Redis",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 44,
+          "skill": "redis",
+          "focus": "Advanced - Redis",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 10.5,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 45,
+          "skill": "aws",
+          "focus": "Beginner - Aws",
+          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 46,
+          "skill": "aws",
+          "focus": "Beginner - Aws",
+          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 47,
+          "skill": "aws",
+          "focus": "Intermediate - Aws",
+          "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 48,
+          "skill": "aws",
+          "focus": "Intermediate - Aws",
+          "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 49,
+          "skill": "aws",
+          "focus": "Advanced - Aws",
+          "tasks": "Well-Architected Framework, cost optimization, security, certifications",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 50,
+          "skill": "aws",
+          "focus": "Advanced - Aws",
+          "tasks": "Well-Architected Framework, cost optimization, security, certifications",
+          "hours": 10.5,
+          "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
+        },
+        {
+          "week": 51,
+          "skill": "ci/cd",
+          "focus": "Beginner - Ci/Cd",
+          "tasks": "CI/CD concepts, GitHub Actions basics, automated testing",
+          "hours": 10.5,
+          "project": ""
+        },
+        {
+          "week": 52,
+          "skill": "ci/cd",
+          "focus": "Intermediate - Ci/Cd",
+          "tasks": "Multi-stage pipelines, Docker integration, deployment automation",
+          "hours": 10.5,
+          "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
+        }
+      ],
+      "tips": [
+        "\ud83d\udcc5 Study 10.5 hours/week consistently \u2014 daily practice beats weekend cramming.",
+        "\ud83c\udfaf Focus on one skill at a time. Complete each phase before moving on.",
+        "\ud83d\udee0\ufe0f Build the mini-project at the end of each skill \u2014 it cements your learning.",
+        "\ud83d\udcca Track your progress weekly and adjust your plan if needed.",
+        "\u26a0\ufe0f Your deadline (3 months) may be tight. Estimated time needed: 11.9 months. Consider increasing study hours or reducing scope.",
+        "\ud83d\udcb0 All recommended resources are free. Kaggle, freeCodeCamp, and YouTube are your best friends."
+      ],
+      "tight_deadline": true
+    },
+    "checked_weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
   }
 }

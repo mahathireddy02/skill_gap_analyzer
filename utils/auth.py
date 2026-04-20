@@ -160,6 +160,17 @@ def update_user(email, data):
     _save(users)
 
 def require_login():
+    import streamlit as st
+    # Restore session from query param on refresh
+    if not st.session_state.get("user"):
+        email = st.query_params.get("session", "")
+        if email:
+            users = _load()
+            if email in users:
+                st.session_state.user  = users[email]
+                st.session_state.email = email
     if not st.session_state.get("user") or not st.session_state.get("email"):
         st.switch_page("pages/1_Login.py")
         st.stop()
+    # Keep session param in URL so refresh works
+    st.query_params["session"] = st.session_state.email

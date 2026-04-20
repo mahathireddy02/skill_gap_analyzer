@@ -24,7 +24,7 @@ div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(13
     padding:0.2rem 0.65rem;font-size:0.8rem;font-weight:600;margin:0.15rem;}
 .chip-y{display:inline-block;background:#fef3c7;color:#92400e;border-radius:999px;
     padding:0.2rem 0.65rem;font-size:0.8rem;font-weight:600;margin:0.15rem;}
-.tier-box{background:#f8f7ff;border-radius:12px;padding:0.8rem 1rem;margin-bottom:0.5rem;
+.tier-box{background:rgba(124,58,237,0.1);border-radius:12px;padding:0.8rem 1rem;margin-bottom:0.5rem;
     border-left:4px solid #4f46e5;}
 </style>
 """, unsafe_allow_html=True)
@@ -45,9 +45,22 @@ with col1:
     role  = st.selectbox("Target Role", roles, label_visibility="collapsed")
 
     if not user_skills:
-        st.warning("⚠️ No skills found. Upload your resume first.")
-        if st.button("📄 Upload Resume →"):
-            st.switch_page("pages/4_Resume_Score.py")
+        st.warning("⚠️ No skills detected from resume.")
+        manual = st.text_input("Enter your skills manually (comma-separated)",
+                               placeholder="e.g. Python, SQL, Excel")
+        if st.button("🔍 Analyze Gap", type="primary", use_container_width=True):
+            skills_to_use = [s.strip().lower() for s in manual.split(",") if s.strip()]
+            if not skills_to_use:
+                st.error("Please enter at least one skill.")
+            else:
+                with st.spinner("Analyzing..."):
+                    result = analyze_skill_gap(skills_to_use, role)
+                    update_user(st.session_state.email, {
+                        "target_role":    role,
+                        "missing_skills": result["missing_skills"],
+                        "skills":         skills_to_use,
+                    })
+                    st.session_state["gap_result"] = result
     else:
         st.markdown(f"**Your skills:** {len(user_skills)} detected")
         if st.button("🔍 Analyze Gap", type="primary", use_container_width=True):
@@ -67,7 +80,8 @@ with col1:
             grade_color = "#059669" if s["score"] >= 65 else "#d97706" if s["score"] >= 40 else "#dc2626"
             st.markdown(
                 f'<div style="display:flex;justify-content:space-between;align-items:center;'
-                f'background:#f8f7ff;border-radius:10px;padding:0.5rem 0.8rem;margin-bottom:0.4rem;">'
+                f'background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);'
+                f'border-radius:10px;padding:0.5rem 0.8rem;margin-bottom:0.4rem;">'
                 f'<span style="font-weight:600;font-size:0.88rem;">{s["role"]}</span>'
                 f'<span style="font-weight:800;color:{grade_color};font-size:0.9rem;">'
                 f'{s["score"]}% ({s["grade"]})</span></div>',

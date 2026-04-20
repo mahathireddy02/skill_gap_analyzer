@@ -10,21 +10,25 @@ require_login()
 email   = st.session_state.email
 db_user = get_user(email)
 theme   = db_user.get("theme", "dark")
+if st.query_params.get("action") == "logout":
+    st.session_state.clear()
+    st.query_params.clear()
+    st.switch_page("app.py")
 
-st.markdown(f"""
+st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-*{{font-family:'Inter',sans-serif!important;box-sizing:border-box;}}
+*{font-family:'Inter',sans-serif!important;box-sizing:border-box;}
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stSidebarNav"],
 [data-testid="stSidebar"],[data-testid="collapsedControl"],section[data-testid="stSidebar"],
 .stDeployButton,[class*="viewerBadge"],[class*="toolbar"]
-{{display:none!important;visibility:hidden!important;}}
-html,body{{margin:0!important;padding:0!important;}}
-.block-container{{padding:0!important;max-width:100%!important;}}
-div[data-testid="stButton"] button{{font-weight:700!important;border-radius:10px!important;transition:all 0.2s!important;}}
-div[data-testid="stButton"] button[kind="primary"]{{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}}
-.stTabs [data-baseweb="tab-list"]{{gap:4px;padding:4px;}}
-.stTabs [data-baseweb="tab"]{{border-radius:10px!important;padding:0.4rem 1.2rem!important;font-weight:600!important;}}
+{display:none!important;visibility:hidden!important;}
+html,body{margin:0!important;padding:0!important;}
+.block-container{padding:0!important;max-width:100%!important;}
+div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;transition:all 0.2s!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+.stTabs [data-baseweb="tab-list"]{gap:4px;padding:4px;}
+.stTabs [data-baseweb="tab"]{border-radius:10px!important;padding:0.4rem 1.2rem!important;font-weight:600!important;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -41,7 +45,14 @@ st.markdown(f"""
                 display:flex;align-items:center;justify-content:center;
                 font-size:2rem;font-weight:800;flex-shrink:0;">{initial}</div>
     <div>
-        <div style="font-size:1.4rem;font-weight:800;">{name}</div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+            <span style="font-size:1.4rem;font-weight:800;">{name}</span>
+            <a href="?action=logout" target="_self"
+               style="font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.9);
+                      background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);
+                      border-radius:6px;padding:0.2rem 0.6rem;text-decoration:none;
+                      transition:background 0.15s;">🚪 Logout</a>
+        </div>
         <div style="opacity:0.75;font-size:0.88rem;">{email}</div>
         <div style="margin-top:0.4rem;background:rgba(255,255,255,0.15);
                     border-radius:6px;padding:0.25rem 0.7rem;font-size:0.82rem;display:inline-block;">
@@ -56,7 +67,7 @@ st.markdown(f"""
 
 tab1, tab2, tab3 = st.tabs(["👤 Profile", "⚙️ Settings", "⚠️ Danger Zone"])
 
-# ── TAB 1: Profile ────────────────────────────────────────────────────────────
+# TAB 1: Profile
 with tab1:
     st.markdown("### ✏️ Edit Profile")
     stored_name = db_user.get("name", "")
@@ -85,20 +96,8 @@ with tab1:
     s3.metric("Skills Missing", len(db_user.get("missing_skills", [])))
     s4.metric("Weeks Done",     len(db_user.get("checked_weeks", [])))
 
-# ── TAB 2: Settings ───────────────────────────────────────────────────────────
+# TAB 2: Settings
 with tab2:
-
-    # Appearance — single toggle
-    st.markdown("### 🎨 Appearance")
-    cur_theme = db_user.get("theme", "dark")
-    new_light = st.toggle("☀️ Light Mode", value=(cur_theme == "light"), key="theme_toggle")
-    if new_light != (cur_theme == "light"):
-        update_user(email, {"theme": "light" if new_light else "dark"})
-        st.rerun()
-
-    st.markdown("---")
-
-    # Change Password
     st.markdown("### 🔑 Change Password")
     cur_pw = st.text_input("Current Password", type="password", key="cp_cur")
     pw1, pw2 = st.columns(2)
@@ -123,7 +122,6 @@ with tab2:
 
     st.markdown("---")
 
-    # Notifications
     st.markdown("### 🔔 Notifications")
     notif = db_user.get("notifications", {"weekly_reminder": True, "tips": True})
     n1 = st.toggle("📅 Weekly progress reminder", value=notif.get("weekly_reminder", True), key="n_weekly")
@@ -134,44 +132,33 @@ with tab2:
         update_user(email, {"notifications": {"weekly_reminder": n1, "tips": n2}})
         st.success("✅ Saved!")
 
-    st.markdown("---")
-
-    # Export
-    st.markdown("### 📦 Export My Data")
-    export = {
-        "name":           db_user.get("name"),
-        "email":          email,
-        "target_role":    db_user.get("target_role"),
-        "skills":         db_user.get("skills", []),
-        "missing_skills": db_user.get("missing_skills", []),
-        "resume_score":   db_user.get("resume_score", 0),
-    }
-    st.download_button(
-        label="⬇️ Download My Data (JSON)",
-        data=_json.dumps(export, indent=2),
-        file_name="skillgap_my_data.json",
-        mime="application/json",
-        use_container_width=True,
-    )
-
-# ── TAB 3: Danger Zone ────────────────────────────────────────────────────────
+# TAB 3: Danger Zone
 with tab3:
     st.markdown("### ⚠️ Danger Zone")
-    with st.expander("🗑️ Reset All Data"):
-        st.warning("Clears resume score, skills, and roadmap progress. Your account stays.")
-        if st.button("🗑️ Reset My Data", key="reset_data"):
-            update_user(email, {"skills": [], "missing_skills": [], "resume_score": 0, "target_role": "", "checked_weeks": []})
-            st.success("✅ All data reset.")
-            st.rerun()
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    st.markdown("")
-    with st.expander("🚨 Delete Account"):
-        st.error("**Permanently deletes your account and all data. Cannot be undone.**")
-        confirm = st.text_input("Type your email to confirm", placeholder=email, key="del_confirm")
-        if st.button("🚨 Delete My Account", type="primary", key="del_btn"):
-            if confirm.strip().lower() != email.strip().lower():
-                st.error("Email doesn't match.")
-            else:
-                delete_account(email)
-                st.session_state.clear()
-                st.switch_page("app.py")
+    st.markdown("#### 🗑️ Reset All Data")
+    st.warning("Clears your resume score, skills, missing skills, and roadmap progress. Your account stays active.")
+    if st.button("🗑️ Reset My Data", key="reset_data"):
+        update_user(email, {
+            "skills": [], "missing_skills": [],
+            "resume_score": 0, "target_role": "", "checked_weeks": []
+        })
+        st.success("✅ All data reset.")
+        st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    st.markdown("#### 🚨 Delete Account")
+    st.error("⚠️ Permanently deletes your account and all data. This cannot be undone.")
+    confirm = st.text_input("Type your email address to confirm", placeholder=email, key="del_confirm")
+    if st.button("🚨 Delete My Account", type="primary", key="del_btn"):
+        if confirm.strip().lower() != email.strip().lower():
+            st.error("❌ Email doesn't match.")
+        else:
+            delete_account(email)
+            st.query_params.clear()
+            st.session_state.clear()
+            st.switch_page("app.py")

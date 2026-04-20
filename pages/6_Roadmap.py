@@ -31,14 +31,24 @@ db_user = get_user(st.session_state.email)
 missing = db_user.get("missing_skills", [])
 role    = db_user.get("target_role", "")
 
-if not missing or not role:
-    st.info("No skill gap data found. Run the Skill Gap Analyzer first.")
+if not role:
+    st.info("No target role set. Run the Skill Gap Analyzer first.")
     if st.button("Go to Skill Gap Analyzer", type="primary"):
         st.switch_page("pages/5_Skill_Gap.py")
     st.stop()
 
+if not missing:
+    st.success(f"🎉 You already have all required skills for **{role}**! No roadmap needed.")
+    if st.button("Re-run Skill Gap Analyzer", type="primary"):
+        st.switch_page("pages/5_Skill_Gap.py")
+    st.stop()
+
 if "checked_weeks" not in st.session_state:
-    st.session_state.checked_weeks = set()
+    saved = db_user.get("checked_weeks", [])
+    st.session_state.checked_weeks = set(saved)
+
+if "roadmap_result" not in st.session_state and db_user.get("roadmap_result"):
+    st.session_state["roadmap_result"] = db_user["roadmap_result"]
 
 st.markdown("## 🛤️ Learning Roadmap")
 st.caption(f"Target Role: **{role}** · {len(missing)} skills to learn")
@@ -73,6 +83,8 @@ with st.expander("⚙️ Customize Roadmap", expanded="roadmap_result" not in st
             )
             st.session_state["roadmap_result"] = result
             st.session_state.checked_weeks = set()
+            from utils.auth import update_user
+            update_user(st.session_state.email, {"roadmap_result": result, "checked_weeks": []})
         st.rerun()
 
 if "roadmap_result" not in st.session_state:
@@ -123,6 +135,8 @@ def render_checklist():
                 if val != is_done:
                     if val: st.session_state.checked_weeks.add(w)
                     else:   st.session_state.checked_weeks.discard(w)
+                    from utils.auth import update_user
+                    update_user(st.session_state.email, {"checked_weeks": list(st.session_state.checked_weeks)})
                     st.rerun()
 
 # ── Build station data for JS ─────────────────────────────────────────────────
@@ -408,6 +422,33 @@ STATIONS.forEach((s, i) => {{
   svg.appendChild(g);
 }});
 
+// Goal flag at the end of the track
+const lastX = pts[N-1].x + 40;
+const lastY = pts[N-1].y;
+const flagG = document.createElementNS('http://www.w3.org/2000/svg','g');
+flagG.setAttribute('transform', `translate(${{lastX}},${{lastY}})`);
+
+const flagPole = document.createElementNS('http://www.w3.org/2000/svg','line');
+flagPole.setAttribute('x1','0'); flagPole.setAttribute('y1','-30');
+flagPole.setAttribute('x2','0'); flagPole.setAttribute('y2','20');
+flagPole.setAttribute('stroke','#fbbf24'); flagPole.setAttribute('stroke-width','2.5');
+flagG.appendChild(flagPole);
+
+const flagRect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+flagRect.setAttribute('x','0'); flagRect.setAttribute('y','-30');
+flagRect.setAttribute('width','22'); flagRect.setAttribute('height','14');
+flagRect.setAttribute('fill','#10b981'); flagRect.setAttribute('rx','2');
+flagG.appendChild(flagRect);
+
+const goalLbl = document.createElementNS('http://www.w3.org/2000/svg','text');
+goalLbl.setAttribute('y','34'); goalLbl.setAttribute('text-anchor','middle');
+goalLbl.setAttribute('font-size','10'); goalLbl.setAttribute('fill','#10b981');
+goalLbl.setAttribute('font-weight','700');
+goalLbl.textContent = '{"🎉 Reached!" if pct == 100 else "Goal Reached"}';
+flagG.appendChild(goalLbl);
+
+svg.appendChild(flagG);
+
 // Train dot
 const trainGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
 trainGroup.setAttribute('id','train');
@@ -492,10 +533,70 @@ with st.expander("💡 Tips for your journey", expanded=False):
 # ── Weekly Checklist ──────────────────────────────────────────────────────────
 render_checklist()
 
-# ── Completion ────────────────────────────────────────────────────────────────
+# Completion
 if pct == 100:
     st.balloons()
     st.success(f"🎉 Roadmap Complete! You've mastered all skills for **{role}**. Time to apply!")
+
+# Achievements
+st.markdown("---")
+
+badge_cards = ""
+for icon, title, desc, unlocked in [
+    ("👣", "First Step",   "Any progress",        pct >= 1),
+    ("🔥", "On Fire",      "Week 1 done",          done_weeks >= 1),
+    ("⚡", "Quarter Way",  "25% complete",         pct >= 25),
+    ("🌟", "Halfway",      "50% complete",         pct >= 50),
+    ("📅", "Consistent",   "4+ weeks done",        done_weeks >= 4),
+    ("💪", "Dedicated",    "10+ weeks done",       done_weeks >= 10),
+    ("🚀", "Almost There", "75% complete",         pct >= 75),
+    ("🧠", "Skill Master", f"100% for {role}",     pct == 100),
+]:
+    badge_cards += (
+        f'<div class="ba-card {"ba-on" if unlocked else "ba-off"}">' 
+        f'<div class="ba-icon">{icon}</div>'
+        f'<div class="ba-title">{title}</div>'
+        f'<div class="ba-desc">{desc}</div>'
+        f'<div class="ba-status">{"✓ Unlocked" if unlocked else "🔒"}</div>'
+        f'</div>'
+    )
+
+components.html(f"""
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+*{{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif;}}
+body{{background:#0f0c29;color:#fff;padding:1rem 0.5rem 2rem;}}
+h2{{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}}
+h2 span{{font-size:1.3rem;}}
+.ba-grid{{display:flex;flex-wrap:wrap;gap:0.7rem;}}
+.ba-card{{
+    width:120px;border-radius:16px;padding:1rem 0.6rem;
+    display:flex;flex-direction:column;align-items:center;gap:0.3rem;
+    transition:transform 0.25s;cursor:default;
+}}
+.ba-card:hover{{transform:translateY(-4px);}}
+.ba-on{{
+    background:linear-gradient(145deg,rgba(124,58,237,0.25),rgba(79,70,229,0.15));
+    border:1.5px solid rgba(167,139,250,0.5);
+    box-shadow:0 4px 18px rgba(124,58,237,0.2);
+}}
+.ba-off{{
+    background:rgba(255,255,255,0.02);
+    border:1.5px solid rgba(255,255,255,0.05);
+    opacity:0.35;filter:grayscale(0.8);
+}}
+.ba-icon{{font-size:2rem;}}
+.ba-title{{font-size:0.75rem;font-weight:800;text-align:center;color:#e2e8f0;}}
+.ba-on .ba-title{{color:#a78bfa;}}
+.ba-desc{{font-size:0.63rem;color:rgba(255,255,255,0.35);text-align:center;line-height:1.4;}}
+.ba-status{{font-size:0.63rem;font-weight:700;margin-top:0.2rem;color:#4b5563;}}
+.ba-on .ba-status{{color:#34d399;}}
+</style>
+</head><body>
+<h2><span>🏆</span> Achievements</h2>
+<div class="ba-grid">{badge_cards}</div>
+</body></html>
+""", height=220, scrolling=False)
 
 # ── Actions ───────────────────────────────────────────────────────────────────
 st.markdown("")
@@ -504,8 +605,12 @@ with a1:
     if st.button("🔄 Regenerate Roadmap", use_container_width=True):
         del st.session_state["roadmap_result"]
         st.session_state.checked_weeks = set()
+        from utils.auth import update_user
+        update_user(st.session_state.email, {"roadmap_result": None, "checked_weeks": []})
         st.rerun()
 with a2:
     if st.button("🗑️ Reset Progress", use_container_width=True):
         st.session_state.checked_weeks = set()
+        from utils.auth import update_user
+        update_user(st.session_state.email, {"checked_weeks": []})
         st.rerun()
