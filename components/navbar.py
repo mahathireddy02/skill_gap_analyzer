@@ -27,28 +27,111 @@ def show_navbar(active="Dashboard"):
         _btn_hover   = "rgba(124,58,237,0.12)"
         _text_color  = "#1a1a2e"
         _theme_css   = """
-        html,body,.stApp{background:#f5f4ff!important;color:#1a1a2e!important;}
+        html,body,.stApp{background:#f0eeff!important;color:#1a1a2e!important;}
+
+        /* All text elements */
         div[data-testid="stMarkdownContainer"] p,
         div[data-testid="stMarkdownContainer"] h1,
         div[data-testid="stMarkdownContainer"] h2,
         div[data-testid="stMarkdownContainer"] h3,
+        div[data-testid="stMarkdownContainer"] h4,
         div[data-testid="stMarkdownContainer"] li,
         div[data-testid="stMarkdownContainer"] span,
-        label,.stTextInput label,.stSelectbox label,
-        .stRadio label,.stCheckbox label,p,h1,h2,h3,h4,span
+        div[data-testid="stMarkdownContainer"] a,
+        div[data-testid="stMarkdownContainer"] strong,
+        div[data-testid="stMarkdownContainer"] em,
+        label, .stTextInput label, .stSelectbox label,
+        .stRadio label, .stCheckbox label,
+        .stSlider label, .stNumberInput label,
+        .stTextArea label, .stDateInput label,
+        p, h1, h2, h3, h4, h5, span, li, a, strong
         {color:#1a1a2e!important;}
-        div[data-testid="stTextInput"] input,div[data-testid="stTextArea"] textarea
+
+        /* Caption and helper text */
+        div[data-testid="stCaptionContainer"] p,
+        small, .caption {color:#4b5563!important;}
+
+        /* Inputs */
+        div[data-testid="stTextInput"] input,
+        div[data-testid="stTextArea"] textarea,
+        div[data-testid="stNumberInput"] input
         {background:#fff!important;color:#1a1a2e!important;border-color:#d1d5db!important;}
-        div[data-testid="stMetric"]{background:#fff!important;border:1px solid #e5e7eb!important;}
-        div[data-testid="stMetricLabel"]{color:#6b7280!important;}
+
+        /* Select boxes */
+        div[data-testid="stSelectbox"] > div > div
+        {background:#fff!important;color:#1a1a2e!important;border-color:#d1d5db!important;}
+
+        /* Metrics */
+        div[data-testid="stMetric"]{background:#fff!important;border:1px solid #e5e7eb!important;border-radius:12px;}
+        div[data-testid="stMetricLabel"] p{color:#6b7280!important;}
         div[data-testid="stMetricValue"]{color:#1a1a2e!important;}
+        div[data-testid="stMetricDelta"]{color:#059669!important;}
+
+        /* Expanders */
         div[data-testid="stExpander"]{background:#fff!important;border-color:#e5e7eb!important;}
-        div[data-testid="stExpander"] summary p{color:#1a1a2e!important;}
+        div[data-testid="stExpander"] summary p,
+        div[data-testid="stExpander"] summary span{color:#1a1a2e!important;}
+        div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p{color:#374151!important;}
+
+        /* Tabs */
         .stTabs [data-baseweb="tab-list"]{background:#ede9fe!important;border-radius:12px;}
         .stTabs [data-baseweb="tab"]{color:#4b5563!important;}
         .stTabs [aria-selected="true"]{background:#7c3aed!important;color:#fff!important;border-radius:10px;}
-        .stat-card,.feat-card{background:#fff!important;border-color:#e5e7eb!important;}
-        .fct{color:#1a1a2e!important;}.fcd{color:#4b5563!important;}
+        .stTabs [data-baseweb="tab-panel"]{background:transparent!important;}
+
+        /* Cards */
+        .stat-card{background:#fff!important;border-color:#e5e7eb!important;}
+        .sc-val{color:#1a1a2e!important;}
+        .sc-lbl{color:#6b7280!important;}
+        .feat-card,.fc-wrap{background:#fff!important;border-color:#e5e7eb!important;}
+        .fct{color:#1a1a2e!important;}
+        .fcd{color:#4b5563!important;}
+        .fcb{background:rgba(124,58,237,0.1)!important;color:#7c3aed!important;}
+
+        /* Force all inline white text inside cards to dark */
+        .fc-wrap div, .fc-wrap p, .fc-wrap span,
+        .feat-card div, .feat-card p, .feat-card span,
+        .stat-card div, .stat-card p, .stat-card span
+        {color:#1a1a2e!important;}
+        .fc-wrap div[style*="rgba(255,255,255,0.55)"],
+        .fc-wrap div[style*="color:#fff"],
+        .feat-card div[style*="color:#fff"]
+        {color:#4b5563!important;}
+
+        /* Section titles and headings in page body */
+        .page-body h1,.page-body h2,.page-body h3,
+        .page-body p,.page-body span,.page-body div
+        {color:#1a1a2e!important;}
+        .sec-title{color:#1a1a2e!important;}
+
+        /* Skill chips */
+        .chip-g{background:#d1fae5!important;color:#065f46!important;border-color:#6ee7b7!important;}
+        .chip-r{background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;}
+
+        /* Progress / Skills boxes */
+        .progress-box{background:#fff!important;border-color:#e5e7eb!important;}
+        .box-title{color:#1a1a2e!important;}
+        .empty-msg{color:#6b7280!important;}
+        .ats-box{background:#fff!important;border-color:#e5e7eb!important;}
+        .ats-label{color:#1a1a2e!important;}
+        .prog-bg{background:#e5e7eb!important;}
+
+        /* Alerts / info boxes */
+        div[data-testid="stAlert"]{background:#fff!important;color:#1a1a2e!important;}
+        div[data-testid="stAlert"] p{color:#1a1a2e!important;}
+
+        /* Checkboxes and toggles */
+        div[data-testid="stCheckbox"] span{color:#1a1a2e!important;}
+        div[data-testid="stToggle"] span{color:#1a1a2e!important;}
+
+        /* Sidebar / page body */
+        .page-body{background:#f0eeff!important;}
+
+        /* Progress bars */
+        .prog-bg{background:#e5e7eb!important;}
+
+        /* Roadmap SVG background */
+        body{background:#f0eeff!important;}
         """
     else:
         _bg          = "#0f0c29"
@@ -78,12 +161,12 @@ def show_navbar(active="Dashboard"):
     _anim_css = ""
     if _just_changed:
         _anim_css = """
-        @keyframes wipeUp {
-            0%   { clip-path: inset(100% 0% 0% 0%); }
-            100% { clip-path: inset(0% 0% 0% 0%); }
+        @keyframes wipeDiag {
+            0%   { clip-path: circle(0% at 100% 0%); }
+            100% { clip-path: circle(150% at 100% 0%); }
         }
         .stApp {
-            animation: wipeUp 0.55s cubic-bezier(0.4,0,0.2,1) forwards !important;
+            animation: wipeDiag 0.7s cubic-bezier(0.25,0.1,0.25,1) forwards !important;
         }
         """
 

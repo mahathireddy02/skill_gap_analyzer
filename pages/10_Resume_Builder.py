@@ -5,7 +5,7 @@ from utils.auth import require_login, get_user
 from utils.resume_builder import build_resume_pdf, validate_resume_data
 from components.navbar import show_navbar
 
-st.set_page_config(page_title="Resume Builder · SkillGap", page_icon="📝", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Resume Builder", page_icon="📝", layout="wide", initial_sidebar_state="collapsed")
 require_login()
 
 st.markdown("""
@@ -18,160 +18,215 @@ html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
-.section-card{background:#f8f7ff;border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1rem;border:1px solid #e5e7eb;}
+.tmpl-card{border:2px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center;
+    cursor:pointer;transition:all 0.2s;}
+.tmpl-card:hover{border-color:#7c3aed;box-shadow:0 4px 16px rgba(124,58,237,0.15);}
+.tmpl-selected{border-color:#7c3aed!important;background:rgba(124,58,237,0.08)!important;}
 </style>
 """, unsafe_allow_html=True)
 
 show_navbar("Resume Builder")
 
 st.markdown("## 📝 Resume Builder")
-st.markdown("Fill in your details and download a clean, ATS-friendly PDF resume.")
+st.caption("Fill in your details and download a professional PDF resume.")
 st.markdown("")
 
 db_user = get_user(st.session_state.email)
 
-# ── Section 1: Personal Info ──────────────────────────────────────────────────
+# Init session state for dynamic rows
+if "num_skills" not in st.session_state:
+    st.session_state.num_skills = 3
+
+# ── Template Selector ─────────────────────────────────────────────────────────
+st.markdown("### 🎨 Choose Template")
+t1, t2, t3, t4 = st.columns(4)
+templates = ["Classic", "Modern", "Minimal", "Creative"]
+selected_template = st.session_state.get("selected_template", "Modern")
+
+for col, tmpl in zip([t1,t2,t3,t4], templates):
+    with col:
+        is_selected = selected_template == tmpl
+        cls = "tmpl-card tmpl-selected" if is_selected else "tmpl-card"
+        icon = {"Classic":"📄","Modern":"✨","Minimal":"🎯","Creative":"🎨"}[tmpl]
+        st.markdown(f'<div class="{cls}">{icon}<br><strong>{tmpl}</strong></div>', unsafe_allow_html=True)
+        if st.button(f"Select {tmpl}", key=f"tmpl_{tmpl}", use_container_width=True):
+            st.session_state.selected_template = tmpl
+            st.rerun()
+
+st.markdown("---")
+
+# ── Personal Info ─────────────────────────────────────────────────────────────
 st.markdown("### 👤 Personal Information")
-with st.container():
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        name     = st.text_input("Full Name *", value=db_user.get("name", ""))
-        email    = st.text_input("Email *",     value=db_user.get("email", st.session_state.email))
-    with c2:
-        phone    = st.text_input("Phone Number", placeholder="+91 9876543210")
-        linkedin = st.text_input("LinkedIn URL", placeholder="linkedin.com/in/yourname")
-    with c3:
-        github   = st.text_input("GitHub URL",  placeholder="github.com/yourname")
-        location = st.text_input("Location",    placeholder="City, Country")
+c1, c2, c3 = st.columns(3)
+with c1:
+    name  = st.text_input("Full Name *", value=db_user.get("name",""))
+    email = st.text_input("Email *",     value=st.session_state.email)
+with c2:
+    phone    = st.text_input("Phone", placeholder="+91 9876543210")
+    linkedin = st.text_input("LinkedIn", placeholder="linkedin.com/in/yourname")
+with c3:
+    github   = st.text_input("GitHub", placeholder="github.com/yourname")
+    location = st.text_input("Location", placeholder="City, Country")
 
-summary = st.text_area("Professional Summary (2–3 lines)", height=80,
-    placeholder="Results-driven software engineer with 2+ years of experience building scalable web applications...")
+summary = st.text_area("Professional Summary", height=70,
+    placeholder="Results-driven engineer with 2+ years building scalable apps...")
 
 st.markdown("---")
 
-# ── Section 2: Skills ─────────────────────────────────────────────────────────
+# ── Skills (Dynamic Rows) ─────────────────────────────────────────────────────
 st.markdown("### 🧠 Skills")
-st.markdown("*Enter skills per category (comma-separated). Leave blank to skip.*")
+st.caption("Add skills by category. Click + to add more rows.")
 
-detected_skills = db_user.get("skills", [])
-if detected_skills:
-    st.info(f"💡 We detected {len(detected_skills)} skills from your resume. Pre-filled below.")
-
-skill_categories = ["Languages", "Frontend", "Backend", "Databases", "AI/ML", "DevOps/Cloud", "Tools"]
 skills_data = {}
+for i in range(st.session_state.num_skills):
+    s1, s2, s3, s4 = st.columns([1.5, 3.5, 1.2, 0.5])
+    with s1:
+        cat = st.text_input("Category", key=f"scat_{i}", placeholder="e.g. Languages")
+    with s2:
+        val = st.text_input("Skills (comma-separated)", key=f"sval_{i}",
+                            placeholder="e.g. Python, Java, SQL")
+    with s3:
+        level = st.selectbox("Level", ["Basic", "Intermediate", "Expert"],
+                             key=f"slvl_{i}")
+    with s4:
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🗑️", key=f"sdel_{i}"):
+            st.session_state.num_skills = max(1, st.session_state.num_skills - 1)
+            st.rerun()
+    if cat.strip() and val.strip():
+        skill_list = [s.strip() for s in val.split(",") if s.strip()]
+        skills_data[cat] = {"skills": skill_list, "level": level}
 
-sc_cols = st.columns(2)
-for i, cat in enumerate(skill_categories):
-    # Pre-fill from detected skills if available
-    prefill = ""
-    if detected_skills:
-        from utils.resume_parser import _SKILL_TO_CATEGORY
-        cat_skills = [s.title() for s in detected_skills if _SKILL_TO_CATEGORY.get(s.lower()) == cat]
-        prefill = ", ".join(cat_skills)
-
-    with sc_cols[i % 2]:
-        val = st.text_input(f"{cat}", value=prefill, placeholder=f"e.g. Python, Java, SQL")
-        if val.strip():
-            skills_data[cat] = [s.strip() for s in val.split(",") if s.strip()]
+if st.button("➕ Add Skill Category"):
+    st.session_state.num_skills += 1
+    st.rerun()
 
 st.markdown("---")
 
-# ── Section 3: Education ──────────────────────────────────────────────────────
+# ── Education ─────────────────────────────────────────────────────────────────
 st.markdown("### 🎓 Education")
-num_edu = st.number_input("Number of education entries", min_value=1, max_value=4, value=1)
+num_edu = st.number_input("Number of entries", 1, 4, 1, key="num_edu")
 education = []
 for i in range(int(num_edu)):
     st.markdown(f"**Entry {i+1}**")
-    e1, e2, e3, e4 = st.columns(4)
-    with e1: degree      = st.text_input("Degree *",      key=f"deg_{i}", placeholder="B.Tech Computer Science")
-    with e2: institution = st.text_input("Institution *", key=f"inst_{i}", placeholder="ABC University")
-    with e3: year        = st.text_input("Year",          key=f"yr_{i}",  placeholder="2020 - 2024")
-    with e4: gpa         = st.text_input("GPA/Percentage",key=f"gpa_{i}", placeholder="8.5 / 10")
-    if degree.strip():
-        education.append({"degree": degree, "institution": institution, "year": year, "gpa": gpa})
+    e1,e2,e3,e4 = st.columns(4)
+    with e1: deg  = st.text_input("Degree *",      key=f"deg_{i}", placeholder="B.Tech CS")
+    with e2: inst = st.text_input("Institution *", key=f"inst_{i}", placeholder="ABC Univ")
+    with e3: yr   = st.text_input("Year",          key=f"yr_{i}",  placeholder="2020-2024")
+    with e4: gpa  = st.text_input("GPA",           key=f"gpa_{i}", placeholder="8.5")
+    if deg.strip():
+        education.append({"degree":deg,"institution":inst,"year":yr,"gpa":gpa})
 
 st.markdown("---")
 
-# ── Section 4: Experience ─────────────────────────────────────────────────────
+# ── Experience ────────────────────────────────────────────────────────────────
 st.markdown("### 💼 Work Experience")
-num_exp = st.number_input("Number of experience entries (0 if fresher)", min_value=0, max_value=5, value=0)
+num_exp = st.number_input("Number of jobs (0 if fresher)", 0, 5, 0, key="num_exp")
 experience = []
 for i in range(int(num_exp)):
     st.markdown(f"**Job {i+1}**")
-    x1, x2, x3 = st.columns(3)
-    with x1: title    = st.text_input("Job Title *",  key=f"jtitle_{i}", placeholder="Software Engineer")
-    with x2: company  = st.text_input("Company *",    key=f"jcomp_{i}",  placeholder="Google")
-    with x3: duration = st.text_input("Duration",     key=f"jdur_{i}",   placeholder="Jun 2022 - Present")
-    resp_raw = st.text_area("Responsibilities (one per line)", key=f"jresp_{i}", height=80,
-        placeholder="• Developed REST APIs using FastAPI\n• Reduced latency by 30%")
-    responsibilities = [r.lstrip("•-– ").strip() for r in resp_raw.splitlines() if r.strip()]
+    x1,x2,x3 = st.columns(3)
+    with x1: title = st.text_input("Title *",    key=f"jtitle_{i}", placeholder="Software Engineer")
+    with x2: comp  = st.text_input("Company *",  key=f"jcomp_{i}",  placeholder="Google")
+    with x3: dur   = st.text_input("Duration",   key=f"jdur_{i}",   placeholder="Jun 2022 - Present")
+    resp = st.text_area("Responsibilities (one per line)", key=f"jresp_{i}", height=70,
+        placeholder="• Developed REST APIs\n• Reduced latency by 30%")
     if title.strip():
-        experience.append({"title": title, "company": company, "duration": duration, "responsibilities": responsibilities})
+        experience.append({"title":title,"company":comp,"duration":dur,
+            "responsibilities":[r.lstrip("•-– ").strip() for r in resp.splitlines() if r.strip()]})
 
 st.markdown("---")
 
-# ── Section 5: Projects ───────────────────────────────────────────────────────
+# ── Projects ──────────────────────────────────────────────────────────────────
 st.markdown("### 🛠️ Projects")
-num_proj = st.number_input("Number of projects", min_value=1, max_value=6, value=2)
+num_proj = st.number_input("Number of projects", 1, 6, 2, key="num_proj")
 projects = []
 for i in range(int(num_proj)):
     st.markdown(f"**Project {i+1}**")
-    p1, p2 = st.columns(2)
-    with p1: proj_title = st.text_input("Project Title *", key=f"ptitle_{i}", placeholder="Skill Gap Analyzer")
-    with p2: proj_link  = st.text_input("GitHub/Live Link", key=f"plink_{i}", placeholder="github.com/you/project")
-    proj_tech = st.text_input("Technologies Used", key=f"ptech_{i}", placeholder="Python, React, FastAPI, Docker")
-    proj_desc = st.text_area("Description (bullet points)", key=f"pdesc_{i}", height=70,
-        placeholder="• Built a web app that analyzes skill gaps\n• Achieved 95% skill detection accuracy")
-    if proj_title.strip():
-        tech_list = [t.strip() for t in proj_tech.split(",") if t.strip()]
-        projects.append({"title": proj_title, "description": proj_desc, "tech": tech_list, "link": proj_link})
+    p1,p2 = st.columns(2)
+    with p1: ptitle = st.text_input("Title *", key=f"ptitle_{i}", placeholder="Skill Gap Analyzer")
+    with p2: plink  = st.text_input("Link",    key=f"plink_{i}",  placeholder="github.com/you/project")
+    ptech = st.text_input("Tech", key=f"ptech_{i}", placeholder="Python, React, Docker")
+    pdesc = st.text_area("Description", key=f"pdesc_{i}", height=60,
+        placeholder="• Built a web app\n• Achieved 95% accuracy")
+    if ptitle.strip():
+        projects.append({"title":ptitle,"description":pdesc,
+            "tech":[t.strip() for t in ptech.split(",") if t.strip()],"link":plink})
 
 st.markdown("---")
 
-# ── Section 6: Certifications ─────────────────────────────────────────────────
+# ── Certifications ────────────────────────────────────────────────────────────
 st.markdown("### 🏆 Certifications (Optional)")
-certs_raw = st.text_area("One per line: Name — Issuer (Year)",
-    height=80, placeholder="AWS Certified Solutions Architect — Amazon (2023)\nTensorFlow Developer Certificate — Google (2023)")
-certifications = []
-for line in certs_raw.splitlines():
-    if line.strip():
-        certifications.append(line.strip())
+certs_raw = st.text_area("One per line", height=70,
+    placeholder="AWS Certified Solutions Architect — Amazon (2023)")
+certifications = [line.strip() for line in certs_raw.splitlines() if line.strip()]
 
 st.markdown("---")
 
-# ── Generate PDF ──────────────────────────────────────────────────────────────
-if st.button("📄 Generate & Download Resume PDF", type="primary", use_container_width=True):
-    resume_data = {
-        "name":           name,
-        "email":          email,
-        "phone":          phone,
-        "linkedin":       linkedin,
-        "github":         github,
-        "location":       location,
-        "summary":        summary,
-        "skills":         skills_data,
-        "experience":     experience,
-        "education":      education,
-        "projects":       projects,
-        "certifications": certifications,
-    }
+# ── Preview & Generate ────────────────────────────────────────────────────────
+resume_data = {
+    "name":name, "email":email, "phone":phone,
+    "linkedin":linkedin, "github":github, "location":location,
+    "summary":summary, "skills":skills_data,
+    "experience":experience, "education":education,
+    "projects":projects, "certifications":certifications,
+}
 
+b1, b2 = st.columns(2)
+with b1:
+    preview_clicked = st.button("👁️ Preview All Templates", use_container_width=True)
+with b2:
+    generate_clicked = st.button("📄 Generate & Download Resume", type="primary", use_container_width=True)
+
+if preview_clicked or generate_clicked:
     errors = validate_resume_data(resume_data)
     if errors:
-        for err in errors:
-            st.error(f"❌ {err}")
+        for e in errors: st.error(f"❌ {e}")
     else:
-        with st.spinner("Building your PDF resume..."):
-            pdf_bytes = build_resume_pdf(resume_data)
+        if preview_clicked:
+            st.markdown("---")
+            st.markdown("### 👁️ Preview — All 4 Templates")
+            st.caption("Click any tab to preview. Use the download button below each preview.")
+            st.markdown("")
 
-        safe_name = name.replace(" ", "_") if name else "resume"
-        st.success("✅ Resume generated successfully!")
-        st.download_button(
-            label="⬇️ Download Resume PDF",
-            data=pdf_bytes,
-            file_name=f"{safe_name}_resume.pdf",
-            mime="application/pdf",
-            use_container_width=True,
-        )
+            templates_list = ["Classic", "Modern", "Minimal", "Creative"]
+            icons = {"Classic":"📄","Modern":"✨","Minimal":"🎯","Creative":"🎨"}
+            pdfs  = {}
 
-st.markdown("</div>", unsafe_allow_html=True)
+            with st.spinner("Generating all 4 previews..."):
+                for tmpl in templates_list:
+                    pdfs[tmpl] = build_resume_pdf(resume_data, template=tmpl)
+
+            tabs = st.tabs([f"{icons[t]} {t}" for t in templates_list])
+            for tab, tmpl in zip(tabs, templates_list):
+                with tab:
+                    import base64
+                    b64 = base64.b64encode(pdfs[tmpl]).decode()
+                    st.markdown(
+                        f'<iframe src="data:application/pdf;base64,{b64}" '
+                        f'width="100%" height="700px" '
+                        f'style="border:1px solid rgba(124,58,237,0.3);border-radius:12px;">'
+                        f'</iframe>',
+                        unsafe_allow_html=True
+                    )
+                    st.markdown("")
+                    st.download_button(
+                        f"⬇️ Download {tmpl} Template",
+                        data=pdfs[tmpl],
+                        file_name=f"{name.replace(' ','_')}_{tmpl}_resume.pdf",
+                        mime="application/pdf",
+                        key=f"dl_{tmpl}",
+                        use_container_width=True,
+                    )
+
+        if generate_clicked:
+            with st.spinner(f"Building {selected_template} template..."):
+                pdf = build_resume_pdf(resume_data, template=selected_template)
+            st.success(f"✅ {selected_template} resume ready!")
+            st.download_button(
+                f"⬇️ Download {selected_template} Resume",
+                data=pdf,
+                file_name=f"{name.replace(' ','_')}_resume.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+            )

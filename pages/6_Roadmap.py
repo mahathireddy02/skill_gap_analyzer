@@ -214,7 +214,8 @@ html = f"""
     position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.92);
     background:linear-gradient(135deg,#1e1b4b,#0f0c29);
     border:1px solid rgba(167,139,250,0.3);
-    border-radius:20px;padding:28px 32px;width:min(520px,90vw);
+    border-radius:20px;padding:24px 28px;width:min(520px,90vw);
+    max-height:80vh;overflow-y:auto;
     box-shadow:0 24px 80px rgba(0,0,0,0.7);
     opacity:0;pointer-events:none;
     transition:all .25s cubic-bezier(.4,0,.2,1);
@@ -523,7 +524,7 @@ function closeDetail() {{
 </html>
 """
 
-components.html(html, height=340, scrolling=False)
+components.html(html, height=420, scrolling=False)
 
 # ── Tips ──────────────────────────────────────────────────────────────────────
 with st.expander("💡 Tips for your journey", expanded=False):

@@ -42,6 +42,13 @@ html,body{margin:0!important;padding:0!important;}
     border:1px solid rgba(239,68,68,0.3);}
 .prog-bg{background:rgba(255,255,255,0.1);border-radius:999px;height:8px;overflow:hidden;margin:0.4rem 0;}
 .prog-fill{height:100%;border-radius:999px;}
+.progress-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+    border-radius:16px;padding:1.2rem 1.4rem;}
+.box-title{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.7rem;}
+.empty-msg{color:rgba(255,255,255,0.5);font-size:0.85rem;}
+.ats-box{background:rgba(255,255,255,0.06);border-radius:16px;padding:1.3rem 1.5rem;
+    border:1px solid rgba(255,255,255,0.1);box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.ats-label{font-weight:700;color:#fff;}
 div[data-testid="stButton"] button{font-weight:600!important;border-radius:10px!important;
     font-size:0.88rem!important;transition:all 0.2s!important;}
 div[data-testid="stButton"] button[kind="primary"]{
@@ -109,46 +116,59 @@ features = [
     ("📊", "Progress Analytics", "Visualize your skill growth and readiness with interactive charts.",   "View Analytics →", "pages/7_Analytics.py",   "Track Growth"),
 ]
 
-cards_html = "".join(
-    f'<div class="feat-card"><div class="fci">{ic}</div>'
-    f'<div class="fct">{ti}</div><div class="fcd">{de}</div>'
-    f'<div class="fcb">{ba}</div></div>'
-    for ic, ti, de, _, __, ba in features
-)
-
-st.markdown(f"""
-<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-            border-radius:20px;padding:1.2rem;margin-bottom:3rem;
-            display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;">
-  {cards_html}
-</div>
+st.markdown("""
+<style>
+.fc-wrap{
+    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+    border-radius:16px;padding:1.4rem 1.2rem 1rem;
+    display:flex;flex-direction:column;height:100%;
+    transition:box-shadow 0.22s,border-color 0.22s;
+}
+.fc-wrap:hover{box-shadow:0 8px 24px rgba(124,58,237,0.2);border-color:rgba(167,139,250,0.4);}
+.fc-top{flex:1;}
+.fct{font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:0.3rem;}
+.fcd{font-size:0.81rem;color:rgba(255,255,255,0.55);line-height:1.5;}
+.fc-badge{display:inline-block;background:rgba(124,58,237,0.2);color:#a78bfa;
+    font-size:0.7rem;font-weight:600;padding:0.15rem 0.5rem;
+    border-radius:999px;margin:0.5rem 0 1rem;border:1px solid rgba(167,139,250,0.3);}
+</style>
 """, unsafe_allow_html=True)
 
-c1, c2, c3, c4 = st.columns(4, gap="large")
-for col, (_, __, ___, cta, path, ____) in zip([c1, c2, c3, c4], features):
+fc1, fc2, fc3, fc4 = st.columns(4, gap="medium")
+for col, (ic, ti, de, cta, path, ba) in zip([fc1, fc2, fc3, fc4], features):
     with col:
+        st.markdown(f"""
+        <div class="fc-wrap">
+            <div class="fc-top">
+                <div style="font-size:2rem;margin-bottom:0.5rem;">{ic}</div>
+                <div class="fct">{ti}</div>
+                <div class="fcd">{de}</div>
+                <div class="fc-badge">{ba}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         if st.button(cta, key=f"fc_{cta}", use_container_width=True, type="primary"):
             st.switch_page(path)
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Your Skills + Missing ─────────────────────────────────────────────────────
 st.markdown("### 📊 Your Progress")
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 skills_html  = "".join(f'<span class="chip-g">✅ {s}</span>' for s in skills) if skills \
-               else '<span style="color:rgba(255,255,255,0.4);font-size:0.85rem;">No skills detected. Upload your resume.</span>'
+               else '<span class="empty-msg">No skills detected. Upload your resume.</span>'
 missing_html = "".join(f'<span class="chip-r">❌ {s}</span>' for s in missing) if missing \
-               else '<span style="color:rgba(255,255,255,0.4);font-size:0.85rem;">Run Skill Gap Analyzer to see missing skills.</span>'
+               else '<span class="empty-msg">Run Skill Gap Analyzer to see missing skills.</span>'
 
 st.markdown(f"""
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
-  <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-              border-radius:16px;padding:1.2rem 1.4rem;">
-    <div style="font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.7rem;">✅ Your Skills</div>
+  <div class="progress-box">
+    <div class="box-title">✅ Your Skills</div>
     <div style="display:flex;flex-wrap:wrap;gap:0.3rem;">{skills_html}</div>
   </div>
-  <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-              border-radius:16px;padding:1.2rem 1.4rem;">
-    <div style="font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.7rem;">⚠️ Skills to Learn</div>
+  <div class="progress-box">
+    <div class="box-title">⚠️ Skills to Learn</div>
     <div style="display:flex;flex-wrap:wrap;gap:0.3rem;">{missing_html}</div>
   </div>
 </div>
@@ -171,10 +191,9 @@ if resume_score > 0:
     c   = "#059669" if resume_score >= 70 else "#d97706" if resume_score >= 40 else "#dc2626"
     lbl = "Excellent 🌟" if resume_score >= 70 else "Good 👍" if resume_score >= 40 else "Needs Work ⚠️"
     st.markdown(f"""
-    <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:1.3rem 1.5rem;
-                border:1px solid rgba(255,255,255,0.1);box-shadow:0 2px 10px rgba(0,0,0,0.2);">
+    <div class="ats-box">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
-        <span style="font-weight:700;color:#fff;">ATS Resume Score</span>
+        <span class="ats-label">ATS Resume Score</span>
         <span style="font-size:1.1rem;font-weight:800;color:{c};">{resume_score}% — {lbl}</span>
       </div>
       <div class="prog-bg"><div class="prog-fill" style="width:{resume_score}%;background:{c};"></div></div>

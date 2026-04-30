@@ -1,364 +1,335 @@
 """
-resume_builder.py
-Generates ATS-friendly PDF resumes from structured form data.
-Uses reportlab for clean, professional formatting.
+resume_builder.py  —  4 visually distinct templates
 """
-
 import io
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, HRFlowable, Table, TableStyle
-)
-from reportlab.lib.enums import TA_LEFT, TA_CENTER
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable, Table, TableStyle, KeepTogether
+from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
 
-# ── Color Palette ─────────────────────────────────────────────────────────────
-PRIMARY   = colors.HexColor("#1a1a2e")
-ACCENT    = colors.HexColor("#4f46e5")
-LIGHT_BG  = colors.HexColor("#f8f7ff")
-GRAY      = colors.HexColor("#6b7280")
-DARK_GRAY = colors.HexColor("#374151")
+W = 17.6 * cm
+
+TEMPLATES = {
+    # ── CLASSIC: Black & white, serif-feel, centered name, thick dividers ──
+    "Classic": {
+        "accent":     colors.HexColor("#000000"),
+        "primary":    colors.HexColor("#000000"),
+        "gray":       colors.HexColor("#555555"),
+        "dark":       colors.HexColor("#222222"),
+        "hr_color":   colors.HexColor("#000000"),
+        "hr_thick":   1.2,
+        "name_size":  22,
+        "name_align": TA_CENTER,
+        "header_bg":  None,
+        "sec_bg":     None,
+        "sec_color":  colors.HexColor("#000000"),
+        "sec_size":   11,
+        "sec_upper":  True,
+        "body_size":  10,
+        "sub_size":   9.5,
+        "margins":    (1.8*cm, 1.8*cm, 2.0*cm, 2.0*cm),
+    },
+    # ── MODERN: Purple header band, left-aligned, colored section titles ──
+    "Modern": {
+        "accent":     colors.HexColor("#4f46e5"),
+        "primary":    colors.HexColor("#1e1b4b"),
+        "gray":       colors.HexColor("#6b7280"),
+        "dark":       colors.HexColor("#1f2937"),
+        "hr_color":   colors.HexColor("#4f46e5"),
+        "hr_thick":   2.0,
+        "name_size":  24,
+        "name_align": TA_LEFT,
+        "header_bg":  colors.HexColor("#4f46e5"),
+        "sec_bg":     None,
+        "sec_color":  colors.HexColor("#4f46e5"),
+        "sec_size":   11,
+        "sec_upper":  True,
+        "body_size":  10,
+        "sub_size":   9.5,
+        "margins":    (1.8*cm, 1.8*cm, 1.5*cm, 1.5*cm),
+    },
+    # ── MINIMAL: Green accents, lots of whitespace, clean lines ──
+    "Minimal": {
+        "accent":     colors.HexColor("#059669"),
+        "primary":    colors.HexColor("#111827"),
+        "gray":       colors.HexColor("#6b7280"),
+        "dark":       colors.HexColor("#374151"),
+        "hr_color":   colors.HexColor("#059669"),
+        "hr_thick":   0.8,
+        "name_size":  26,
+        "name_align": TA_LEFT,
+        "header_bg":  None,
+        "sec_bg":     None,
+        "sec_color":  colors.HexColor("#059669"),
+        "sec_size":   10,
+        "sec_upper":  False,
+        "body_size":  10,
+        "sub_size":   9.5,
+        "margins":    (2.2*cm, 2.2*cm, 2.0*cm, 2.0*cm),
+    },
+    # ── CREATIVE: Purple sidebar-style header, bold section labels ──
+    "Creative": {
+        "accent":     colors.HexColor("#7c3aed"),
+        "primary":    colors.HexColor("#1a1a2e"),
+        "gray":       colors.HexColor("#6b7280"),
+        "dark":       colors.HexColor("#374151"),
+        "hr_color":   colors.HexColor("#7c3aed"),
+        "hr_thick":   3.0,
+        "name_size":  24,
+        "name_align": TA_CENTER,
+        "header_bg":  colors.HexColor("#7c3aed"),
+        "sec_bg":     colors.HexColor("#f5f3ff"),
+        "sec_color":  colors.HexColor("#7c3aed"),
+        "sec_size":   11,
+        "sec_upper":  True,
+        "body_size":  10,
+        "sub_size":   9.5,
+        "margins":    (1.8*cm, 1.8*cm, 1.5*cm, 1.5*cm),
+    },
+}
 
 
-# ── Style Definitions ─────────────────────────────────────────────────────────
-
-def _build_styles():
-    base = getSampleStyleSheet()
+def _styles(t: dict) -> dict:
+    name_color = colors.white if t["header_bg"] else t["primary"]
+    contact_color = colors.white if t["header_bg"] else t["gray"]
     return {
-        "name": ParagraphStyle(
-            "name", fontSize=18, fontName="Helvetica-Bold",
-            textColor=PRIMARY, spaceAfter=3, alignment=TA_CENTER,
-        ),
-        "contact": ParagraphStyle(
-            "contact", fontSize=8.5, fontName="Helvetica",
-            textColor=GRAY, spaceAfter=6, alignment=TA_CENTER, leading=13,
-        ),
-        "section_header": ParagraphStyle(
-            "section_header", fontSize=11, fontName="Helvetica-Bold",
-            textColor=ACCENT, spaceBefore=10, spaceAfter=3,
-        ),
-        "body": ParagraphStyle(
-            "body", fontSize=9.5, fontName="Helvetica",
-            textColor=DARK_GRAY, spaceAfter=3, leading=14,
-        ),
-        "bullet": ParagraphStyle(
-            "bullet", fontSize=9.5, fontName="Helvetica",
-            textColor=DARK_GRAY, spaceAfter=2, leading=13,
-            leftIndent=12, bulletIndent=0,
-        ),
-        "job_title": ParagraphStyle(
-            "job_title", fontSize=10, fontName="Helvetica-Bold",
-            textColor=PRIMARY, spaceAfter=1,
-        ),
-        "sub_info": ParagraphStyle(
-            "sub_info", fontSize=9, fontName="Helvetica-Oblique",
-            textColor=GRAY, spaceAfter=3,
-        ),
-        "skill_tag": ParagraphStyle(
-            "skill_tag", fontSize=9, fontName="Helvetica",
-            textColor=DARK_GRAY, spaceAfter=2,
-        ),
-        "summary": ParagraphStyle(
-            "summary", fontSize=9.5, fontName="Helvetica",
-            textColor=DARK_GRAY, spaceAfter=4, leading=14,
-            leftIndent=4,
-        ),
+        "name": ParagraphStyle("name",
+            fontSize=t["name_size"], fontName="Helvetica-Bold",
+            textColor=name_color, spaceAfter=6,
+            alignment=t["name_align"]),
+        "contact": ParagraphStyle("contact",
+            fontSize=9, fontName="Helvetica",
+            textColor=contact_color,
+            spaceAfter=5, alignment=t["name_align"], leading=16),
+        "sec_hdr": ParagraphStyle("sec_hdr",
+            fontSize=t["sec_size"], fontName="Helvetica-Bold",
+            textColor=t["sec_color"],
+            spaceBefore=0, spaceAfter=4),
+        "body": ParagraphStyle("body",
+            fontSize=t["body_size"], fontName="Helvetica",
+            textColor=t["dark"], spaceAfter=4, leading=15),
+        "bullet": ParagraphStyle("bullet",
+            fontSize=t["body_size"], fontName="Helvetica",
+            textColor=t["dark"], spaceAfter=3, leading=14, leftIndent=12),
+        "job_title": ParagraphStyle("job_title",
+            fontSize=t["body_size"]+0.5, fontName="Helvetica-Bold",
+            textColor=t["primary"], spaceAfter=2),
+        "sub": ParagraphStyle("sub",
+            fontSize=t["sub_size"], fontName="Helvetica-Oblique",
+            textColor=t["gray"], spaceAfter=4),
+        "skill_cat": ParagraphStyle("skill_cat",
+            fontSize=t["sub_size"], fontName="Helvetica-Bold",
+            textColor=t["accent"], spaceAfter=2),
+        "skill_val": ParagraphStyle("skill_val",
+            fontSize=t["sub_size"], fontName="Helvetica",
+            textColor=t["dark"], spaceAfter=2),
     }
 
 
-def _section_divider(styles) -> list:
-    """Returns a section header divider line."""
-    return [HRFlowable(width="100%", thickness=0.5, color=ACCENT, spaceAfter=4)]
+def _divider(t, space_before=2, space_after=6):
+    return [
+        Spacer(1, space_before),
+        HRFlowable(width="100%", thickness=t["hr_thick"],
+                   color=t["hr_color"], spaceAfter=space_after),
+    ]
 
 
-# ── Section Builders ──────────────────────────────────────────────────────────
-
-def _build_header(data: dict, styles: dict) -> list:
-    elements = []
-    name = data.get("name", "Your Name").strip()
-    elements.append(Paragraph(name, styles["name"]))
-
-    contact_parts = []
-    for field in ["email", "phone", "location"]:
-        val = data.get(field, "").strip()
-        if val:
-            contact_parts.append(val)
-    if contact_parts:
-        elements.append(Paragraph("  |  ".join(contact_parts), styles["contact"]))
-
-    link_parts = []
-    for field in ["linkedin", "github"]:
-        val = data.get(field, "").strip()
-        if val:
-            link_parts.append(val)
-    if link_parts:
-        elements.append(Paragraph("  |  ".join(link_parts), styles["contact"]))
-
-    elements.append(HRFlowable(width="100%", thickness=1.5, color=ACCENT, spaceAfter=6))
-    return elements
+def _sec_header(title, s, t, extra_top=0):
+    label = title.upper() if t["sec_upper"] else title
+    hdr = Paragraph(label, s["sec_hdr"])
+    top_space = 14 + extra_top
+    if t["sec_bg"]:
+        tbl = Table([[hdr]], colWidths=[W])
+        tbl.setStyle(TableStyle([
+            ("BACKGROUND",    (0,0), (-1,-1), t["sec_bg"]),
+            ("TOPPADDING",    (0,0), (-1,-1), 4),
+            ("BOTTOMPADDING", (0,0), (-1,-1), 4),
+            ("LEFTPADDING",   (0,0), (-1,-1), 6),
+            ("RIGHTPADDING",  (0,0), (-1,-1), 6),
+        ]))
+        return [Spacer(1, top_space), tbl, Spacer(1, 6)]
+    return [Spacer(1, top_space), hdr] + _divider(t, space_before=2, space_after=6)
 
 
-def _build_summary(summary: str, styles: dict) -> list:
-    if not summary.strip():
-        return []
-    elements = [Paragraph("PROFESSIONAL SUMMARY", styles["section_header"])]
-    elements += _section_divider(styles)
-    elements.append(Paragraph(summary.strip(), styles["summary"]))
-    return elements
+def _header(data, s, t):
+    name = data.get("name", "").strip()
+    contacts = [v for k in ["email","phone","location"] if (v := data.get(k,"").strip())]
+    links    = [v for k in ["linkedin","github"]        if (v := data.get(k,"").strip())]
 
-
-def _build_skills(skills_data: dict, styles: dict) -> list:
-    """
-    skills_data: { "Languages": ["Python", "Java"], "Frontend": ["React"] }
-    or flat list of strings
-    """
-    if not skills_data:
-        return []
-
-    elements = [Paragraph("TECHNICAL SKILLS", styles["section_header"])]
-    elements += _section_divider(styles)
-
-    if isinstance(skills_data, dict):
-        rows = []
-        for category, skill_list in skills_data.items():
-            if skill_list:
-                cat_text  = Paragraph(f"<b>{category}:</b>", styles["skill_tag"])
-                skill_text = Paragraph(", ".join(skill_list), styles["skill_tag"])
-                rows.append([cat_text, skill_text])
-        if rows:
-            table = Table(rows, colWidths=[3.5 * cm, 14 * cm])
-            table.setStyle(TableStyle([
-                ("VALIGN",    (0, 0), (-1, -1), "TOP"),
-                ("TOPPADDING",  (0, 0), (-1, -1), 2),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
-            ]))
-            elements.append(table)
+    if t["header_bg"]:
+        rows = [[Paragraph(name, s["name"])]]
+        if contacts:
+            rows.append([Paragraph("  |  ".join(contacts), s["contact"])])
+        if links:
+            rows.append([Paragraph("  |  ".join(links), s["contact"])])
+        tbl = Table(rows, colWidths=[W])
+        tbl.setStyle(TableStyle([
+            ("BACKGROUND",    (0,0), (-1,-1), t["header_bg"]),
+            ("TOPPADDING",    (0,0), (-1,-1), 14),
+            ("BOTTOMPADDING", (0,0), (-1,-1), 14),
+            ("LEFTPADDING",   (0,0), (-1,-1), 16),
+            ("RIGHTPADDING",  (0,0), (-1,-1), 16),
+        ]))
+        return [tbl, Spacer(1, 10)]
     else:
-        # Flat list
-        elements.append(Paragraph(", ".join(skills_data), styles["body"]))
+        elems = [Paragraph(name, s["name"]), Spacer(1, 14)]
+        if contacts:
+            elems.append(Paragraph("  |  ".join(contacts), s["contact"]))
+        if links:
+            elems.append(Paragraph("  |  ".join(links), s["contact"]))
+        elems.append(Spacer(1, 8))
+        elems += _divider(t, space_before=0, space_after=10)
+        return elems
 
-    return elements
+
+def _summary(data, s, t, extra=0):
+    txt = data.get("summary","").strip()
+    if not txt: return []
+    return _sec_header("Professional Summary", s, t, extra) + \
+           [Paragraph(txt, s["body"]), Spacer(1, 8)]
 
 
-def _build_experience(experience: list, styles: dict) -> list:
-    if not experience:
-        return []
-
-    elements = [Paragraph("WORK EXPERIENCE", styles["section_header"])]
-    elements += _section_divider(styles)
-
-    for job in experience:
-        title   = job.get("title", "").strip()
-        company = job.get("company", "").strip()
-        duration = job.get("duration", "").strip()
-        responsibilities = job.get("responsibilities", [])
-
-        # Title row with duration on right
-        if title:
-            title_table = Table(
-                [[Paragraph(title, styles["job_title"]),
-                  Paragraph(duration, styles["sub_info"])]],
-                colWidths=[12 * cm, 5.5 * cm]
-            )
-            title_table.setStyle(TableStyle([
-                ("ALIGN",  (1, 0), (1, 0), "RIGHT"),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("TOPPADDING",    (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+def _skills(data, s, t, extra=0):
+    skills = data.get("skills", {})
+    if not skills: return []
+    elems = _sec_header("Technical Skills", s, t, extra)
+    if isinstance(skills, dict):
+        rows = []
+        for cat, val in skills.items():
+            lst = val.get("skills", []) if isinstance(val, dict) else val
+            if lst:
+                rows.append([
+                    Paragraph(f"{cat}:", s["skill_cat"]),
+                    Paragraph(", ".join(lst), s["skill_val"]),
+                ])
+        if rows:
+            tbl = Table(rows, colWidths=[3.5*cm, W-3.5*cm])
+            tbl.setStyle(TableStyle([
+                ("VALIGN",        (0,0), (-1,-1), "TOP"),
+                ("TOPPADDING",    (0,0), (-1,-1), 3),
+                ("BOTTOMPADDING", (0,0), (-1,-1), 3),
             ]))
-            elements.append(title_table)
-
-        if company:
-            elements.append(Paragraph(company, styles["sub_info"]))
-
-        for resp in responsibilities:
-            if resp.strip():
-                elements.append(Paragraph(f"• {resp.strip()}", styles["bullet"]))
-
-        elements.append(Spacer(1, 4))
-
-    return elements
+            elems.append(tbl)
+    else:
+        elems.append(Paragraph(", ".join(skills), s["body"]))
+    elems.append(Spacer(1, 4))
+    return elems
 
 
-def _build_education(education: list, styles: dict) -> list:
-    if not education:
-        return []
-
-    elements = [Paragraph("EDUCATION", styles["section_header"])]
-    elements += _section_divider(styles)
-
-    for edu in education:
-        degree      = edu.get("degree", "").strip()
-        institution = edu.get("institution", "").strip()
-        year        = edu.get("year", "").strip()
-        gpa         = edu.get("gpa", "").strip()
-
-        if degree:
-            row = Table(
-                [[Paragraph(degree, styles["job_title"]),
-                  Paragraph(year, styles["sub_info"])]],
-                colWidths=[12 * cm, 5.5 * cm]
-            )
+def _experience(data, s, t):
+    jobs = data.get("experience", [])
+    if not jobs: return []
+    elems = _sec_header("Work Experience", s, t)
+    for job in jobs:
+        title    = job.get("title","").strip()
+        company  = job.get("company","").strip()
+        duration = job.get("duration","").strip()
+        if title:
+            row = Table([[Paragraph(title, s["job_title"]),
+                          Paragraph(duration, s["sub"])]],
+                        colWidths=[W*0.65, W*0.35])
             row.setStyle(TableStyle([
-                ("ALIGN",  (1, 0), (1, 0), "RIGHT"),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("TOPPADDING",    (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ("ALIGN",         (1,0), (1,0), "RIGHT"),
+                ("VALIGN",        (0,0), (-1,-1), "TOP"),
+                ("TOPPADDING",    (0,0), (-1,-1), 0),
+                ("BOTTOMPADDING", (0,0), (-1,-1), 0),
             ]))
-            elements.append(row)
-
-        sub = institution
-        if gpa:
-            sub += f"  |  GPA: {gpa}"
-        if sub:
-            elements.append(Paragraph(sub, styles["sub_info"]))
-        elements.append(Spacer(1, 3))
-
-    return elements
+            elems.append(row)
+        if company:
+            elems.append(Paragraph(company, s["sub"]))
+        for r in job.get("responsibilities",[]):
+            if r.strip():
+                elems.append(Paragraph(f"• {r.strip()}", s["bullet"]))
+        elems.append(Spacer(1, 6))
+    return elems
 
 
-def _build_projects(projects: list, styles: dict) -> list:
-    if not projects:
-        return []
+def _education(data, s, t):
+    edus = data.get("education", [])
+    if not edus: return []
+    elems = _sec_header("Education", s, t)
+    for edu in edus:
+        degree = edu.get("degree","").strip()
+        inst   = edu.get("institution","").strip()
+        year   = edu.get("year","").strip()
+        gpa    = edu.get("gpa","").strip()
+        if degree:
+            row = Table([[Paragraph(degree, s["job_title"]),
+                          Paragraph(year, s["sub"])]],
+                        colWidths=[W*0.65, W*0.35])
+            row.setStyle(TableStyle([
+                ("ALIGN",         (1,0), (1,0), "RIGHT"),
+                ("VALIGN",        (0,0), (-1,-1), "TOP"),
+                ("TOPPADDING",    (0,0), (-1,-1), 0),
+                ("BOTTOMPADDING", (0,0), (-1,-1), 0),
+            ]))
+            elems.append(row)
+        sub = inst + (f"  |  GPA: {gpa}" if gpa else "")
+        if sub: elems.append(Paragraph(sub, s["sub"]))
+        elems.append(Spacer(1, 5))
+    return elems
 
-    elements = [Paragraph("PROJECTS", styles["section_header"])]
-    elements += _section_divider(styles)
 
-    for proj in projects:
-        title       = proj.get("title", "").strip()
-        description = proj.get("description", "").strip()
-        tech        = proj.get("tech", [])
-        link        = proj.get("link", "").strip()
-
+def _projects(data, s, t):
+    projs = data.get("projects", [])
+    if not projs: return []
+    elems = _sec_header("Projects", s, t)
+    for p in projs:
+        title = p.get("title","").strip()
+        link  = p.get("link","").strip()
+        tech  = p.get("tech",[])
+        desc  = p.get("description","").strip()
         if title:
-            title_str = title
-            if link:
-                title_str += f" | {link}"
-            elements.append(Paragraph(title_str, styles["job_title"]))
-
+            elems.append(Paragraph(f"{title}{' | '+link if link else ''}", s["job_title"]))
         if tech:
-            tech_str = ", ".join(tech) if isinstance(tech, list) else tech
-            elements.append(Paragraph(f"<i>Tech: {tech_str}</i>", styles["sub_info"]))
-
-        if description:
-            for line in description.split("\n"):
-                if line.strip():
-                    elements.append(Paragraph(f"• {line.strip()}", styles["bullet"]))
-
-        elements.append(Spacer(1, 4))
-
-    return elements
+            elems.append(Paragraph(f"Tech: {', '.join(tech)}", s["sub"]))
+        for line in desc.split("\n"):
+            if line.strip():
+                elems.append(Paragraph(f"• {line.strip()}", s["bullet"]))
+        elems.append(Spacer(1, 6))
+    return elems
 
 
-def _build_certifications(certs: list, styles: dict) -> list:
-    if not certs:
-        return []
-
-    elements = [Paragraph("CERTIFICATIONS", styles["section_header"])]
-    elements += _section_divider(styles)
-
-    for cert in certs:
-        if isinstance(cert, dict):
-            name   = cert.get("name", "").strip()
-            issuer = cert.get("issuer", "").strip()
-            year   = cert.get("year", "").strip()
-            line   = name
-            if issuer:
-                line += f" — {issuer}"
-            if year:
-                line += f" ({year})"
-            elements.append(Paragraph(f"• {line}", styles["bullet"]))
-        else:
-            elements.append(Paragraph(f"• {str(cert).strip()}", styles["bullet"]))
-
-    return elements
+def _certifications(data, s, t):
+    certs = data.get("certifications", [])
+    if not certs: return []
+    elems = _sec_header("Certifications", s, t)
+    for c in certs:
+        elems.append(Paragraph(f"• {str(c).strip()}", s["bullet"]))
+    elems.append(Spacer(1, 4))
+    return elems
 
 
-# ── Master Builder ────────────────────────────────────────────────────────────
+def build_resume_pdf(resume_data: dict, template: str = "Modern") -> bytes:
+    t = TEMPLATES.get(template, TEMPLATES["Modern"])
+    s = _styles(t)
+    lm, rm, tm, bm = t["margins"]
 
-def build_resume_pdf(resume_data: dict) -> bytes:
-    """
-    Build a complete ATS-friendly PDF resume.
+    buf = io.BytesIO()
+    doc = SimpleDocTemplate(buf, pagesize=A4,
+        leftMargin=lm, rightMargin=rm,
+        topMargin=tm, bottomMargin=bm)
 
-    resume_data structure:
-    {
-        "name": str,
-        "email": str,
-        "phone": str,
-        "linkedin": str,       # optional
-        "github": str,         # optional
-        "location": str,       # optional
-        "summary": str,        # optional
-        "skills": dict | list, # { "Languages": [...] } or flat list
-        "experience": [
-            {
-                "title": str,
-                "company": str,
-                "duration": str,
-                "responsibilities": [str, ...]
-            }
-        ],
-        "education": [
-            {
-                "degree": str,
-                "institution": str,
-                "year": str,
-                "gpa": str      # optional
-            }
-        ],
-        "projects": [
-            {
-                "title": str,
-                "description": str,
-                "tech": [str, ...],
-                "link": str     # optional
-            }
-        ],
-        "certifications": [str | dict, ...]  # optional
-    }
+    extra = 16 if template in ("Minimal", "Creative") else 0
 
-    Returns: bytes (PDF content)
-    """
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=A4,
-        leftMargin=1.8 * cm,
-        rightMargin=1.8 * cm,
-        topMargin=1.5 * cm,
-        bottomMargin=1.5 * cm,
-    )
+    elems = []
+    elems += _header(resume_data, s, t)
+    elems += _summary(resume_data, s, t, extra)
+    elems += _skills(resume_data, s, t, extra)
+    elems += _experience(resume_data, s, t)
+    elems += _education(resume_data, s, t)
+    elems += _projects(resume_data, s, t)
+    elems += _certifications(resume_data, s, t)
 
-    styles   = _build_styles()
-    elements = []
-
-    # Build sections in order
-    elements += _build_header(resume_data, styles)
-    elements += _build_summary(resume_data.get("summary", ""), styles)
-    elements += _build_skills(resume_data.get("skills", {}), styles)
-    elements += _build_experience(resume_data.get("experience", []), styles)
-    elements += _build_education(resume_data.get("education", []), styles)
-    elements += _build_projects(resume_data.get("projects", []), styles)
-    elements += _build_certifications(resume_data.get("certifications", []), styles)
-
-    doc.build(elements)
-    return buffer.getvalue()
+    doc.build(elems)
+    return buf.getvalue()
 
 
 def validate_resume_data(data: dict) -> list[str]:
-    """
-    Validate resume form data before building.
-    Returns list of error messages (empty = valid).
-    """
     errors = []
-    if not data.get("name", "").strip():
-        errors.append("Name is required.")
-    if not data.get("email", "").strip():
-        errors.append("Email is required.")
-    if not data.get("skills"):
-        errors.append("At least one skill is required.")
-    if not data.get("education"):
-        errors.append("At least one education entry is required.")
+    if not data.get("name","").strip():  errors.append("Name is required.")
+    if not data.get("email","").strip(): errors.append("Email is required.")
+    if not data.get("education"):        errors.append("At least one education entry is required.")
     return errors
