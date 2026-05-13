@@ -59,8 +59,11 @@ st.markdown(f"""
             🎯 {db_user.get('target_role','No role set')}
         </div>
     </div>
-    <div style="margin-left:auto;opacity:0.6;font-size:0.8rem;">
-        {'🌙 Dark' if theme == 'dark' else '☀️ Light'}
+    <div style="margin-left:auto;opacity:0.6;font-size:0.8rem;text-align:right;line-height:1.9;">
+        {'🌙 Dark' if theme == 'dark' else '☀️ Light'}<br>
+        {db_user.get('skill_level','Beginner')}<br>
+        {db_user.get('experience_type','Student')}<br>
+        ⏱️ {db_user.get('time_availability','')}
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -95,6 +98,36 @@ with tab1:
     s2.metric("Skills Found",   len(db_user.get("skills", [])))
     s3.metric("Skills Missing", len(db_user.get("missing_skills", [])))
     s4.metric("Weeks Done",     len(db_user.get("checked_weeks", [])))
+
+    st.markdown("---")
+    st.markdown("### ⚙️ Career Preferences")
+    TIME_OPTS  = ["Less than 5 hrs", "5–10 hrs", "10+ hrs"]
+    EXP_OPTS   = ["Student", "Fresher", "Working Professional"]
+    LEVEL_OPTS = ["Beginner", "Intermediate", "Advanced"]
+    sv_time  = db_user.get("time_availability", "5–10 hrs")
+    sv_exp   = db_user.get("experience_type",   "Student")
+    sv_level = db_user.get("skill_level",        "Beginner")
+    pc1, pc2, pc3 = st.columns(3)
+    with pc1:
+        new_time  = st.selectbox("⏰ Time Availability", TIME_OPTS,
+                                 index=TIME_OPTS.index(sv_time) if sv_time in TIME_OPTS else 1,
+                                 key="p_time")
+    with pc2:
+        new_exp   = st.selectbox("🎓 Experience", EXP_OPTS,
+                                 index=EXP_OPTS.index(sv_exp) if sv_exp in EXP_OPTS else 0,
+                                 key="p_exp")
+    with pc3:
+        new_level = st.selectbox("📊 Skill Level", LEVEL_OPTS,
+                                 index=LEVEL_OPTS.index(sv_level) if sv_level in LEVEL_OPTS else 0,
+                                 key="p_level")
+    if st.button("💾 Save Preferences", key="save_prefs"):
+        update_user(email, {
+            "time_availability": new_time,
+            "experience_type":   new_exp,
+            "skill_level":       new_level,
+        })
+        st.success("✅ Preferences saved!")
+        st.rerun()
 
 # TAB 2: Settings
 with tab2:

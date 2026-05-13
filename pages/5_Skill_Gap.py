@@ -36,13 +36,25 @@ st.markdown("")
 
 db_user     = get_user(st.session_state.email)
 user_skills = db_user.get("skills", [])
+target_role = db_user.get("target_role", "").strip()
+
+if not target_role:
+    st.warning("⚠️ No target role set. Please update it in your Profile.")
+    if st.button("👤 Go to Profile", type="primary"):
+        st.switch_page("pages/8_Profile.py")
+    st.stop()
+
+st.markdown(
+    f'<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);'
+    f'border-radius:10px;padding:0.5rem 1rem;font-size:0.9rem;margin-bottom:1rem;">'
+    f'🎯 Analyzing for: <strong>{target_role}</strong> '
+    f'<span style="font-size:0.75rem;opacity:0.5;">(✏️ change in Profile)</span></div>',
+    unsafe_allow_html=True,
+)
 
 col1, col2 = st.columns([1, 2])
 
 with col1:
-    st.markdown("### 🎯 Select Target Role")
-    roles = get_roles()
-    role  = st.selectbox("Target Role", roles, label_visibility="collapsed")
 
     if not user_skills:
         st.warning("⚠️ No skills detected from resume.")
@@ -54,23 +66,31 @@ with col1:
                 st.error("Please enter at least one skill.")
             else:
                 with st.spinner("Analyzing..."):
-                    result = analyze_skill_gap(skills_to_use, role)
-                    update_user(st.session_state.email, {
-                        "target_role":    role,
-                        "missing_skills": result["missing_skills"],
-                        "skills":         skills_to_use,
-                    })
-                    st.session_state["gap_result"] = result
+                    try:
+                        result = analyze_skill_gap(skills_to_use, target_role)
+                        update_user(st.session_state.email, {
+                            "target_role":    target_role,
+                            "missing_skills": result["missing_skills"],
+                            "skills":         skills_to_use,
+                        })
+                        st.session_state["gap_result"] = result
+                    except ValueError as e:
+                        st.error(f"❌ {e}")
+                        st.info(f"Supported roles: {', '.join(get_roles())}")
     else:
         st.markdown(f"**Your skills:** {len(user_skills)} detected")
         if st.button("🔍 Analyze Gap", type="primary", use_container_width=True):
             with st.spinner("Analyzing..."):
-                result = analyze_skill_gap(user_skills, role)
-                update_user(st.session_state.email, {
-                    "target_role":    role,
-                    "missing_skills": result["missing_skills"],
-                })
-                st.session_state["gap_result"] = result
+                try:
+                    result = analyze_skill_gap(user_skills, target_role)
+                    update_user(st.session_state.email, {
+                        "target_role":    target_role,
+                        "missing_skills": result["missing_skills"],
+                    })
+                    st.session_state["gap_result"] = result
+                except ValueError as e:
+                    st.error(f"❌ {e}")
+                    st.info(f"Supported roles: {', '.join(get_roles())}")
 
     st.markdown("---")
     st.markdown("### 💡 Best Role Matches")

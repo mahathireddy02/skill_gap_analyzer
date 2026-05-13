@@ -1,7 +1,7 @@
 import streamlit as st
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from utils.auth import require_login, update_user
+from utils.auth import require_login, get_user, update_user
 from utils.scorer import score_resume_file
 from utils.skill_analyzer import get_roles
 from components.navbar import show_navbar
@@ -42,23 +42,29 @@ st.markdown("## 📄 Resume Scorer")
 st.caption("Upload your resume to get an ATS score, extracted skills, and improvement tips.")
 st.markdown("")
 
-# ── Inputs ────────────────────────────────────────────────────────────────────
-roles = get_roles()
-i1, i2, i3 = st.columns([2, 2, 2])
-with i1:
-    role_option = st.selectbox("🎯 Target Role", ["-- Select --"] + roles)
-with i2:
-    manual_role = st.text_input("✏️ Or type your own role", placeholder="e.g. Hotel Manager...")
-with i3:
-    uploaded = st.file_uploader("📁 Upload Resume (PDF / DOCX)", type=["pdf", "docx"])
+# ── Target role: fixed from signup, change only via Profile ────────────────
+db_user     = get_user(st.session_state.email)
+target_role = db_user.get("target_role", "").strip()
 
-target_role = manual_role.strip() if manual_role.strip() else (
-    role_option if role_option != "-- Select --" else ""
+if not target_role:
+    st.warning("⚠️ No target role set. Please update it in your Profile.")
+    if st.button("👤 Go to Profile", type="primary"):
+        st.switch_page("pages/8_Profile.py")
+    st.stop()
+
+st.markdown(
+    f'<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);'
+    f'border-radius:10px;padding:0.5rem 1rem;font-size:0.9rem;margin-bottom:1rem;">'
+    f'🎯 Scoring against: <strong>{target_role}</strong> '
+    f'<span style="font-size:0.75rem;opacity:0.5;">(✏️ change in Profile)</span></div>',
+    unsafe_allow_html=True,
 )
+
+# ── File uploader ─────────────────────────────────────────────────────────────
+uploaded = st.file_uploader("📁 Upload Resume (PDF / DOCX)", type=["pdf", "docx"])
 
 # ── Analyze on upload ─────────────────────────────────────────────────────────
 if uploaded and target_role:
-    # Only re-analyze if file or role changed
     file_key = f"{uploaded.name}_{uploaded.size}_{target_role}"
     if st.session_state.get("resume_file_key") != file_key:
         with st.spinner("Analyzing your resume..."):
@@ -85,10 +91,10 @@ if uploaded and target_role:
                 st.session_state.pop("resume_result", None)
 
 elif uploaded and not target_role:
-    st.warning("⚠️ Please select or enter a target role first.")
+    st.warning("⚠️ Please enter a target role first.")
 
 elif not uploaded:
-    st.info("👆 Select a target role and upload your resume to get started.")
+    st.info("👆 Upload your resume to get started.")
     st.session_state.pop("resume_result", None)
     st.session_state.pop("resume_file_key", None)
 
@@ -101,11 +107,11 @@ if "resume_result" in st.session_state:
     skills      = res["skills"]
     target_role = res["target_role"]
 
-    contact    = parsed_data.get("contact", {})
-    education  = parsed_data.get("education", [])
-    experience = parsed_data.get("experience", [])
-    projects   = parsed_data.get("projects", [])
-    breakdown  = parsed_data.get("score_breakdown", {})
+    contact     = parsed_data.get("contact", {})
+    education   = parsed_data.get("education", [])
+    experience  = parsed_data.get("experience", [])
+    projects    = parsed_data.get("projects", [])
+    breakdown   = parsed_data.get("score_breakdown", {})
     categorized = parsed_data.get("categorized_skills", {})
 
     color = "#059669" if score >= 70 else "#d97706" if score >= 40 else "#dc2626"
@@ -113,7 +119,6 @@ if "resume_result" in st.session_state:
 
     st.markdown("---")
 
-    # ── Row 1: Score | Breakdown | Suggestions ────────────────────────────────
     c1, c2, c3 = st.columns([1, 1.2, 1.4])
 
     with c1:
@@ -139,12 +144,12 @@ if "resume_result" in st.session_state:
     with c2:
         st.markdown("**📊 Score Breakdown**")
         items = [
-            ("sections",     "Sections",          25),
+            ("sections",     "Sections",          20),
             ("contact",      "Contact Info",       10),
-            ("length",       "Content Length",     15),
-            ("action_verbs", "Action Verbs",       15),
-            ("quantified",   "Quantified Results", 15),
-            ("keywords",     "Role Keywords",      10),
+            ("length",       "Content Length",     10),
+            ("action_verbs", "Action Verbs",       10),
+            ("quantified",   "Quantified Results", 10),
+            ("keywords",     "Role Keywords",      30),
             ("formatting",   "Formatting",         10),
         ]
         for key, lbl, mx in items:
@@ -170,7 +175,6 @@ if "resume_result" in st.session_state:
     st.markdown("---")
     st.markdown("### 🔍 Extracted Resume Data")
 
-    # Contact
     contact_vals = {k: v for k, v in contact.items() if v and k != "name"}
     if contact_vals:
         icons_map = {"email": "📧", "phone": "📞", "linkedin": "💼", "github": "🐙"}
@@ -180,7 +184,6 @@ if "resume_result" in st.session_state:
                 st.markdown(f"**{icons_map.get(k,'')} {k.title()}**  \n`{v}`")
         st.markdown("")
 
-    # Skills by category
     if categorized:
         st.markdown("**🧠 Skills by Category**")
         for cat, skill_list in categorized.items():
@@ -192,7 +195,6 @@ if "resume_result" in st.session_state:
                 st.markdown(chips, unsafe_allow_html=True)
         st.markdown("")
 
-    # Education | Experience | Projects
     d1, d2, d3 = st.columns(3)
 
     with d1:
@@ -204,7 +206,7 @@ if "resume_result" in st.session_state:
                 <div class="info-pill">
                     <strong>{edu.get('degree','')}</strong><br>
                     <span style="color:#6b7280;font-size:0.8rem;">
-                        {edu.get('institution','')}{"  ·  " + yr if yr else ""}
+                        {edu.get('institution','')}{" · " + yr if yr else ""}
                     </span>
                 </div>""", unsafe_allow_html=True)
 
@@ -219,7 +221,7 @@ if "resume_result" in st.session_state:
                 <div class="info-pill">
                     <strong>{exp.get('title','')}</strong><br>
                     <span style="color:#6b7280;font-size:0.8rem;">
-                        {exp.get('company','')}{"  ·  " + dur if dur else ""}
+                        {exp.get('company','')}{" · " + dur if dur else ""}
                     </span>{resp_line}
                 </div>""", unsafe_allow_html=True)
 

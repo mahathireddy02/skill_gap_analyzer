@@ -28,8 +28,26 @@ div[data-testid="stMetric"] div{color:#fff!important;}
 show_navbar("Roadmap")
 
 db_user = get_user(st.session_state.email)
-missing = db_user.get("missing_skills", [])
-role    = db_user.get("target_role", "")
+role    = db_user.get("target_role", "").strip()
+
+# Always use freshest missing_skills tied to the current role
+# Priority: live gap_result in session > saved gap_result in DB > saved missing_skills
+_gap = st.session_state.get("gap_result") or db_user.get("gap_result", {})
+if _gap and _gap.get("role", "").lower() == role.lower():
+    missing = _gap.get("missing_skills", [])
+else:
+    missing = db_user.get("missing_skills", [])
+
+# Pull signup/profile preferences as defaults
+_time_map  = {"Less than 5 hrs": 3.5, "5–10 hrs": 7.0, "10+ hrs": 12.0}
+_exp_eff   = {"Student": 1.0, "Fresher": 0.9, "Working Professional": 0.7}
+_saved_time  = db_user.get("time_availability", "5–10 hrs")
+_saved_level = db_user.get("skill_level", "Beginner")
+_saved_exp   = db_user.get("experience_type", "Student")
+_default_hpw = round(_time_map.get(_saved_time, 7.0) * _exp_eff.get(_saved_exp, 1.0), 1)
+_default_hpd = min(round(_default_hpw / 7, 1), 8.0)
+_level_opts  = ["Beginner", "Intermediate", "Advanced"]
+_level_idx   = _level_opts.index(_saved_level) if _saved_level in _level_opts else 0
 
 if not role:
     st.info("No target role set. Run the Skill Gap Analyzer first.")
@@ -48,17 +66,30 @@ if "checked_weeks" not in st.session_state:
     st.session_state.checked_weeks = set(saved)
 
 if "roadmap_result" not in st.session_state and db_user.get("roadmap_result"):
-    st.session_state["roadmap_result"] = db_user["roadmap_result"]
+    saved_rm = db_user["roadmap_result"]
+    # Only restore if it was generated for the same role and same missing skills
+    if (saved_rm.get("role", "").lower() == role.lower() and
+            set(saved_rm.get("phase_plan") and
+                [p["skill"] for p in saved_rm["phase_plan"]] or []) ==
+            set(s.lower() for s in missing)):
+        st.session_state["roadmap_result"] = saved_rm
 
 st.markdown("## 🛤️ Learning Roadmap")
 st.caption(f"Target Role: **{role}** · {len(missing)} skills to learn")
 
 # ── Settings Form ─────────────────────────────────────────────────────────────
 with st.expander("⚙️ Customize Roadmap", expanded="roadmap_result" not in st.session_state):
+    st.markdown(
+        f'<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);'
+        f'border-radius:8px;padding:0.4rem 0.9rem;font-size:0.82rem;color:#a78bfa;margin-bottom:0.8rem;">'
+        f'ℹ️ Pre-filled from your profile — <strong>{_saved_level}</strong>, '
+        f'<strong>{_saved_time}</strong>/week, <strong>{_saved_exp}</strong>. Adjust if needed.</div>',
+        unsafe_allow_html=True,
+    )
     c1, c2, c3 = st.columns(3)
     with c1:
-        skill_level   = st.selectbox("Your Level", ["Beginner", "Intermediate", "Advanced"])
-        hours_per_day = st.slider("Hours/day", 0.5, 8.0, 1.5, 0.5)
+        skill_level   = st.selectbox("Your Level", _level_opts, index=_level_idx)
+        hours_per_day = st.slider("Hours/day", 0.5, 8.0, _default_hpd, 0.5)
     with c2:
         deadline_months = st.selectbox("Timeline", [1,2,3,6,9,12], index=2,
                             format_func=lambda x: f"{x} month{'s' if x>1 else ''}")
@@ -72,7 +103,7 @@ with st.expander("⚙️ Customize Roadmap", expanded="roadmap_result" not in st
         interests = st.text_input("Interests (optional)", placeholder="e.g. finance, gaming")
 
     if st.button("Generate Roadmap", type="primary", use_container_width=True):
-        with st.spinner("Building your roadmap..."):
+        with st.spinner("Building your personalized roadmap..."):
             result = generate_roadmap(
                 role=role, missing_skills=missing,
                 skill_level=skill_level.lower(),

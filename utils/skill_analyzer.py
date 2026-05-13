@@ -131,24 +131,39 @@ def best_match_score(user_skill: str, required_skills: list[str]) -> tuple[float
 
 # ── Core Analysis ─────────────────────────────────────────────────────────────
 
+def _resolve_role(role: str) -> str | None:
+    """Fuzzy-match a role string to the nearest ROLE_DATASET key. Returns None if no good match."""
+    if not role:
+        return None
+    role_lower = role.lower().strip()
+    # Exact match
+    for k in ROLE_DATASET:
+        if k.lower() == role_lower:
+            return k
+    # Substring match
+    for k in ROLE_DATASET:
+        if role_lower in k.lower() or k.lower() in role_lower:
+            return k
+    # Fuzzy similarity
+    best_sim, best_k = 0.0, None
+    for k in ROLE_DATASET:
+        sim = skill_similarity(role_lower, k.lower())
+        if sim > best_sim:
+            best_sim, best_k = sim, k
+    return best_k if best_sim >= 0.5 else None
+
+
 def analyze_skill_gap(user_skills: list[str], role: str, threshold: float = 0.75) -> dict:
     """
     Full skill gap analysis with weighted scoring.
-
-    Returns:
-    {
-        role, score, grade,
-        matched_skills, missing_skills, partial_matches,
-        strengths, weaknesses,
-        core_coverage, important_coverage,
-        recommendations, role_description
-    }
+    Fuzzy-matches the role name so minor variations don't crash.
     """
-    if role not in ROLE_DATASET:
+    resolved = _resolve_role(role)
+    if not resolved:
         available = list(ROLE_DATASET.keys())
-        raise ValueError(f"Role '{role}' not found. Available: {available}")
+        raise ValueError(f"Role '{role}' not recognised. Available roles: {', '.join(available)}")
 
-    role_data   = ROLE_DATASET[role]
+    role_data   = ROLE_DATASET[resolved]
     user_lower  = [s.lower().strip() for s in user_skills]
 
     matched_skills   = []
@@ -228,7 +243,7 @@ def analyze_skill_gap(user_skills: list[str], role: str, threshold: float = 0.75
     )
 
     return {
-        "role":               role,
+        "role":               resolved,
         "score":              score,
         "grade":              grade,
         "matched_skills":     matched_skills,
@@ -249,19 +264,22 @@ def get_roles() -> list[str]:
 
 def get_role_requirements(role: str) -> dict:
     """Return full skill requirements for a role."""
-    if role not in ROLE_DATASET:
+    resolved = _resolve_role(role)
+    if not resolved:
         raise ValueError(f"Role '{role}' not found.")
-    return ROLE_DATASET[role]
+    return ROLE_DATASET[resolved]
 
 
 def suggest_roles(user_skills: list[str], top_n: int = 3) -> list[dict]:
     """
     Given user skills, suggest the top N best-fit roles.
-    Useful for users who don't know what role to target.
     """
     scores = []
     for role in ROLE_DATASET:
-        result = analyze_skill_gap(user_skills, role)
-        scores.append({"role": role, "score": result["score"], "grade": result["grade"]})
+        try:
+            result = analyze_skill_gap(user_skills, role)
+            scores.append({"role": role, "score": result["score"], "grade": result["grade"]})
+        except ValueError:
+            continue
     scores.sort(key=lambda x: x["score"], reverse=True)
     return scores[:top_n]

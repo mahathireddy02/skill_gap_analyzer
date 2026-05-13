@@ -5,15 +5,16 @@ import re
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.resume_parser import parse_resume, split_into_sections
+from utils.skill_analyzer import ROLE_DATASET, skill_similarity
 
 # ── Weights ───────────────────────────────────────────────────────────────────
 WEIGHTS = {
-    "sections":    25,   # standard resume sections present
+    "sections":    20,   # standard resume sections present
     "contact":     10,   # email + phone
-    "length":      15,   # appropriate word count
-    "action_verbs":15,   # strong action verbs
-    "quantified":  15,   # numbers / metrics
-    "keywords":    10,   # role-relevant keywords found
+    "length":      10,   # appropriate word count
+    "action_verbs":10,   # strong action verbs
+    "quantified":  10,   # numbers / metrics
+    "keywords":    30,   # role-relevant skill keywords (main signal)
     "formatting":  10,   # dates, job titles, education detected
 }
 
@@ -34,13 +35,79 @@ ACTION_VERBS = [
     "assisted", "supported", "ensured", "provided", "served", "processed",
 ]
 
-# Generic keywords that appear in good resumes across all domains
-QUALITY_KEYWORDS = [
-    "team", "project", "client", "customer", "service", "management",
-    "communication", "leadership", "strategy", "performance", "results",
-    "responsible", "experience", "professional", "certified", "trained",
-    "award", "achievement", "promoted", "initiative", "solution",
-]
+# Tier weights mirror skill_analyzer.py
+_TIER_W = {"core": 1.0, "important": 0.6, "nice_to_have": 0.3}
+_SIM_THRESHOLD = 0.75
+
+
+def _role_keyword_score(text_lower: str, target_role: str) -> tuple[int, list[str], list[str]]:
+    """
+    Score the keywords component using the ROLE_DATASET.
+    Returns (score_0_to_30, matched_skills, missing_core_skills).
+    Falls back to generic quality keywords if role not in dataset.
+    """
+    # ── Fuzzy-match role name to dataset ─────────────────────────────────────
+    role_key = None
+    if target_role:
+        role_lower = target_role.lower().strip()
+        # Exact match first
+        for k in ROLE_DATASET:
+            if k.lower() == role_lower:
+                role_key = k
+                break
+        # Partial / fuzzy match
+        if not role_key:
+            best_sim, best_k = 0.0, None
+            for k in ROLE_DATASET:
+                sim = skill_similarity(role_lower, k.lower())
+                if sim > best_sim:
+                    best_sim, best_k = sim, k
+            if best_sim >= 0.55:
+                role_key = best_k
+
+    if not role_key:
+        # Generic fallback — count quality words
+        QUALITY_KEYWORDS = [
+            "team", "project", "client", "customer", "service", "management",
+            "communication", "leadership", "strategy", "performance", "results",
+            "responsible", "professional", "certified", "solution",
+        ]
+        hits = sum(1 for k in QUALITY_KEYWORDS if k in text_lower)
+        return min(hits * 2, WEIGHTS["keywords"]), [], []
+
+    role_data = ROLE_DATASET[role_key]
+    total_w, earned_w = 0.0, 0.0
+    matched, missing_core = [], []
+
+    for tier, tw in _TIER_W.items():
+        for skill in role_data.get(tier, []):
+            total_w += tw
+            # Check if skill (or close variant) appears in resume text
+            found = False
+            # Direct substring check first (fast)
+            if skill in text_lower:
+                found = True
+            else:
+                # Fuzzy: split resume into tokens and compare
+                for token in re.findall(r"[\w/+#.-]+", text_lower):
+                    if skill_similarity(token, skill) >= _SIM_THRESHOLD:
+                        found = True
+                        break
+                # Also try multi-word skill as a phrase
+                if not found and " " in skill:
+                    words = skill.split()
+                    if all(w in text_lower for w in words):
+                        found = True
+
+            if found:
+                earned_w += tw
+                matched.append(skill)
+            elif tier == "core":
+                missing_core.append(skill)
+
+    raw_ratio = earned_w / total_w if total_w > 0 else 0.0
+    score = round(raw_ratio * WEIGHTS["keywords"])
+    return min(score, WEIGHTS["keywords"]), matched, missing_core
 
 
 def score_resume_text(text: str, target_role: str = "") -> tuple[int, list[str], list[str]]:
@@ -72,7 +139,7 @@ def score_resume_text(text: str, target_role: str = "") -> tuple[int, list[str],
     if 250 <= word_count <= 1000:
         length_score = WEIGHTS["length"]
     elif word_count > 1000:
-        length_score = WEIGHTS["length"] - 4
+        length_score = WEIGHTS["length"] - 3
         suggestions.append("Resume is too long. Aim for 250–1000 words.")
     elif word_count >= 100:
         length_score = int(word_count / 250 * WEIGHTS["length"])
@@ -91,29 +158,23 @@ def score_resume_text(text: str, target_role: str = "") -> tuple[int, list[str],
 
     # 5. Quantified achievements
     numbers = re.findall(r"\b\d+[\%\+]?\b", text)
-    # Filter out years (4-digit numbers like 2020)
     non_year_numbers = [n for n in numbers if not re.match(r"^(19|20)\d{2}$", n)]
     quant_score = min(len(non_year_numbers) * 2, WEIGHTS["quantified"])
     breakdown["quantified"] = quant_score
     if len(non_year_numbers) < 3:
         suggestions.append("Quantify achievements: e.g., 'Managed a team of 10', 'Increased sales by 25%'.")
 
-    # 6. Role-relevant keywords
-    keyword_score = 0
-    if target_role:
-        role_words = re.sub(r"[^a-z\s]", "", target_role.lower()).split()
-        role_words = [w for w in role_words if len(w) > 3]
-        matches    = sum(1 for w in role_words if w in text_lower)
-        keyword_score = min(matches * 3, WEIGHTS["keywords"])
-        # Also check generic quality keywords
-        quality_matches = sum(1 for k in QUALITY_KEYWORDS if k in text_lower)
-        keyword_score   = min(keyword_score + quality_matches, WEIGHTS["keywords"])
-    else:
-        quality_matches = sum(1 for k in QUALITY_KEYWORDS if k in text_lower)
-        keyword_score   = min(quality_matches, WEIGHTS["keywords"])
+    # 6. Role-relevant keywords (uses ROLE_DATASET)
+    keyword_score, matched_skills, missing_core = _role_keyword_score(text_lower, target_role)
     breakdown["keywords"] = keyword_score
 
-    # 7. Formatting quality (dates, job titles, education detected)
+    if target_role and missing_core:
+        top_missing = ", ".join(s.title() for s in missing_core[:4])
+        suggestions.append(f"Add core {target_role} skills missing from your resume: {top_missing}.")
+    elif target_role and keyword_score < WEIGHTS["keywords"] * 0.5:
+        suggestions.append(f"Include more {target_role}-specific skills and technologies in your resume.")
+
+    # 7. Formatting quality
     has_dates   = bool(re.search(
         r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[\s,]+\d{4}\b"
         r"|\b\d{4}\s*[-–]\s*(\d{4}|present|current)\b", text_lower))
@@ -131,8 +192,7 @@ def score_resume_text(text: str, target_role: str = "") -> tuple[int, list[str],
     if not has_degree:
         suggestions.append("Include your educational qualification (degree name).")
 
-    total = sum(breakdown.values())
-    total = min(total, 100)
+    total = min(sum(breakdown.values()), 100)
 
     if not suggestions:
         suggestions.append("✅ Your resume is well-structured and ATS-optimized!")

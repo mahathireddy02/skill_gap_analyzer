@@ -20,17 +20,24 @@ def _save(data):
 def _hash(pw):
     return hashlib.sha256(pw.encode()).hexdigest()
 
-def signup(name, email, password, security_q=None, security_a=None):
+def signup(name, email, password, security_q=None, security_a=None,
+           target_role="", skill_level="Beginner", skills=None,
+           time_availability="5–10 hrs", experience_type="Student"):
     users = _load()
     if email in users:
         return False, "Email already registered."
     users[email] = {
-        "name": name,
-        "password": _hash(password),
-        "skills": [],
-        "resume_score": 0,
-        "security_q": security_q or "",
-        "security_a": _hash(security_a.lower().strip()) if security_a else "",
+        "name":              name,
+        "password":          _hash(password),
+        "skills":            skills or [],
+        "missing_skills":    [],
+        "resume_score":      0,
+        "target_role":       target_role,
+        "skill_level":       skill_level,
+        "time_availability": time_availability,
+        "experience_type":   experience_type,
+        "security_q":        security_q or "",
+        "security_a":        _hash(security_a.lower().strip()) if security_a else "",
     }
     _save(users)
     return True, "Account created!"

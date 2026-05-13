@@ -16,23 +16,201 @@
   "xyz@gmail.com": {
     "name": "Mahathi Reddy",
     "password": "caa506f1b0e40f6e9708a4d911921afbde0f2b6291c2fbc0e23d07d49186254f",
-    "skills": [],
-    "resume_score": 0,
+    "skills": [
+      "artificial intelligence",
+      "aws",
+      "css",
+      "data structures",
+      "docker",
+      "express",
+      "firebase",
+      "git",
+      "github",
+      "html",
+      "javascript",
+      "mongodb",
+      "natural language processing",
+      "next",
+      "node",
+      "postgresql",
+      "react",
+      "rest api",
+      "tailwind"
+    ],
+    "resume_score": 91,
     "security_q": "What is your favourite movie?",
     "security_a": "e9eb3b2dd9e02057e659f87cfefe3ef0eb7d05557cf7ddcff2c20e5903d12262",
-    "target_role": "Web Developer",
+    "target_role": "Full stack developer",
     "missing_skills": [
-      "html",
-      "css",
-      "javascript",
-      "react",
-      "node",
-      "rest api",
-      "git",
-      "sql",
-      "typescript",
-      "docker"
-    ]
+      "python",
+      "graphql",
+      "ci/cd"
+    ],
+    "roadmap_result": {
+      "role": "Full stack developer",
+      "skill_level": "beginner",
+      "summary": "Full stack developer | Beginner | 3 skills | 9 weeks | 1.0h/day",
+      "timeline": {
+        "total_weeks": 9,
+        "total_hours": 63,
+        "total_months": 2.1,
+        "hours_per_week": 7.0,
+        "daily_hours": 1.0
+      },
+      "phase_plan": [
+        {
+          "phase_num": 1,
+          "skill": "python",
+          "start_week": 1,
+          "end_week": 4,
+          "hours": 28,
+          "phases": {
+            "beginner": "Variables, data types, loops, functions, lists, dicts",
+            "intermediate": "OOP, file I/O, error handling, modules, virtual envs",
+            "advanced": "Decorators, generators, async/await, packaging, testing"
+          },
+          "resources": [
+            "Python.org tutorial",
+            "freeCodeCamp Python (YouTube)",
+            "Automate the Boring Stuff"
+          ],
+          "project": "Build a CLI task manager or web scraper"
+        },
+        {
+          "phase_num": 2,
+          "skill": "graphql",
+          "start_week": 5,
+          "end_week": 7,
+          "hours": 21,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 3,
+          "skill": "ci/cd",
+          "start_week": 8,
+          "end_week": 9,
+          "hours": 14,
+          "phases": {
+            "beginner": "CI/CD concepts, GitHub Actions basics, automated testing",
+            "intermediate": "Multi-stage pipelines, Docker integration, deployment automation",
+            "advanced": "GitOps, ArgoCD, advanced workflows, secrets management"
+          },
+          "resources": [
+            "GitHub Actions docs",
+            "TechWorld with Nana CI/CD (YouTube)"
+          ],
+          "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
+        }
+      ],
+      "weekly_plan": [
+        {
+          "week": 1,
+          "skill": "python",
+          "focus": "Beginner - Python",
+          "tasks": "Variables, data types, loops, functions, lists, dicts",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 2,
+          "skill": "python",
+          "focus": "Beginner - Python",
+          "tasks": "Variables, data types, loops, functions, lists, dicts",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 3,
+          "skill": "python",
+          "focus": "Intermediate - Python",
+          "tasks": "OOP, file I/O, error handling, modules, virtual envs",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 4,
+          "skill": "python",
+          "focus": "Advanced - Python",
+          "tasks": "Decorators, generators, async/await, packaging, testing",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a CLI task manager or web scraper"
+        },
+        {
+          "week": 5,
+          "skill": "graphql",
+          "focus": "Beginner - Graphql",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 6,
+          "skill": "graphql",
+          "focus": "Intermediate - Graphql",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 7,
+          "skill": "graphql",
+          "focus": "Advanced - Graphql",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 8,
+          "skill": "ci/cd",
+          "focus": "Beginner - Ci/Cd",
+          "tasks": "CI/CD concepts, GitHub Actions basics, automated testing",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 9,
+          "skill": "ci/cd",
+          "focus": "Intermediate - Ci/Cd",
+          "tasks": "Multi-stage pipelines, Docker integration, deployment automation",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
+        }
+      ],
+      "tips": [
+        "Your 9-week plan covers all 3 skills at 1.0h/day.",
+        "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
+        "Complete the mini-project at the end of each skill to solidify learning.",
+        "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
+        "Your 9-week window covers ~70% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+        "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends.",
+        "Video learner \u2014 watch at 1.5x speed and pause to code along."
+      ],
+      "tight_deadline": true
+    },
+    "checked_weeks": [],
+    "theme": "dark",
+    "bio": "",
+    "reset_token": "Sc1YfBg36i2cZ1Q4VmUGLp9cQpjJ3QKqXu_CFwERT0Q",
+    "reset_expiry": 1778599262.6127052
   },
   "madhurigurram.g@gmail.com": {
     "name": "Madhuri Reddy Gurram",

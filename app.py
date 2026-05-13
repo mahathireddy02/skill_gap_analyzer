@@ -183,9 +183,9 @@ div[data-testid="stHorizontalBlock"] {
 .stat-div { width:1px; height:40px; background:rgba(255,255,255,0.1); }
 
 /* Features */
-.feats { max-width:1100px; margin:0 auto; padding:0 2rem 4rem; position:relative; z-index:5; }
+.feats { max-width:1400px; margin:0 auto; padding:0 2rem 4rem; position:relative; z-index:5; }
 .feats-h { text-align:center; color:#fff; font-size:1.75rem; font-weight:800; margin-bottom:1.8rem; }
-.feats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem; }
+.feats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1.1rem; }
 .fc {
     background:rgba(255,255,255,0.04);
     border:1px solid rgba(255,255,255,0.08);
@@ -278,6 +278,7 @@ st.markdown("""
         <div class="fc"><span class="fc-i">🧠</span><div class="fc-t">Skill Gap Analysis</div><div class="fc-d">Compare your skills against 10+ top tech roles and find exactly what's missing.</div></div>
         <div class="fc"><span class="fc-i">🛤️</span><div class="fc-t">Learning Roadmap</div><div class="fc-d">Beginner → Intermediate → Advanced plans for every missing skill.</div></div>
         <div class="fc"><span class="fc-i">📊</span><div class="fc-t">Progress Analytics</div><div class="fc-d">Visual charts to track your skill growth and readiness over time.</div></div>
+        <div class="fc"><span class="fc-i">📝</span><div class="fc-t">Resume Builder</div><div class="fc-d">Create professional ATS-friendly resumes with 4 beautiful templates in minutes.</div></div>
     </div>
 </div>
 
