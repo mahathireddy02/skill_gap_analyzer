@@ -272,7 +272,7 @@ st.markdown("""
 </div>
 
 <div class="feats">
-    <div class="feats-h">Everything You Need to Get Hired 🔥</div>
+    <div class="feats-h">Everything You Need to Get Hired </div>
     <div class="feats-grid">
         <div class="fc"><span class="fc-i">📄</span><div class="fc-t">Resume Scorer</div><div class="fc-d">ATS-based scoring with keyword analysis and actionable improvement tips.</div></div>
         <div class="fc"><span class="fc-i">🧠</span><div class="fc-t">Skill Gap Analysis</div><div class="fc-d">Compare your skills against 10+ top tech roles and find exactly what's missing.</div></div>
