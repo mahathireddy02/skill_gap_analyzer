@@ -17,18 +17,24 @@
     "name": "Mahathi Reddy",
     "password": "caa506f1b0e40f6e9708a4d911921afbde0f2b6291c2fbc0e23d07d49186254f",
     "skills": [
+<<<<<<< HEAD
       "agile",
       "css",
       "docker",
       "express",
       "git",
       "github",
+=======
+      "css",
+      "express",
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
       "html",
       "java",
       "javascript",
       "linux",
       "mongodb",
       "mysql",
+<<<<<<< HEAD
       "next",
       "node",
       "object oriented programming",
@@ -58,16 +64,67 @@
         "total_weeks": 4,
         "total_hours": 28,
         "total_months": 0.9,
+=======
+      "node",
+      "react"
+    ],
+    "resume_score": 53,
+    "security_q": "What is your favourite movie?",
+    "security_a": "e9eb3b2dd9e02057e659f87cfefe3ef0eb7d05557cf7ddcff2c20e5903d12262",
+    "target_role": "backden devleoper",
+    "missing_skills": [
+      "rest api",
+      "mvvm",
+      "testing",
+      "flutter",
+      "dart",
+      "ci/cd",
+      "dagger"
+    ],
+    "roadmap_result": {
+      "role": "backden devleoper",
+      "skill_level": "beginner",
+      "summary": "backden devleoper | Beginner | 7 skills | 26 weeks | 1.0h/day",
+      "timeline": {
+        "total_weeks": 26,
+        "total_hours": 182,
+        "total_months": 6.0,
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
         "hours_per_week": 7.0,
         "daily_hours": 1.0
       },
       "phase_plan": [
         {
           "phase_num": 1,
+<<<<<<< HEAD
           "skill": "graphql",
           "start_week": 1,
           "end_week": 1,
           "hours": 7,
+=======
+          "skill": "rest api",
+          "start_week": 1,
+          "end_week": 3,
+          "hours": 21,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 2,
+          "skill": "mvvm",
+          "start_week": 4,
+          "end_week": 6,
+          "hours": 21,
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
           "phases": {
             "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
           },
@@ -79,10 +136,70 @@
           "project": "Build a small project applying this skill end-to-end"
         },
         {
+<<<<<<< HEAD
           "phase_num": 2,
           "skill": "aws",
           "start_week": 2,
           "end_week": 3,
+=======
+          "phase_num": 3,
+          "skill": "testing",
+          "start_week": 7,
+          "end_week": 10,
+          "hours": 28,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 4,
+          "skill": "flutter",
+          "start_week": 11,
+          "end_week": 16,
+          "hours": 42,
+          "phases": {
+            "beginner": "Dart basics, widgets (Stateless/Stateful), layouts, navigation",
+            "intermediate": "State management (Provider/Riverpod/Bloc), REST API integration",
+            "advanced": "Custom animations, platform channels, CI/CD, app store deployment"
+          },
+          "resources": [
+            "Flutter official docs",
+            "Vandad Nahavandipoor (YouTube)"
+          ],
+          "project": "Build a cross-platform todo or weather app"
+        },
+        {
+          "phase_num": 5,
+          "skill": "dart",
+          "start_week": 17,
+          "end_week": 20,
+          "hours": 28,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 6,
+          "skill": "ci/cd",
+          "start_week": 21,
+          "end_week": 22,
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
           "hours": 14,
           "phases": {
             "beginner": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
@@ -110,11 +227,30 @@
             "TechWorld with Nana CI/CD (YouTube)"
           ],
           "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
+        },
+        {
+          "phase_num": 7,
+          "skill": "dagger",
+          "start_week": 23,
+          "end_week": 26,
+          "hours": 28,
+          "phases": {
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
         }
       ],
       "weekly_plan": [
         {
           "week": 1,
+<<<<<<< HEAD
           "skill": "graphql",
           "focus": "Beginner - Graphql",
           "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
@@ -127,12 +263,27 @@
           "skill": "aws",
           "focus": "Beginner - Aws",
           "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+=======
+          "skill": "rest api",
+          "focus": "Beginner - Rest Api",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 2,
+          "skill": "rest api",
+          "focus": "Intermediate - Rest Api",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
           "hours": 7.0,
           "daily_hrs": 1.0,
           "project": ""
         },
         {
           "week": 3,
+<<<<<<< HEAD
           "skill": "aws",
           "focus": "Intermediate - Aws",
           "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
@@ -145,23 +296,275 @@
           "skill": "ci/cd",
           "focus": "Beginner - Ci/Cd",
           "tasks": "[1w sprint] CI/CD concepts, GitHub Actions basics, automated testing",
+=======
+          "skill": "rest api",
+          "focus": "Advanced - Rest Api",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 4,
+          "skill": "mvvm",
+          "focus": "Beginner - Mvvm",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 5,
+          "skill": "mvvm",
+          "focus": "Intermediate - Mvvm",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 6,
+          "skill": "mvvm",
+          "focus": "Advanced - Mvvm",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 7,
+          "skill": "testing",
+          "focus": "Beginner - Testing",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 8,
+          "skill": "testing",
+          "focus": "Beginner - Testing",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 9,
+          "skill": "testing",
+          "focus": "Intermediate - Testing",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 10,
+          "skill": "testing",
+          "focus": "Advanced - Testing",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 11,
+          "skill": "flutter",
+          "focus": "Beginner - Flutter",
+          "tasks": "Dart basics, widgets (Stateless/Stateful), layouts, navigation",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 12,
+          "skill": "flutter",
+          "focus": "Beginner - Flutter",
+          "tasks": "Dart basics, widgets (Stateless/Stateful), layouts, navigation",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 13,
+          "skill": "flutter",
+          "focus": "Intermediate - Flutter",
+          "tasks": "State management (Provider/Riverpod/Bloc), REST API integration",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 14,
+          "skill": "flutter",
+          "focus": "Intermediate - Flutter",
+          "tasks": "State management (Provider/Riverpod/Bloc), REST API integration",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 15,
+          "skill": "flutter",
+          "focus": "Advanced - Flutter",
+          "tasks": "Custom animations, platform channels, CI/CD, app store deployment",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 16,
+          "skill": "flutter",
+          "focus": "Advanced - Flutter",
+          "tasks": "Custom animations, platform channels, CI/CD, app store deployment",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a cross-platform todo or weather app"
+        },
+        {
+          "week": 17,
+          "skill": "dart",
+          "focus": "Beginner - Dart",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 18,
+          "skill": "dart",
+          "focus": "Beginner - Dart",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 19,
+          "skill": "dart",
+          "focus": "Intermediate - Dart",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 20,
+          "skill": "dart",
+          "focus": "Advanced - Dart",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 21,
+          "skill": "ci/cd",
+          "focus": "Beginner - Ci/Cd",
+          "tasks": "CI/CD concepts, GitHub Actions basics, automated testing",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 22,
+          "skill": "ci/cd",
+          "focus": "Intermediate - Ci/Cd",
+          "tasks": "Multi-stage pipelines, Docker integration, deployment automation",
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
           "hours": 7.0,
           "daily_hrs": 1.0,
           "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
+        },
+        {
+          "week": 23,
+          "skill": "dagger",
+          "focus": "Beginner - Dagger",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 24,
+          "skill": "dagger",
+          "focus": "Beginner - Dagger",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 25,
+          "skill": "dagger",
+          "focus": "Intermediate - Dagger",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 26,
+          "skill": "dagger",
+          "focus": "Advanced - Dagger",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
         }
       ],
       "tips": [
+<<<<<<< HEAD
         "Your 4-week plan covers 3 skills at 1.0h/day.",
         "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
         "Complete the mini-project at the end of each skill to solidify learning.",
         "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
         "Your 4-week window covers ~25% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+=======
+        "Your 26-week plan covers 7 skills at 1.0h/day.",
+        "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
+        "Complete the mini-project at the end of each skill to solidify learning.",
+        "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
+        "Your 26-week window covers ~83% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
         "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends."
       ],
       "tight_deadline": true
     },
+<<<<<<< HEAD
     "checked_weeks": [],
     "theme": "light",
+=======
+    "checked_weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+    ],
+    "theme": "dark",
+>>>>>>> fce56fc (Made sure that in roadmap it is being customized for all months)
     "bio": "",
     "reset_token": "Sc1YfBg36i2cZ1Q4VmUGLp9cQpjJ3QKqXu_CFwERT0Q",
     "reset_expiry": 1778599262.6127052,
