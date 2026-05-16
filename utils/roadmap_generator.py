@@ -65,6 +65,16 @@ def _distribute_weighted(weights: list[float], total_slots: int) -> list[int]:
     Distribute total_slots proportionally by weight.
     Every skill gets at least 1 slot. Total always equals total_slots exactly.
     """
+    n = len(weights)
+    if n > total_slots:
+        # More skills than slots: give 1 to top skills, 0 to rest
+        indexed = [(weights[i], i) for i in range(n)]
+        indexed.sort(reverse=True)
+        result = [0] * n
+        for j in range(total_slots):
+            result[indexed[j][1]] = 1
+        return result
+    
     total_w = sum(weights)
     raw     = [(w / total_w) * total_slots for w in weights]
     floors  = [max(1, math.floor(r)) for r in raw]
@@ -109,7 +119,10 @@ def generate_roadmap(
     )
 
     # ── Deadline: EXACTLY this many weeks, no more ────────────────────────────
-    total_weeks    = max(1, round(deadline_months * 4.33))
+    # Use more accurate weeks per month calculation
+    # 1 month = 4 weeks, 2 months = 9 weeks, 3 months = 13 weeks, etc.
+    weeks_per_month = {1: 4, 2: 9, 3: 13, 6: 26, 9: 39, 12: 52}
+    total_weeks    = weeks_per_month.get(deadline_months, max(1, round(deadline_months * 4.33)))
     hours_per_day  = round(hours_per_week / 7, 2)
     total_hours    = round(hours_per_week * total_weeks)
 
@@ -128,9 +141,12 @@ def generate_roadmap(
     week_cursor = 1
 
     for i, skill in enumerate(missing_skills):
+        weeks = skill_weeks[i]
+        if weeks == 0:
+            continue  # Skip skills with 0 weeks (happens when too many skills for short timeline)
+        
         sl    = skill.lower()
         db    = SKILL_DB.get(sl, DEFAULT_SKILL)
-        weeks = skill_weeks[i]                          # exactly allocated weeks
         hours = round(weeks * hours_per_week)           # hours = weeks * hpw
 
         resources = db["resources"].get(resource_key, db["resources"]["free"])
@@ -147,7 +163,7 @@ def generate_roadmap(
             }
 
         phase_plan.append({
-            "phase_num":  i + 1,
+            "phase_num":  len(phase_plan) + 1,
             "skill":      skill,
             "start_week": week_cursor,
             "end_week":   week_cursor + weeks - 1,
@@ -201,12 +217,19 @@ def generate_roadmap(
     }
 
     # ── Tips ──────────────────────────────────────────────────────────────────
+    skills_covered = len(phase_plan)
+    skills_skipped = len(missing_skills) - skills_covered
+    
     tips = [
-        f"Your {total_weeks}-week plan covers all {len(missing_skills)} skills at {round(hours_per_day,1)}h/day.",
+        f"Your {total_weeks}-week plan covers {skills_covered} skill{'s' if skills_covered != 1 else ''} at {round(hours_per_day,1)}h/day.",
         f"Starting from {skill_level.title()} level — covering {', '.join(phases_to_include)} phase(s).",
         f"Complete the mini-project at the end of each skill to solidify learning.",
         f"Each skill gets proportional time based on its complexity — heavier skills get more weeks.",
     ]
+    
+    if skills_skipped > 0:
+        skipped_names = [missing_skills[i] for i in range(len(missing_skills)) if skill_weeks[i] == 0]
+        tips.insert(1, f"⚠️ Timeline too short: {skills_skipped} skill(s) excluded ({', '.join(skipped_names)}). Consider extending to 2-3 months.")
 
     ideal_hours = sum(
         SKILL_DB.get(s.lower(), DEFAULT_SKILL)["hours"] * multiplier

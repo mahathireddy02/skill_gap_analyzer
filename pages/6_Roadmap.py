@@ -68,11 +68,13 @@ if "checked_weeks" not in st.session_state:
 if "roadmap_result" not in st.session_state and db_user.get("roadmap_result"):
     saved_rm = db_user["roadmap_result"]
     # Only restore if it was generated for the same role and same missing skills
-    if (saved_rm.get("role", "").lower() == role.lower() and
-            set(saved_rm.get("phase_plan") and
-                [p["skill"] for p in saved_rm["phase_plan"]] or []) ==
-            set(s.lower() for s in missing)):
-        st.session_state["roadmap_result"] = saved_rm
+    # DO NOT restore old roadmaps - force regeneration for fresh customization
+    if False:  # Disabled - always force fresh generation
+        if (saved_rm.get("role", "").lower() == role.lower() and
+                set(saved_rm.get("phase_plan") and
+                    [p["skill"] for p in saved_rm["phase_plan"]] or []) ==
+                set(s.lower() for s in missing)):
+            st.session_state["roadmap_result"] = saved_rm
 
 st.markdown("## 🛤️ Learning Roadmap")
 st.caption(f"Target Role: **{role}** · {len(missing)} skills to learn")
@@ -121,12 +123,13 @@ with st.expander("⚙️ Customize Roadmap", expanded="roadmap_result" not in st
 if "roadmap_result" not in st.session_state:
     st.stop()
 
-rm          = st.session_state["roadmap_result"]
-tl          = rm["timeline"]
-phases      = rm["phase_plan"]
-weekly      = rm["weekly_plan"]
+rm = st.session_state["roadmap_result"]
+tl          = rm.get("timeline", {})
+phases      = rm.get("phase_plan", [])
+weekly      = rm.get("weekly_plan", [])
 checked     = st.session_state.checked_weeks
 total_weeks = tl.get("total_weeks", 0)
+
 done_weeks  = len(checked)
 pct         = int(done_weeks / total_weeks * 100) if total_weeks else 0
 current_week = done_weeks + 1
