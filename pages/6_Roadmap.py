@@ -15,7 +15,7 @@ st.markdown("""
 [data-testid="stSidebar"],[data-testid="collapsedControl"],section[data-testid="stSidebar"],
 .stDeployButton,[class*="viewerBadge"],[class*="toolbar"]
 {display:none!important;visibility:hidden!important;}
-html,body,.stApp{margin:0!important;padding:0!important;background:#0f0c29!important;}
+html,body,.stApp{margin:0!important;padding:0!important;background:#0a0e17!important;}
 .block-container{padding:1rem 2rem!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
@@ -210,7 +210,7 @@ html = f"""
 <meta charset="utf-8">
 <style>
   *{{box-sizing:border-box;margin:0;padding:0;}}
-  body{{background:#0f0c29;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden;}}
+  body{{background:#0a0e17;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden;}}
 
   #map-wrap{{width:100%;overflow-x:auto;overflow-y:visible;padding:20px 0 10px;-webkit-overflow-scrolling:touch;}}
   #map-wrap::-webkit-scrollbar{{height:4px;}}
@@ -246,7 +246,7 @@ html = f"""
   /* Detail panel */
   #detail{{
     position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.92);
-    background:linear-gradient(135deg,#1e1b4b,#0f0c29);
+    background:linear-gradient(135deg,#152238,#0a0e17);
     border:1px solid rgba(167,139,250,0.3);
     border-radius:20px;padding:24px 28px;width:min(520px,90vw);
     max-height:80vh;overflow-y:auto;
@@ -600,7 +600,7 @@ components.html(f"""
 <!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif;}}
-body{{background:#0f0c29;color:#fff;padding:1rem 0.5rem 2rem;}}
+body{{background:#0a0e17;color:#fff;padding:1rem 0.5rem 2rem;}}
 h2{{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}}
 h2 span{{font-size:1.3rem;}}
 .ba-grid{{display:flex;flex-wrap:wrap;gap:0.7rem;}}

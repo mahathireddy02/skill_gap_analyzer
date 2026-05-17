@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from utils.auth import signup
 from utils.skill_analyzer import get_roles, ROLE_DATASET
 from components.role_autocomplete import role_autocomplete
+from components.theme import BG_ANIMATED
 
 st.set_page_config(page_title="Sign Up · SkillGap", page_icon="✨", layout="wide", initial_sidebar_state="collapsed")
 
@@ -37,9 +38,9 @@ st.markdown("""
 {display:none!important;visibility:hidden!important;}
 html,body{margin:0!important;padding:0!important;}
 .stApp{
-    background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#1a1a2e)!important;
-    background-size:400% 400%!important;
-    animation:bgShift 10s ease infinite!important;
+    background:""" + BG_ANIMATED + """!important;
+    background-size:100% 100%,100% 100%,400% 400%!important;
+    animation:bgShift 14s ease infinite!important;
     min-height:100vh!important;
 }
 @keyframes bgShift{

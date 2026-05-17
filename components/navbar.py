@@ -1,4 +1,5 @@
 import streamlit as st
+from components.theme import BG_LIGHT, BG_STATIC, COLOR_BG_DARK, COLOR_BG_LIGHT, COLOR_NAV_DARK, COLOR_SURFACE_LIGHT
 
 def show_navbar(active="Dashboard"):
     name  = st.session_state.get("user", {}).get("name", "User")
@@ -20,14 +21,15 @@ def show_navbar(active="Dashboard"):
 
     # ── Theme colours ─────────────────────────────────────────────────────────
     if _theme == "light":
-        _bg          = "#f5f4ff"
-        _nav_bg      = "#ede9fe"
-        _nav_border  = "#c4b5fd"
+        _bg          = COLOR_BG_LIGHT
+        _nav_bg      = COLOR_SURFACE_LIGHT
+        _nav_border  = "#cbd5e1"
         _btn_color   = "rgba(30,27,75,0.85)"
         _btn_hover   = "rgba(124,58,237,0.12)"
         _text_color  = "#1a1a2e"
-        _theme_css   = """
-        html,body,.stApp{background:#f0eeff!important;color:#1a1a2e!important;}
+        _theme_css   = (
+        """
+        html,body,.stApp{background:""" + BG_LIGHT + """!important;color:#1a1a2e!important;}
 
         /* All text elements */
         div[data-testid="stMarkdownContainer"] p,
@@ -125,23 +127,25 @@ def show_navbar(active="Dashboard"):
         div[data-testid="stToggle"] span{color:#1a1a2e!important;}
 
         /* Sidebar / page body */
-        .page-body{background:#f0eeff!important;}
+        .page-body{background:""" + COLOR_BG_LIGHT + """!important;}
 
         /* Progress bars */
         .prog-bg{background:#e5e7eb!important;}
 
         /* Roadmap SVG background */
-        body{background:#f0eeff!important;}
+        body{background:""" + COLOR_BG_LIGHT + """!important;}
         """
+        )
     else:
-        _bg          = "#0f0c29"
-        _nav_bg      = "#0d0b1e"
+        _bg          = COLOR_BG_DARK
+        _nav_bg      = COLOR_NAV_DARK
         _nav_border  = "rgba(255,255,255,0.08)"
         _btn_color   = "rgba(255,255,255,0.65)"
         _btn_hover   = "rgba(255,255,255,0.08)"
         _text_color  = "#ffffff"
-        _theme_css   = """
-        html,body,.stApp{background:linear-gradient(-45deg,#0f0c29,#1a1a2e,#0f0c29)!important;color:#fff!important;}
+        _theme_css   = (
+        """
+        html,body,.stApp{background:""" + BG_STATIC + """!important;color:#fff!important;}
         div[data-testid="stMarkdownContainer"] p,
         div[data-testid="stMarkdownContainer"] li,
         div[data-testid="stMarkdownContainer"] span,
@@ -156,6 +160,7 @@ def show_navbar(active="Dashboard"):
         div[data-testid="stMetricLabel"]{color:rgba(255,255,255,0.5)!important;}
         div[data-testid="stMetricValue"]{color:#fff!important;}
         """
+        )
 
     # ── Bottom-to-top reveal animation (only fires right after toggle) ────────
     _anim_css = ""

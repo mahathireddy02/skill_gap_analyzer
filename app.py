@@ -1,4 +1,5 @@
 import streamlit as st
+from components.theme import BG_ANIMATED
 
 st.set_page_config(
     page_title="Skill Gap Analyzer",
@@ -25,9 +26,9 @@ html, body, .stApp {
     font-family: 'Inter', sans-serif !important;
 }
 .stApp {
-    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e) !important;
-    background-size: 400% 400% !important;
-    animation: bgShift 10s ease infinite !important;
+    background: """ + BG_ANIMATED + """ !important;
+    background-size: 100% 100%, 100% 100%, 400% 400% !important;
+    animation: bgShift 14s ease infinite !important;
     min-height: 100vh !important;
 }
 @keyframes bgShift {
@@ -47,7 +48,7 @@ div[data-testid="stMarkdownContainer"] { width:100%; text-align:center; }
 
 /* Particles */
 .particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
-.p { position:absolute; border-radius:50%; background:rgba(255,255,255,0.06); animation:rise linear infinite; }
+.p { position:absolute; border-radius:50%; background:rgba(56,189,248,0.07); animation:rise linear infinite; }
 @keyframes rise {
     0%   { transform:translateY(110vh) scale(0); opacity:0; }
     5%   { opacity:1; }
