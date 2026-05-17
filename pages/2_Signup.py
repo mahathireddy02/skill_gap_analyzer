@@ -3,7 +3,6 @@ import streamlit as st
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.auth import signup
 from utils.skill_analyzer import get_roles, ROLE_DATASET
-from components.role_autocomplete import role_autocomplete
 from components.theme import BG_ANIMATED
 
 st.set_page_config(page_title="Sign Up · SkillGap", page_icon="✨", layout="wide", initial_sidebar_state="collapsed")
@@ -220,10 +219,35 @@ with center:
         </div>
         """, unsafe_allow_html=True)
 
-        # ── Target Role with autocomplete ─────────────────────────────────────
+        # ── Target Role ───────────────────────────────────────────────────────
         st.markdown('<div class="sec-lbl">🎯 Target Role</div>', unsafe_allow_html=True)
-        target_role = role_autocomplete(ALL_ROLES, default=st.session_state.su_role,
-                                        key="su_role", dark=True)
+        role_options = ["-- Select a Role --"] + ALL_ROLES + ["Other"]
+        saved_role = st.session_state.su_role
+        is_other = saved_role and saved_role not in ALL_ROLES
+        default_idx = (ALL_ROLES.index(saved_role) + 1) if saved_role in ALL_ROLES else (len(role_options) - 1 if is_other else 0)
+
+        selected_role = st.selectbox("Target Role", role_options, index=default_idx, key="su_role_select", label_visibility="collapsed")
+        
+        target_role = ""
+        if selected_role == "Other":
+            import re
+            from difflib import get_close_matches
+            custom_role = st.text_input("Enter custom role", value=saved_role if is_other else "", placeholder="E.g. Data Scientist", key="su_role_custom", label_visibility="collapsed")
+            if custom_role.strip():
+                if len(custom_role.strip()) < 3:
+                    st.error("Role must be at least 3 characters long.")
+                elif not re.match(r"^[A-Za-z\s\-]+$", custom_role.strip()):
+                    st.error("Role must contain only letters, spaces, and hyphens.")
+                else:
+                    close = get_close_matches(custom_role.strip().lower(), [r.lower() for r in ALL_ROLES], n=1, cutoff=0.8)
+                    if close:
+                        matched = ALL_ROLES[[r.lower() for r in ALL_ROLES].index(close[0])]
+                        st.error(f"Did you mean '{matched}'? Please select it from the dropdown to avoid spelling mistakes.")
+                    else:
+                        target_role = custom_role.strip()
+        elif selected_role != "-- Select a Role --":
+            target_role = selected_role
+            
         st.session_state.su_role = target_role
 
         if target_role:

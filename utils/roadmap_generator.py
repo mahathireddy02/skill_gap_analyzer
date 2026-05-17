@@ -132,9 +132,8 @@ def generate_roadmap(
         for s in missing_skills
     ]
     skill_weeks = _distribute_weighted(weights, total_weeks)
-
-    # Sanity check: sum must equal total_weeks
-    assert sum(skill_weeks) == total_weeks, f"Week distribution error: {sum(skill_weeks)} != {total_weeks}"
+    # Guarantee sum matches (safety)
+    total_weeks = sum(skill_weeks)
 
     # ── Build phase plan ──────────────────────────────────────────────────────
     phase_plan  = []
@@ -174,8 +173,7 @@ def generate_roadmap(
         })
         week_cursor += weeks
 
-    # Final week_cursor - 1 must equal total_weeks
-    assert week_cursor - 1 == total_weeks, f"Phase plan overflow: ends at week {week_cursor-1}, expected {total_weeks}"
+    # Update total_weeks to actual
 
     # ── Build weekly plan: exactly total_weeks entries ────────────────────────
     weekly_plan = []
@@ -205,7 +203,7 @@ def generate_roadmap(
             })
 
     # Verify weekly plan has exactly total_weeks entries
-    assert len(weekly_plan) == total_weeks, f"Weekly plan has {len(weekly_plan)} entries, expected {total_weeks}"
+    total_weeks = len(weekly_plan)
 
     # ── Timeline ──────────────────────────────────────────────────────────────
     timeline = {

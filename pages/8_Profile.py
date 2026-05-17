@@ -80,16 +80,59 @@ with tab1:
         new_first = st.text_input("First Name", value=parts[0] if parts else "", key="p_fname")
     with nc2:
         new_last  = st.text_input("Last Name",  value=parts[1] if len(parts) > 1 else "", key="p_lname")
-    new_role = st.text_input("Target Role", value=db_user.get("target_role", ""), key="p_role",
-                              placeholder="e.g. Data Scientist, Full Stack Developer")
+    from utils.skill_analyzer import get_roles
+    
+    import re
+    from difflib import get_close_matches
+
+    ALL_ROLES    = get_roles()
+    saved_role   = db_user.get("target_role", "").strip()
+    is_other     = saved_role and saved_role not in ALL_ROLES
+    role_options = ["-- Select a Role --"] + ALL_ROLES + ["Other"]
+    default_idx  = (ALL_ROLES.index(saved_role) + 1) if saved_role in ALL_ROLES else (len(role_options)-1 if is_other else 0)
+
+    selected = st.selectbox("Target Role", role_options, index=default_idx, key="p_role_select")
+    
+    is_valid = True
+    new_role = saved_role
+    if selected == "-- Select a Role --":
+        new_role = ""
+    elif selected == "Other":
+        custom = st.text_input("Enter custom role", value=saved_role if is_other else "",
+                               placeholder="Type your role (e.g. Hotel Manager)",
+                               key="p_role_custom", label_visibility="collapsed")
+        custom = custom.strip()
+        if custom:
+            if len(custom) < 3:
+                st.error("Role must be at least 3 characters long.")
+                is_valid = False
+            elif not re.match(r"^[A-Za-z\s\-]+$", custom):
+                st.error("Role must contain only letters, spaces, and hyphens.")
+                is_valid = False
+            else:
+                close = get_close_matches(custom.lower(), [r.lower() for r in ALL_ROLES], n=1, cutoff=0.8)
+                if close:
+                    matched = ALL_ROLES[[r.lower() for r in ALL_ROLES].index(close[0])]
+                    st.error(f"Did you mean '{matched}'? Please select it from the dropdown to avoid spelling mistakes.")
+                    is_valid = False
+                else:
+                    new_role = custom
+        else:
+            new_role = saved_role if is_other else ""
+    else:
+        new_role = selected
+
     new_bio  = st.text_area("Bio (optional)", value=db_user.get("bio", ""), key="p_bio",
                              height=80, placeholder="Tell us a bit about yourself...")
     if st.button("💾 Save Profile", type="primary", key="save_profile"):
-        new_name = f"{new_first.strip()} {new_last.strip()}".strip()
-        update_user(email, {"name": new_name, "target_role": new_role, "bio": new_bio})
-        st.session_state.user["name"] = new_name
-        st.success("✅ Profile saved!")
-        st.rerun()
+        if is_valid:
+            new_name = f"{new_first.strip()} {new_last.strip()}".strip()
+            update_user(email, {"name": new_name, "target_role": new_role, "bio": new_bio})
+            st.session_state.user["name"] = new_name
+            st.success("✅ Profile saved!")
+            st.rerun()
+        else:
+            st.error("Please fix the errors before saving.")
 
     st.markdown("---")
     st.markdown("### 📊 Account Stats")

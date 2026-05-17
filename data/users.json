@@ -672,69 +672,67 @@
     "name": "Madhuri Reddy Gurram",
     "password": "8a9bcf1e51e812d0af8465a8dbcc9f741064bf0af3b3d08e6b0246437c19f7fb",
     "skills": [
+      "python",
       "sql"
     ],
-    "resume_score": 0,
+    "resume_score": 2,
     "security_q": "What was the name of your first school?",
     "security_a": "7fff36d2db80e6d7e7593a9f7b133c8e7415c8c761c2befe0a19e01d6cc5d9ae",
-    "target_role": "Android Developer",
+    "target_role": "DevOps Engineer",
     "bio": "",
     "missing_skills": [
-      "kotlin",
-      "android",
+      "html",
+      "css",
+      "javascript",
+      "react",
+      "node",
       "git",
+      "typescript",
       "rest api",
-      "java",
-      "jetpack compose",
-      "firebase",
-      "mvvm",
-      "testing",
-      "flutter",
-      "dart",
+      "docker",
+      "next",
+      "graphql",
+      "redis",
+      "aws",
       "ci/cd",
-      "kotlin coroutines",
-      "dagger",
-      "hilt"
+      "mongodb"
     ],
     "roadmap_result": {
-      "role": "Android Developer",
+      "role": "full stack developer",
       "skill_level": "beginner",
-      "summary": "Personalized roadmap for **Android Developer** | Level: Beginner | 15 skills to learn | ~10.2 months at 10.5h/week",
+      "summary": "full stack developer | Beginner | 15 skills | 15 weeks | 1.0h/day",
       "timeline": {
-        "total_hours": 455,
-        "total_weeks": 44,
-        "total_months": 10.2,
-        "hours_per_week": 10.5
+        "total_weeks": 15,
+        "total_hours": 91,
+        "total_months": 3.5,
+        "hours_per_week": 7.0,
+        "daily_hours": 1.0
       },
       "phase_plan": [
         {
           "phase_num": 1,
-          "skill": "kotlin",
+          "skill": "html",
           "start_week": 1,
-          "end_week": 4,
-          "hours": 40,
+          "end_week": 1,
+          "hours": 7,
           "phases": {
-            "beginner": "Kotlin syntax, null safety, data classes, collections",
-            "intermediate": "Coroutines, Android basics, Jetpack components, MVVM",
-            "advanced": "Jetpack Compose, Hilt DI, Flow, testing, app architecture"
+            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
           },
           "resources": [
-            "Kotlin official docs",
-            "Philipp Lackner Android (YouTube)",
-            "Google Codelabs"
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
           ],
-          "project": "Build a notes or weather Android app with MVVM"
+          "project": "Build a small project applying this skill end-to-end"
         },
         {
           "phase_num": 2,
-          "skill": "android",
-          "start_week": 5,
-          "end_week": 7,
-          "hours": 30,
+          "skill": "css",
+          "start_week": 2,
+          "end_week": 2,
+          "hours": 7,
           "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
+            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
           },
           "resources": [
             "Official documentation",
@@ -745,14 +743,59 @@
         },
         {
           "phase_num": 3,
-          "skill": "git",
-          "start_week": 8,
-          "end_week": 9,
-          "hours": 15,
+          "skill": "javascript",
+          "start_week": 3,
+          "end_week": 3,
+          "hours": 7,
           "phases": {
-            "beginner": "init, add, commit, push, pull, clone, status",
-            "intermediate": "Branching, merging, rebasing, pull requests, resolving conflicts",
-            "advanced": "Git hooks, workflows (GitFlow), CI/CD integration, monorepo strategies"
+            "beginner": "[1w sprint] Variables, functions, DOM manipulation, events, ES6 basics"
+          },
+          "resources": [
+            "javascript.info",
+            "freeCodeCamp JS (YouTube)",
+            "MDN Web Docs"
+          ],
+          "project": "Build a weather app or quiz game with API integration"
+        },
+        {
+          "phase_num": 4,
+          "skill": "react",
+          "start_week": 4,
+          "end_week": 4,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] Components, JSX, props, state, event handling"
+          },
+          "resources": [
+            "Official React Docs (react.dev)",
+            "Traversy Media React (YouTube)",
+            "freeCodeCamp React"
+          ],
+          "project": "Build a task manager or e-commerce product listing app"
+        },
+        {
+          "phase_num": 5,
+          "skill": "node",
+          "start_week": 5,
+          "end_week": 5,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] Node.js basics, npm, modules, file system, HTTP module"
+          },
+          "resources": [
+            "Node.js official docs",
+            "Traversy Media Node (YouTube)"
+          ],
+          "project": "Build a REST API with Express + JWT authentication"
+        },
+        {
+          "phase_num": 6,
+          "skill": "git",
+          "start_week": 6,
+          "end_week": 6,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] init, add, commit, push, pull, clone, status"
           },
           "resources": [
             "GitHub Hello World guide",
@@ -762,87 +805,28 @@
           "project": "Contribute to an open-source project on GitHub"
         },
         {
-          "phase_num": 4,
-          "skill": "rest api",
-          "start_week": 10,
-          "end_week": 12,
-          "hours": 30,
-          "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
-          },
-          "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
-          ],
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "phase_num": 5,
-          "skill": "java",
-          "start_week": 13,
-          "end_week": 15,
-          "hours": 30,
-          "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
-          },
-          "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
-          ],
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "phase_num": 6,
-          "skill": "jetpack compose",
-          "start_week": 16,
-          "end_week": 18,
-          "hours": 30,
-          "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
-          },
-          "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
-          ],
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
           "phase_num": 7,
-          "skill": "firebase",
-          "start_week": 19,
-          "end_week": 21,
-          "hours": 30,
+          "skill": "typescript",
+          "start_week": 7,
+          "end_week": 7,
+          "hours": 7,
           "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
+            "beginner": "[1w sprint] Types, interfaces, enums, type inference, tsconfig basics"
           },
           "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
+            "TypeScript Handbook (typescriptlang.org)",
+            "Matt Pocock TS tutorials (YouTube)"
           ],
-          "project": "Build a small project applying this skill end-to-end"
+          "project": "Rewrite a JavaScript project in TypeScript"
         },
         {
           "phase_num": 8,
-          "skill": "mvvm",
-          "start_week": 22,
-          "end_week": 24,
-          "hours": 30,
+          "skill": "rest api",
+          "start_week": 8,
+          "end_week": 8,
+          "hours": 7,
           "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
+            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
           },
           "resources": [
             "Official documentation",
@@ -853,14 +837,28 @@
         },
         {
           "phase_num": 9,
-          "skill": "testing",
-          "start_week": 25,
-          "end_week": 27,
-          "hours": 30,
+          "skill": "docker",
+          "start_week": 9,
+          "end_week": 9,
+          "hours": 7,
           "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
+            "beginner": "[1w sprint] Containers vs VMs, Docker CLI, Dockerfile, images, containers"
+          },
+          "resources": [
+            "Play with Docker",
+            "TechWorld with Nana Docker (YouTube)",
+            "Docker Docs"
+          ],
+          "project": "Containerize a Python Flask/FastAPI app with Docker Compose"
+        },
+        {
+          "phase_num": 10,
+          "skill": "next",
+          "start_week": 10,
+          "end_week": 10,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
           },
           "resources": [
             "Official documentation",
@@ -870,33 +868,13 @@
           "project": "Build a small project applying this skill end-to-end"
         },
         {
-          "phase_num": 10,
-          "skill": "flutter",
-          "start_week": 28,
-          "end_week": 32,
-          "hours": 50,
-          "phases": {
-            "beginner": "Dart basics, widgets (Stateless/Stateful), layouts, navigation",
-            "intermediate": "State management (Provider/Riverpod/Bloc), REST API integration",
-            "advanced": "Custom animations, platform channels, CI/CD, app store deployment"
-          },
-          "resources": [
-            "Flutter official docs",
-            "Vandad Nahavandipoor (YouTube)",
-            "freeCodeCamp Flutter"
-          ],
-          "project": "Build a cross-platform todo or weather app"
-        },
-        {
           "phase_num": 11,
-          "skill": "dart",
-          "start_week": 33,
-          "end_week": 35,
-          "hours": 30,
+          "skill": "graphql",
+          "start_week": 11,
+          "end_week": 11,
+          "hours": 7,
           "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
+            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
           },
           "resources": [
             "Official documentation",
@@ -907,68 +885,59 @@
         },
         {
           "phase_num": 12,
-          "skill": "ci/cd",
-          "start_week": 36,
-          "end_week": 37,
-          "hours": 20,
+          "skill": "redis",
+          "start_week": 12,
+          "end_week": 12,
+          "hours": 7,
           "phases": {
-            "beginner": "CI/CD concepts, GitHub Actions basics, automated testing",
-            "intermediate": "Multi-stage pipelines, Docker integration, deployment automation",
-            "advanced": "GitOps, ArgoCD, advanced workflows, secrets management"
+            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
+          },
+          "resources": [
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
+          ],
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "phase_num": 13,
+          "skill": "aws",
+          "start_week": 13,
+          "end_week": 13,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] IAM, EC2, S3, VPC basics, AWS Free Tier setup"
+          },
+          "resources": [
+            "AWS Free Tier",
+            "freeCodeCamp AWS (YouTube)",
+            "AWS Skill Builder"
+          ],
+          "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
+        },
+        {
+          "phase_num": 14,
+          "skill": "ci/cd",
+          "start_week": 14,
+          "end_week": 14,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] CI/CD concepts, GitHub Actions basics, automated testing"
           },
           "resources": [
             "GitHub Actions docs",
-            "TechWorld with Nana CI/CD (YouTube)",
-            "GitLab CI docs"
+            "TechWorld with Nana CI/CD (YouTube)"
           ],
           "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
         },
         {
-          "phase_num": 13,
-          "skill": "kotlin coroutines",
-          "start_week": 38,
-          "end_week": 40,
-          "hours": 30,
-          "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
-          },
-          "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
-          ],
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "phase_num": 14,
-          "skill": "dagger",
-          "start_week": 41,
-          "end_week": 43,
-          "hours": 30,
-          "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
-          },
-          "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
-          ],
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
           "phase_num": 15,
-          "skill": "hilt",
-          "start_week": 44,
-          "end_week": 46,
-          "hours": 30,
+          "skill": "mongodb",
+          "start_week": 15,
+          "end_week": 15,
+          "hours": 7,
           "phases": {
-            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
-            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
-            "advanced": "Contribute to open source, build portfolio projects, get certified"
+            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
           },
           "resources": [
             "Official documentation",
@@ -981,380 +950,147 @@
       "weekly_plan": [
         {
           "week": 1,
-          "skill": "kotlin",
-          "focus": "Beginner - Kotlin",
-          "tasks": "Kotlin syntax, null safety, data classes, collections",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 2,
-          "skill": "kotlin",
-          "focus": "Beginner - Kotlin",
-          "tasks": "Kotlin syntax, null safety, data classes, collections",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 3,
-          "skill": "kotlin",
-          "focus": "Intermediate - Kotlin",
-          "tasks": "Coroutines, Android basics, Jetpack components, MVVM",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 4,
-          "skill": "kotlin",
-          "focus": "Advanced - Kotlin",
-          "tasks": "Jetpack Compose, Hilt DI, Flow, testing, app architecture",
-          "hours": 10.5,
-          "project": "Build a notes or weather Android app with MVVM"
-        },
-        {
-          "week": 5,
-          "skill": "android",
-          "focus": "Beginner - Android",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 6,
-          "skill": "android",
-          "focus": "Intermediate - Android",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 7,
-          "skill": "android",
-          "focus": "Advanced - Android",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
+          "skill": "html",
+          "focus": "Beginner - Html",
+          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
           "project": "Build a small project applying this skill end-to-end"
         },
         {
-          "week": 8,
-          "skill": "git",
-          "focus": "Beginner - Git",
-          "tasks": "init, add, commit, push, pull, clone, status",
-          "hours": 10.5,
-          "project": ""
+          "week": 2,
+          "skill": "css",
+          "focus": "Beginner - Css",
+          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
         },
         {
-          "week": 9,
+          "week": 3,
+          "skill": "javascript",
+          "focus": "Beginner - Javascript",
+          "tasks": "[1w sprint] Variables, functions, DOM manipulation, events, ES6 basics",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a weather app or quiz game with API integration"
+        },
+        {
+          "week": 4,
+          "skill": "react",
+          "focus": "Beginner - React",
+          "tasks": "[1w sprint] Components, JSX, props, state, event handling",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a task manager or e-commerce product listing app"
+        },
+        {
+          "week": 5,
+          "skill": "node",
+          "focus": "Beginner - Node",
+          "tasks": "[1w sprint] Node.js basics, npm, modules, file system, HTTP module",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a REST API with Express + JWT authentication"
+        },
+        {
+          "week": 6,
           "skill": "git",
-          "focus": "Intermediate - Git",
-          "tasks": "Branching, merging, rebasing, pull requests, resolving conflicts",
-          "hours": 10.5,
+          "focus": "Beginner - Git",
+          "tasks": "[1w sprint] init, add, commit, push, pull, clone, status",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
           "project": "Contribute to an open-source project on GitHub"
         },
         {
-          "week": 10,
+          "week": 7,
+          "skill": "typescript",
+          "focus": "Beginner - Typescript",
+          "tasks": "[1w sprint] Types, interfaces, enums, type inference, tsconfig basics",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Rewrite a JavaScript project in TypeScript"
+        },
+        {
+          "week": 8,
           "skill": "rest api",
           "focus": "Beginner - Rest Api",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
+          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
+        },
+        {
+          "week": 9,
+          "skill": "docker",
+          "focus": "Beginner - Docker",
+          "tasks": "[1w sprint] Containers vs VMs, Docker CLI, Dockerfile, images, containers",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Containerize a Python Flask/FastAPI app with Docker Compose"
+        },
+        {
+          "week": 10,
+          "skill": "next",
+          "focus": "Beginner - Next",
+          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
         },
         {
           "week": 11,
-          "skill": "rest api",
-          "focus": "Intermediate - Rest Api",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
+          "skill": "graphql",
+          "focus": "Beginner - Graphql",
+          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a small project applying this skill end-to-end"
         },
         {
           "week": 12,
-          "skill": "rest api",
-          "focus": "Advanced - Rest Api",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
+          "skill": "redis",
+          "focus": "Beginner - Redis",
+          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
           "project": "Build a small project applying this skill end-to-end"
         },
         {
           "week": 13,
-          "skill": "java",
-          "focus": "Beginner - Java",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
+          "skill": "aws",
+          "focus": "Beginner - Aws",
+          "tasks": "[1w sprint] IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
         },
         {
           "week": 14,
-          "skill": "java",
-          "focus": "Intermediate - Java",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 15,
-          "skill": "java",
-          "focus": "Advanced - Java",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 16,
-          "skill": "jetpack compose",
-          "focus": "Beginner - Jetpack Compose",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 17,
-          "skill": "jetpack compose",
-          "focus": "Intermediate - Jetpack Compose",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 18,
-          "skill": "jetpack compose",
-          "focus": "Advanced - Jetpack Compose",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 19,
-          "skill": "firebase",
-          "focus": "Beginner - Firebase",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 20,
-          "skill": "firebase",
-          "focus": "Intermediate - Firebase",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 21,
-          "skill": "firebase",
-          "focus": "Advanced - Firebase",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 22,
-          "skill": "mvvm",
-          "focus": "Beginner - Mvvm",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 23,
-          "skill": "mvvm",
-          "focus": "Intermediate - Mvvm",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 24,
-          "skill": "mvvm",
-          "focus": "Advanced - Mvvm",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 25,
-          "skill": "testing",
-          "focus": "Beginner - Testing",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 26,
-          "skill": "testing",
-          "focus": "Intermediate - Testing",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 27,
-          "skill": "testing",
-          "focus": "Advanced - Testing",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 28,
-          "skill": "flutter",
-          "focus": "Beginner - Flutter",
-          "tasks": "Dart basics, widgets (Stateless/Stateful), layouts, navigation",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 29,
-          "skill": "flutter",
-          "focus": "Beginner - Flutter",
-          "tasks": "Dart basics, widgets (Stateless/Stateful), layouts, navigation",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 30,
-          "skill": "flutter",
-          "focus": "Intermediate - Flutter",
-          "tasks": "State management (Provider/Riverpod/Bloc), REST API integration",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 31,
-          "skill": "flutter",
-          "focus": "Intermediate - Flutter",
-          "tasks": "State management (Provider/Riverpod/Bloc), REST API integration",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 32,
-          "skill": "flutter",
-          "focus": "Advanced - Flutter",
-          "tasks": "Custom animations, platform channels, CI/CD, app store deployment",
-          "hours": 10.5,
-          "project": "Build a cross-platform todo or weather app"
-        },
-        {
-          "week": 33,
-          "skill": "dart",
-          "focus": "Beginner - Dart",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 34,
-          "skill": "dart",
-          "focus": "Intermediate - Dart",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 35,
-          "skill": "dart",
-          "focus": "Advanced - Dart",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 36,
           "skill": "ci/cd",
           "focus": "Beginner - Ci/Cd",
-          "tasks": "CI/CD concepts, GitHub Actions basics, automated testing",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 37,
-          "skill": "ci/cd",
-          "focus": "Intermediate - Ci/Cd",
-          "tasks": "Multi-stage pipelines, Docker integration, deployment automation",
-          "hours": 10.5,
+          "tasks": "[1w sprint] CI/CD concepts, GitHub Actions basics, automated testing",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
           "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
         },
         {
-          "week": 38,
-          "skill": "kotlin coroutines",
-          "focus": "Beginner - Kotlin Coroutines",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 39,
-          "skill": "kotlin coroutines",
-          "focus": "Intermediate - Kotlin Coroutines",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 40,
-          "skill": "kotlin coroutines",
-          "focus": "Advanced - Kotlin Coroutines",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 41,
-          "skill": "dagger",
-          "focus": "Beginner - Dagger",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 42,
-          "skill": "dagger",
-          "focus": "Intermediate - Dagger",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 43,
-          "skill": "dagger",
-          "focus": "Advanced - Dagger",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 44,
-          "skill": "hilt",
-          "focus": "Beginner - Hilt",
-          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 45,
-          "skill": "hilt",
-          "focus": "Intermediate - Hilt",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
-          "hours": 10.5,
-          "project": ""
-        },
-        {
-          "week": 46,
-          "skill": "hilt",
-          "focus": "Advanced - Hilt",
-          "tasks": "Contribute to open source, build portfolio projects, get certified",
-          "hours": 10.5,
+          "week": 15,
+          "skill": "mongodb",
+          "focus": "Beginner - Mongodb",
+          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
           "project": "Build a small project applying this skill end-to-end"
         }
       ],
       "tips": [
-        "\ud83d\udcc5 Study 10.5 hours/week consistently \u2014 daily practice beats weekend cramming.",
-        "\ud83c\udfaf Focus on one skill at a time. Complete each phase before moving on.",
-        "\ud83d\udee0\ufe0f Build the mini-project at the end of each skill \u2014 it cements your learning.",
-        "\ud83d\udcca Track your progress weekly and adjust your plan if needed.",
-        "\u26a0\ufe0f Your deadline (3 months) may be tight. Estimated time needed: 10.2 months. Consider increasing study hours or reducing scope.",
-        "\ud83d\udcb0 All recommended resources are free. Kaggle, freeCodeCamp, and YouTube are your best friends."
+        "Your 15-week plan covers all 15 skills at 1.0h/day.",
+        "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
+        "Complete the mini-project at the end of each skill to solidify learning.",
+        "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
+        "Your 15-week window covers ~18% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+        "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends."
       ],
       "tight_deadline": true
     },
