@@ -18,14 +18,15 @@ html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
-.chip-g{display:inline-block;background:#d1fae5;color:#065f46;border-radius:999px;
+.chip-g{display:inline-block;background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);border-radius:999px;
     padding:0.2rem 0.65rem;font-size:0.8rem;font-weight:600;margin:0.15rem;}
-.chip-r{display:inline-block;background:#fee2e2;color:#991b1b;border-radius:999px;
+.chip-r{display:inline-block;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);border-radius:999px;
     padding:0.2rem 0.65rem;font-size:0.8rem;font-weight:600;margin:0.15rem;}
-.chip-y{display:inline-block;background:#fef3c7;color:#92400e;border-radius:999px;
+.chip-y{display:inline-block;background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);border-radius:999px;
     padding:0.2rem 0.65rem;font-size:0.8rem;font-weight:600;margin:0.15rem;}
-.tier-box{background:rgba(124,58,237,0.1);border-radius:12px;padding:0.8rem 1rem;margin-bottom:0.5rem;
-    border-left:4px solid #4f46e5;}
+.tier-box{background:rgba(124,58,237,0.12);border-radius:12px;padding:0.8rem 1rem;margin-bottom:0.5rem;
+    border-left:4px solid #7c3aed;color:#fff;}
+.tier-box div{color:#fff!important;}
 </style>
 """, unsafe_allow_html=True)
 
