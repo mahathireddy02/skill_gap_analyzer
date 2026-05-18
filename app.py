@@ -284,7 +284,7 @@ st.markdown("""
 </div>
 
 <div class="steps">
-    <div class="steps-h">How It Works 🗺️</div>
+    <div class="steps-h">How It Works</div>
     <div class="steps-grid">
         <div class="step"><div class="step-n">1</div><div class="step-i">📝</div><div class="step-l">Create your free account</div></div>
         <div class="step"><div class="step-n">2</div><div class="step-i">📄</div><div class="step-l">Upload your resume</div></div>

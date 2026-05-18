@@ -5,8 +5,13 @@ Uses regex + NLP-style pattern matching with skill normalization,
 section detection, and categorization — no heavy ML dependencies needed.
 """
 
-import re
+import csv
+import html
 import io
+import mimetypes
+import os
+import re
+import zipfile
 from difflib import SequenceMatcher
 
 import pdfplumber
@@ -172,6 +177,148 @@ def extract_text_from_docx(file_obj) -> str:
     return "\n".join(lines)
 
 
+def _read_bytes(file_obj) -> bytes:
+    if hasattr(file_obj, "getvalue"):
+        return file_obj.getvalue()
+    current = file_obj.tell() if hasattr(file_obj, "tell") else None
+    data = file_obj.read()
+    if current is not None and hasattr(file_obj, "seek"):
+        file_obj.seek(current)
+    return data
+
+
+def extract_text_from_plain_file(file_obj) -> str:
+    """Extract text from common plain-text resume uploads."""
+    data = _read_bytes(file_obj)
+    for encoding in ("utf-8", "utf-16", "latin-1"):
+        try:
+            return data.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return data.decode("utf-8", errors="ignore")
+
+
+def extract_text_from_csv(file_obj) -> str:
+    """Flatten CSV/TSV rows into text that the resume parser can score."""
+    text = extract_text_from_plain_file(file_obj)
+    delimiter = "\t" if "\t" in text[:1000] else ","
+    rows = csv.reader(io.StringIO(text), delimiter=delimiter)
+    return "\n".join(" | ".join(cell.strip() for cell in row if cell.strip()) for row in rows)
+
+
+def extract_text_from_rtf(file_obj) -> str:
+    """Best-effort RTF text extraction without extra dependencies."""
+    text = extract_text_from_plain_file(file_obj)
+    text = re.sub(r"{\\\*[^{}]*}", " ", text)
+    text = re.sub(r"\\'[0-9a-fA-F]{2}", " ", text)
+    text = re.sub(r"\\[a-zA-Z]+\d* ?", " ", text)
+    text = text.replace("{", " ").replace("}", " ")
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def extract_text_from_html(file_obj) -> str:
+    """Extract visible-ish text from HTML resume exports."""
+    text = extract_text_from_plain_file(file_obj)
+    text = re.sub(r"(?is)<(script|style).*?>.*?</\1>", " ", text)
+    text = re.sub(r"(?s)<br\s*/?>|</p>|</div>|</li>|</tr>", "\n", text)
+    text = re.sub(r"(?s)<.*?>", " ", text)
+    return html.unescape(re.sub(r"[ \t]+", " ", text)).strip()
+
+
+def extract_text_from_odt(file_obj) -> str:
+    """Extract text from OpenDocument text files."""
+    data = _read_bytes(file_obj)
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        content = zf.read("content.xml").decode("utf-8", errors="ignore")
+    content = re.sub(r"(?s)<text:line-break\s*/>|</text:p>|</text:h>", "\n", content)
+    content = re.sub(r"(?s)<.*?>", " ", content)
+    return html.unescape(re.sub(r"[ \t]+", " ", content)).strip()
+
+
+def _extract_text_from_image_with_gemini(data: bytes, filename: str) -> str:
+    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        return ""
+
+    try:
+        import google.generativeai as genai
+    except ImportError:
+        return ""
+
+    mime_type = mimetypes.guess_type(filename)[0] or "image/png"
+    genai.configure(api_key=api_key)
+    model_name = os.environ.get("GEMINI_OCR_MODEL", "gemini-1.5-flash")
+    model = genai.GenerativeModel(model_name)
+    response = model.generate_content([
+        "Extract only the readable resume text from this image. Preserve line breaks where useful.",
+        {"mime_type": mime_type, "data": data},
+    ])
+    return (getattr(response, "text", "") or "").strip()
+
+
+def _extract_text_from_image_with_tesseract(data: bytes) -> str:
+    try:
+        from PIL import Image
+        import pytesseract
+    except ImportError as exc:
+        raise RuntimeError("Local OCR packages are unavailable.") from exc
+
+    image = Image.open(io.BytesIO(data))
+    return pytesseract.image_to_string(image).strip()
+
+
+def _extract_text_from_image_with_easyocr(data: bytes) -> str:
+    try:
+        from PIL import Image
+        import easyocr
+        import numpy as np
+    except ImportError as exc:
+        raise RuntimeError("Bundled OCR packages are unavailable.") from exc
+
+    languages = [
+        lang.strip()
+        for lang in os.environ.get("OCR_LANGUAGES", "en").split(",")
+        if lang.strip()
+    ]
+    image = Image.open(io.BytesIO(data)).convert("RGB")
+    reader = easyocr.Reader(languages or ["en"], gpu=False)
+    lines = reader.readtext(np.array(image), detail=0, paragraph=True)
+    return "\n".join(line.strip() for line in lines if line and line.strip())
+
+
+def extract_text_from_image(file_obj, filename: str) -> str:
+    """Extract text from image resumes using app-side OCR services."""
+    data = _read_bytes(file_obj)
+    errors = []
+
+    try:
+        text = _extract_text_from_image_with_gemini(data, filename)
+        if text:
+            return text
+    except Exception as exc:
+        errors.append(f"cloud OCR: {exc}")
+
+    try:
+        text = _extract_text_from_image_with_tesseract(data)
+        if text:
+            return text
+    except Exception as exc:
+        errors.append(f"local OCR: {exc}")
+
+    try:
+        text = _extract_text_from_image_with_easyocr(data)
+        if text:
+            return text
+    except Exception as exc:
+        errors.append(f"bundled OCR: {exc}")
+
+    detail = " ".join(errors) if errors else "No OCR provider is configured."
+    raise ValueError(
+        "Image resume text could not be read automatically on this deployment. "
+        "Please try uploading a clearer image, or use a PDF/DOCX/TXT version."
+    ) from RuntimeError(detail)
+
+
 def extract_text(file_obj, filename: str) -> str:
     """Route to correct extractor based on file extension."""
     ext = filename.lower().rsplit(".", 1)[-1]
@@ -179,7 +326,21 @@ def extract_text(file_obj, filename: str) -> str:
         return extract_text_from_pdf(file_obj)
     elif ext in ("docx", "doc"):
         return extract_text_from_docx(file_obj)
-    raise ValueError(f"Unsupported file type: .{ext}. Use PDF or DOCX.")
+    elif ext in ("txt", "md", "markdown", "log"):
+        return extract_text_from_plain_file(file_obj)
+    elif ext in ("csv", "tsv"):
+        return extract_text_from_csv(file_obj)
+    elif ext == "rtf":
+        return extract_text_from_rtf(file_obj)
+    elif ext in ("html", "htm"):
+        return extract_text_from_html(file_obj)
+    elif ext == "odt":
+        return extract_text_from_odt(file_obj)
+    elif ext in ("jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff"):
+        return extract_text_from_image(file_obj, filename)
+    raise ValueError(
+        f"Unsupported file type: .{ext}. Try PDF, DOCX, TXT, CSV, RTF, HTML, ODT, JPG, or PNG."
+    )
 
 
 # ── Section Splitter ──────────────────────────────────────────────────────────

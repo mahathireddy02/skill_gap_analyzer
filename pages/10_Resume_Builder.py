@@ -100,10 +100,8 @@ def _preview_classic(border, shadow):
     <div style="font-size:0.52rem;color:#222;font-family:Georgia,serif;"><b>Tools:</b> Docker, Git, AWS</div>
   </div>
   <div style="background:#f5f5f5;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div>
-      <span style="background:#eee;color:#333;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Traditional</span>
-      <span style="background:#eee;color:#333;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">ATS-Safe</span>
-      <span style="background:#eee;color:#333;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">B&W</span>
+    <div style="color:#000;font-size:0.62rem;font-weight:800;">
+      Traditional | ATS-Safe | B&W
     </div>
     <div style="font-size:0.65rem;font-weight:800;color:#000;">📄 Classic</div>
   </div>
@@ -144,10 +142,8 @@ def _preview_modern(border, shadow):
     </div>
   </div>
   <div style="background:#f0f0ff;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div>
-      <span style="background:#4f46e518;color:#4f46e5;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Popular</span>
-      <span style="background:#4f46e518;color:#4f46e5;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">2-Column</span>
-      <span style="background:#4f46e518;color:#4f46e5;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Tech</span>
+    <div style="color:#000;font-size:0.62rem;font-weight:800;">
+      Popular | Tech | Clean
     </div>
     <div style="font-size:0.65rem;font-weight:800;color:#4f46e5;">✨ Modern</div>
   </div>
@@ -184,10 +180,8 @@ def _preview_minimal(border, shadow):
     </div>
   </div>
   <div style="background:#f9fafb;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div>
-      <span style="background:#05966918;color:#059669;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Clean</span>
-      <span style="background:#05966918;color:#059669;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Minimal</span>
-      <span style="background:#05966918;color:#059669;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Green</span>
+    <div style="color:#000;font-size:0.62rem;font-weight:800;">
+      Clean | Simple | Green
     </div>
     <div style="font-size:0.65rem;font-weight:800;color:#059669;">🎯 Minimal</div>
   </div>
@@ -224,10 +218,8 @@ def _preview_creative(border, shadow):
     </div>
   </div>
   <div style="background:#f5f3ff;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div>
-      <span style="background:#7c3aed18;color:#7c3aed;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Bold</span>
-      <span style="background:#7c3aed18;color:#7c3aed;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Pills</span>
-      <span style="background:#7c3aed18;color:#7c3aed;font-size:0.58rem;font-weight:600;padding:2px 6px;border-radius:999px;margin:1px;display:inline-block;">Creative</span>
+    <div style="color:#000;font-size:0.62rem;font-weight:800;">
+      Bold | Creative | Purple
     </div>
     <div style="font-size:0.65rem;font-weight:800;color:#7c3aed;">🎨 Creative</div>
   </div>
@@ -257,7 +249,17 @@ for col, (tmpl, meta) in zip(cols, TEMPLATE_META.items()):
         if st.button(btn_label, key=f"tmpl_{tmpl}", use_container_width=True, type=btn_type):
             st.session_state.selected_template = tmpl
             st.session_state.template_chosen   = True
-            st.rerun()
+            st.switch_page("pages/11_Resume_Details.py")
+
+st.markdown("")
+if not st.session_state.template_chosen:
+    st.info("👆 Select a template above to continue filling in your resume details.")
+else:
+    st.success(f"{st.session_state.selected_template} template selected.")
+    if st.button("Continue to Resume Details", type="primary", use_container_width=True):
+        st.switch_page("pages/11_Resume_Details.py")
+
+st.stop()
 
 # ── Gate: must pick a template first ─────────────────────────────────────────
 if not st.session_state.template_chosen:
