@@ -1,6 +1,7 @@
 """Rule-based chatbot for SkillGap Analyzer — broad app topics, off-topic guard."""
 
 import re
+from difflib import SequenceMatcher
 from typing import Any
 
 SKILL_TIPS: dict[str, str] = {
@@ -96,9 +97,20 @@ INTENTS: dict[str, list[str]] = {
         "my target role", "what is my role", "which role am i targeting",
         "my goal role", "career goal", "role am i aiming",
     ],
+    "change_target_role": [
+        "change target role", "change my target role", "change role",
+        "edit target role", "edit my role", "update target role",
+        "update my role", "set target role", "set my role",
+        "where can i change target role", "where to change target role",
+        "where can i change my role", "how to change target role",
+        "how can i change my role", "how do i change my role",
+        "chnaeg taget role", "change taget role", "chnaeg target role",
+    ],
     "roadmap": [
         "my roadmap", "learning plan", "study plan", "how to prepare for",
         "what should i learn first", "learning path", "week by week",
+        "roadmap", "study schedule", "learning schedule", "plan for",
+        "prepare for", "make me a study plan",
     ],
     "career_tips": [
         "career tips", "how to get a job", "job search", "how to get hired",
@@ -112,6 +124,7 @@ INTENTS: dict[str, list[str]] = {
     "projects": [
         "project ideas", "what projects to build", "portfolio projects",
         "project suggestions", "github projects", "what to build",
+        "projects should i build", "suggest projects", "build for",
     ],
     "salary": [
         "salary", "how much does", "pay", "compensation", "package", "ctc", "lpa",
@@ -119,14 +132,25 @@ INTENTS: dict[str, list[str]] = {
     "compare_roles": [
         "difference between", " vs ", "compare", "which is better",
         "data scientist vs", "frontend vs backend", "better role",
+        "frontend or backend", "backend or frontend",
     ],
     "improve_resume": [
         "improve resume", "better resume", "resume tips", "fix my resume",
         "resume format", "resume section", "make resume stronger",
+        "improve my cv", "fix my cv", "better cv", "cv tips",
+    ],
+    "template_suggestion": [
+        "best template", "which template", "template is best", "best resume template",
+        "suggest template", "recommend template", "choose template", "template out of four",
+        "best template out of four", "which resume template should i use",
+        "whihc is the best template", "which is the best template",
+        "template for my target role", "template for target role", "template for my role",
+        "best template our of four", "best template out of 4", "template out of 4",
     ],
     "interview_prep": [
         "interview question", "prepare for interview", "technical interview",
         "hr interview", "mock interview", "coding interview", "system design",
+        "interview preparation", "prep for interview", "crack interview",
     ],
     "linkedin": [
         "linkedin", "linkedin profile", "optimize linkedin", "linkedin headline",
@@ -142,6 +166,12 @@ INTENTS: dict[str, list[str]] = {
         "how to use", "how does this app", "skillgap", "skill gap analyzer",
         "upload resume", "resume builder", "dashboard", "analytics page",
         "profile page", "sign up", "change role", "theme",
+    ],
+    "theme_change": [
+        "change to light theme", "switch to light theme", "make it light",
+        "light theme", "light mode", "change to dark theme", "switch to dark theme",
+        "make it dark", "dark theme", "dark mode", "change theme", "switch theme",
+        "lighth", "lite theme", "lite mode", "darkh", "drak theme", "drak mode",
     ],
     "help": ["help", "what can you do", "commands", "options", "topics"],
 }
@@ -198,9 +228,8 @@ LEARNING_PATTERNS = [
 ]
 
 OFF_TOPIC_REPLY = (
-    "I can only help with topics related to **SkillGap Analyzer** — skills, resumes, "
-    "skill gaps, roadmaps, interviews, career growth, and learning tech.\n\n"
-    "Please ask a question related to the app. Type **help** to see examples."
+    "I don't answer such questions that are irrelevant. "
+    "Ask me something relevant to **SkillGap Analyzer**."
 )
 
 ROLE_PROJECTS = {
@@ -214,6 +243,88 @@ ROLE_PROJECTS = {
     "data analyst": ["Sales dashboard in Power BI", "COVID data analysis", "Excel automation script"],
 }
 
+APP_GUIDES: dict[str, dict[str, Any]] = {
+    "resume_score": {
+        "keywords": [
+            "resume score", "ats", "upload resume", "upload my resume",
+            "score resume", "score my resume", "check resume", "check my resume", "parse resume",
+        ],
+        "answer": (
+            "Use **Resume Score** to upload your resume and get an ATS score.\n\n"
+            "Steps:\n"
+            "1. Open **Resume Score** from the top navigation.\n"
+            "2. Upload your PDF resume.\n"
+            "3. Review the ATS score, detected skills, and suggestions.\n"
+            "4. Use **Skill Gap** after that to compare your skills with your target role."
+        ),
+    },
+    "skill_gap": {
+        "keywords": ["skill gap", "missing skills", "analyze gap", "check gap", "find gap"],
+        "answer": (
+            "Use **Skill Gap** to compare your skills with your target role.\n\n"
+            "Steps:\n"
+            "1. Make sure your **Target Role** is saved in **Profile**.\n"
+            "2. Open **Skill Gap** from the top navigation.\n"
+            "3. Click **Analyze Gap**.\n"
+            "4. Review matched and missing skills, then open **Roadmap** for a learning plan."
+        ),
+    },
+    "roadmap": {
+        "keywords": ["roadmap", "learning plan", "study plan", "weekly plan", "week by week"],
+        "answer": (
+            "Use **Roadmap** to see your learning plan.\n\n"
+            "Steps:\n"
+            "1. Save a target role in **Profile**.\n"
+            "2. Run **Skill Gap** so the app knows your missing skills.\n"
+            "3. Open **Roadmap** from the top navigation.\n"
+            "4. Follow the weekly tasks and mark progress as you complete them."
+        ),
+    },
+    "resume_builder": {
+        "keywords": ["resume builder", "build resume", "create resume", "download resume", "make resume"],
+        "answer": (
+            "Use **Resume Builder** to create and download a resume.\n\n"
+            "Steps:\n"
+            "1. Open **Resume Builder** from the top navigation.\n"
+            "2. Fill in your personal details, education, skills, projects, and experience.\n"
+            "3. Choose a template.\n"
+            "4. Download the finished resume."
+        ),
+    },
+    "analytics": {
+        "keywords": ["analytics", "progress", "track progress", "stats", "dashboard chart"],
+        "answer": (
+            "Use **Analytics** to track your progress.\n\n"
+            "It shows your resume score, target role, skills found, missing skills, and roadmap progress."
+        ),
+    },
+    "profile": {
+        "keywords": ["profile", "edit profile", "change name", "bio", "career preferences", "preferences"],
+        "answer": (
+            "Use **Profile** to update your account and career details.\n\n"
+            "You can edit your name, target role, bio, and career preferences, then click **Save Profile**."
+        ),
+    },
+    "dashboard": {
+        "keywords": ["dashboard", "home page", "main page", "overview"],
+        "answer": (
+            "Use **Dashboard** for a quick overview of your SkillGap account.\n\n"
+            "It summarizes your target role, readiness, resume score, skills, and quick links to the main tools."
+        ),
+    },
+}
+
+PAGE_TARGETS: list[tuple[str, str, list[str]]] = [
+    ("Dashboard", "pages/3_Dashboard.py", ["dashboard", "home", "home page", "main page", "overview"]),
+    ("Resume Score", "pages/4_Resume_Score.py", ["resume score", "resume page", "ats", "resume upload", "upload resume", "score page"]),
+    ("Skill Gap", "pages/5_Skill_Gap.py", ["skill gap", "gap analyzer", "skill analyzer", "missing skills"]),
+    ("Roadmap", "pages/6_Roadmap.py", ["roadmap", "learning plan", "study plan"]),
+    ("Analytics", "pages/7_Analytics.py", ["analytics", "stats", "progress page", "progress"]),
+    ("Profile", "pages/8_Profile.py", ["profile", "account", "settings", "career preferences"]),
+    ("Chatbot", "pages/9_Chatbot.py", ["chatbot", "chat bot", "assistant"]),
+    ("Resume Builder", "pages/10_Resume_Builder.py", ["resume builder", "builder", "create resume", "make resume"]),
+]
+
 
 def normalize_query(text: str) -> str:
     q = text.strip().lower()
@@ -221,23 +332,102 @@ def normalize_query(text: str) -> str:
     return re.sub(r"\s+", " ", q).strip()
 
 
+def similar_text(a: str, b: str) -> float:
+    return SequenceMatcher(None, a.lower().strip(), b.lower().strip()).ratio()
+
+
+def fuzzy_contains(q: str, phrase: str, threshold: float = 0.82) -> bool:
+    q = q.lower().strip()
+    phrase = phrase.lower().strip()
+    if not q or not phrase:
+        return False
+    if phrase in q:
+        return True
+
+    q_words = q.split()
+    p_words = phrase.split()
+    if not q_words or not p_words:
+        return False
+
+    if len(p_words) == 1:
+        return any(similar_text(word, phrase) >= threshold for word in q_words)
+
+    window = len(p_words)
+    for i in range(0, len(q_words) - window + 1):
+        chunk = " ".join(q_words[i:i + window])
+        if similar_text(chunk, phrase) >= threshold:
+            return True
+    return False
+
+
+def fuzzy_any(q: str, phrases: list[str], threshold: float = 0.82) -> bool:
+    return any(fuzzy_contains(q, phrase, threshold) for phrase in phrases)
+
+
 def match_intent(q: str) -> str:
     for intent, patterns in INTENTS.items():
         for p in patterns:
-            if p in q:
+            if len(p) <= 3:
+                if re.search(rf"\b{re.escape(p)}\b", q):
+                    return intent
+            elif fuzzy_contains(q, p):
                 return intent
     return "unknown"
 
 
 def match_skill(q: str) -> str:
     for skill in sorted(SKILL_TIPS.keys(), key=len, reverse=True):
-        if skill in q:
+        if fuzzy_contains(q, skill):
             return skill
     for skill_key in sorted(SKILL_TIPS.keys(), key=len, reverse=True):
         words = skill_key.split()
-        if all(w in q for w in words):
+        if all(fuzzy_contains(q, w, 0.82) for w in words):
             return skill_key
     return ""
+
+
+def detect_page_navigation(q: str) -> tuple[str, str]:
+    wants_navigation = fuzzy_any(q, ["go", "open", "take", "navigate", "visit", "move", "switch", "show", "view", "page"], 0.70) or re.search(
+        r"\b(go|open|take|navigate|visit|move|switch|show|view)\b", q
+    ) is not None
+    if not wants_navigation:
+        return "", ""
+
+    for label, path, aliases in PAGE_TARGETS:
+        if fuzzy_any(q, aliases, 0.78):
+            return label, path
+    return "", ""
+
+
+def is_target_role_change_question(q: str) -> bool:
+    has_role = fuzzy_any(q, ["role", "target", "taget", "goal"], 0.75)
+    has_change_word = fuzzy_any(q, ["change", "chnaeg", "chnage", "edit", "update", "set", "choose", "select", "where", "how"], 0.75)
+    return has_role and has_change_word
+
+
+def app_guide_response(q: str) -> str:
+    for guide in APP_GUIDES.values():
+        if fuzzy_any(q, guide["keywords"]):
+            return guide["answer"]
+    return ""
+
+
+def is_app_navigation_question(q: str) -> bool:
+    return fuzzy_any(q, ["where", "how", "what is", "open", "go", "find", "use", "upload", "download", "check", "see", "view"], 0.78)
+
+
+def is_template_question(q: str) -> bool:
+    has_template = fuzzy_any(q, ["template", "templates"], 0.78)
+    wants_advice = fuzzy_any(q, ["best", "which", "suggest", "recommend", "choose", "select", "better", "role", "target"], 0.78)
+    return has_template and wants_advice
+
+
+def is_theme_question(q: str) -> bool:
+    if detect_theme_request(q):
+        return True
+    return fuzzy_any(q, ["theme", "mode", "appearance", "color"], 0.78) and fuzzy_any(
+        q, ["light", "lite", "lighth", "dark", "drak", "darkh", "change", "switch", "make", "set"], 0.75
+    )
 
 
 def _subject_is_off_topic(subject: str) -> bool:
@@ -266,11 +456,13 @@ def extract_learning_subject(q: str) -> str:
 def is_app_related(q: str) -> bool:
     if match_intent(q) not in ("unknown",):
         return True
+    if app_guide_response(q):
+        return True
     if match_skill(q):
         return True
     if extract_learning_subject(q):
         return True
-    return any(kw in q for kw in APP_RELATED_KEYWORDS)
+    return fuzzy_any(q, APP_RELATED_KEYWORDS, 0.82)
 
 
 def is_off_topic(q: str) -> bool:
@@ -307,6 +499,302 @@ def skill_response(skill: str, ctx: dict[str, Any]) -> str:
     else:
         status = f"Here's how to learn **{skill.title()}**:"
     return f"{status}\n\n{tip}"
+
+
+def skill_roadmap_response(skill: str, ctx: dict[str, Any]) -> str:
+    tip = SKILL_TIPS.get(skill, f"Start with beginner tutorials and official docs for {skill}.")
+    return (
+        f"Here's a practical study plan for **{skill.title()}**:\n\n"
+        f"1. **Days 1-2:** Learn the basics and key terms. {tip}\n"
+        "2. **Days 3-5:** Follow one hands-on tutorial and take notes in your own words.\n"
+        "3. **Days 6-10:** Build a small project that uses the skill in a real workflow.\n"
+        "4. **Days 11-14:** Add tests, polish the README, and put the project on GitHub.\n\n"
+        "After that, add the project to your resume and re-check your SkillGap progress."
+    )
+
+
+def next_step_response(skill: str, ctx: dict[str, Any]) -> str:
+    missing = ctx.get("missing") or []
+    target_role = ctx.get("target_role") or "your target role"
+    next_gap = next((s for s in missing if s.lower() != skill.lower()), "")
+    if next_gap:
+        return (
+            f"After **{skill.title()}**, move to **{next_gap.title()}** because it is still a gap "
+            f"for **{target_role}**.\n\n"
+            f"Use this order: revise **{skill.title()}** with one project, learn **{next_gap.title()}**, "
+            "then update your resume and run the Skill Gap check again."
+        )
+    return (
+        f"After **{skill.title()}**, build one portfolio project, write a clear GitHub README, "
+        "and practice explaining the project for interviews."
+    )
+
+
+def awaiting_target_role(ctx: dict[str, Any]) -> bool:
+    history = ctx.get("chat_history") or []
+    for msg in reversed(history[-4:]):
+        if msg.get("role") == "bot":
+            return "Which role should I set" in msg.get("text", "")
+    return False
+
+
+def recent_target_role_context(ctx: dict[str, Any]) -> bool:
+    history = ctx.get("chat_history") or []
+    for msg in reversed(history[-6:]):
+        text = msg.get("text", "").lower()
+        if "target role" in text or "role should i set" in text:
+            return True
+    return False
+
+
+def extract_target_role_from_query(q: str) -> str:
+    patterns = [
+        r"\b(?:change|chnage|chnaeg|set|update|make|switch)\b.*?\b(?:target role|taget role|role|goal)\b\s+(?:to|as|into)\s+(.+)$",
+        r"\b(?:target role|role|goal)\b\s+(?:to|as|into)\s+(.+)$",
+        r"\b(?:set|make|change|chnage|chnaeg|update)\s+(?:it|this)\s+(?:to|as|into)\s+(.+)$",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, q)
+        if match:
+            return clean_role_name(match.group(1))
+    return ""
+
+
+def clean_role_name(role: str) -> str:
+    role = re.sub(r"\b(in the app|in app|please|pls|for me|now)\b", "", role).strip()
+    role = re.sub(r"[^a-zA-Z\s\-+/]", " ", role)
+    role = re.sub(r"\s+", " ", role).strip(" -/")
+    if len(role) < 3:
+        return ""
+    return format_role_name(role)
+
+
+def supported_roles() -> list[str]:
+    try:
+        from utils.skill_analyzer import get_roles
+
+        return get_roles()
+    except Exception:
+        return []
+
+
+def canonical_supported_role(role: str) -> str:
+    for known in supported_roles():
+        if known.lower() == role.lower():
+            return known
+    return role
+
+
+def suggest_role_correction(role: str) -> str:
+    roles = supported_roles()
+    if not roles:
+        return ""
+    role_l = role.lower()
+    best = ""
+    best_score = 0.0
+    for known in roles:
+        known_l = known.lower()
+        score = SequenceMatcher(None, role_l, known_l).ratio()
+        if role_l in known_l or known_l in role_l:
+            score = max(score, 0.9)
+        if score > best_score:
+            best = known
+            best_score = score
+    return best if best_score >= 0.72 and best.lower() != role_l else ""
+
+
+def pending_role_confirmation(ctx: dict[str, Any]) -> tuple[str, str]:
+    history = ctx.get("chat_history") or []
+    pattern = r"Type \*\*yes\*\* to change it to \*\*(.+?)\*\*, or \*\*no\*\* to keep \*\*(.+?)\*\*"
+    for msg in reversed(history[-6:]):
+        if msg.get("role") != "bot":
+            continue
+        match = re.search(pattern, msg.get("text", ""))
+        if match:
+            return match.group(1), match.group(2)
+    return "", ""
+
+
+def save_target_role(role: str, ctx: dict[str, Any]) -> str:
+    email = ctx.get("email")
+    if not email:
+        return "I can guide you, but I could not change the target role because your session email was not available."
+
+    from utils.auth import update_user
+
+    update_user(email, {
+        "target_role": role,
+        "missing_skills": [],
+        "checked_weeks": [],
+    })
+    ctx["target_role"] = role
+    ctx["missing"] = []
+    return (
+        f"Changed your target role to **{role}** for the whole app.\n\n"
+        "I cleared the old gap/roadmap progress because it belonged to the previous role. "
+        "Open **Skill Gap** and run the analysis again to get missing skills for this new role."
+    )
+
+
+def target_role_change_response(q: str, ctx: dict[str, Any]) -> str:
+    corrected_role, original_role = pending_role_confirmation(ctx)
+    if corrected_role and q in ("yes", "y", "yeah", "yep", "correct"):
+        return save_target_role(corrected_role, ctx)
+    if corrected_role and q in ("no", "n", "nope"):
+        return save_target_role(original_role, ctx)
+
+    requested_role = extract_target_role_from_query(q)
+    if not requested_role and awaiting_target_role(ctx):
+        requested_role = clean_role_name(q)
+
+    current_role = ctx.get("target_role") or ""
+    if not requested_role:
+        current = f" Your current target role is **{current_role}**." if current_role else ""
+        return (
+            f"Sure, I can change it for the whole app.{current}\n\n"
+            "Which role should I set as your target role? For example: **Data Analyst**, "
+            "**Backend Developer**, or **UI UX Designer**."
+        )
+
+    requested_role = canonical_supported_role(requested_role)
+    correction = suggest_role_correction(requested_role)
+    if correction:
+        return (
+            f"Did you mean **{correction}**?\n\n"
+            f"Type **yes** to change it to **{correction}**, or **no** to keep **{requested_role}**."
+        )
+
+    return save_target_role(requested_role, ctx)
+
+
+def theme_change_response(q: str, ctx: dict[str, Any]) -> str:
+    requested = detect_theme_request(q)
+
+    current = (ctx.get("theme") or "dark").lower()
+    if not requested:
+        return (
+            f"Your current theme is **{current.title()}**.\n\n"
+            "Ask **change to light theme** or **change to dark theme** and I will switch it for you."
+        )
+
+    if requested == current:
+        return f"The app is already using **{requested.title()}** theme."
+
+    email = ctx.get("email")
+    if not email:
+        return "I can guide you, but I could not change the theme because your session email was not available."
+
+    from utils.auth import update_user
+
+    update_user(email, {"theme": requested})
+    ctx["theme"] = requested
+    return f"Changed the app to **{requested.title()}** theme."
+
+
+def detect_theme_request(q: str) -> str:
+    if fuzzy_any(q, ["light", "lighth", "lite", "white", "bright"], 0.72):
+        return "light"
+    if fuzzy_any(q, ["dark", "darkh", "drak", "black", "night"], 0.72):
+        return "dark"
+    return ""
+
+
+def extract_template_role(q: str, ctx: dict[str, Any]) -> str:
+    saved_role = (ctx.get("target_role") or "").strip()
+    role_patterns = [
+        r"\bfor (?:a |an |the )?(.+?)(?: role| profile| resume)?$",
+        r"\bas (?:a |an )?(.+?)(?: role| profile)?$",
+    ]
+    for pattern in role_patterns:
+        match = re.search(pattern, q)
+        if not match:
+            continue
+        role = match.group(1).strip()
+        role = re.sub(r"\b(in the app|in app|out of four|out of 4|our of four)\b", "", role).strip()
+        if role in {"my target", "my target role", "target role", "my role", "role"}:
+            return saved_role
+        if role and not any(word in role for word in ["template", "templates"]):
+            return format_role_name(role)
+    return saved_role
+
+
+def format_role_name(role: str) -> str:
+    formatted = role.title()
+    replacements = {
+        "Ui": "UI",
+        "Ux": "UX",
+        "Ml": "ML",
+        "Ai": "AI",
+        "Hr": "HR",
+        "Qa": "QA",
+    }
+    for old, new in replacements.items():
+        formatted = re.sub(rf"\b{old}\b", new, formatted)
+    return formatted
+
+
+def correct_common_role_words(role: str) -> str:
+    terms = [
+        "doctor", "nurse", "medical", "teacher", "professor", "lawyer", "legal",
+        "government", "bank", "admin", "marketing", "designer", "developer",
+        "engineer", "analyst", "scientist", "frontend", "backend", "data",
+        "software", "manager", "accountant", "finance", "research",
+    ]
+    corrected = []
+    for word in role.split():
+        replacement = ""
+        for term in terms:
+            if similar_text(word, term) >= 0.80:
+                replacement = term
+                break
+        corrected.append(replacement or word)
+    return format_role_name(" ".join(corrected))
+
+
+def template_choice_for_role(role: str) -> tuple[str, str]:
+    r = role.lower()
+    if fuzzy_any(r, ["designer", "ui", "ux", "creative", "graphics", "graphic", "artist", "content", "marketing"], 0.78):
+        return "Creative", "that role benefits from a resume that looks more visual and distinctive"
+    if fuzzy_any(r, ["data analyst", "analyst", "data scientist", "business analyst", "finance", "accountant", "research"], 0.78):
+        return "Minimal", "it keeps data, tools, metrics, and achievements easy to scan"
+    if fuzzy_any(r, ["developer", "engineer", "full stack", "frontend", "backend", "devops", "ml engineer", "software", "programmer"], 0.78):
+        return "Modern", "it looks professional for tech roles and gives enough structure for skills, projects, and experience"
+    if fuzzy_any(r, ["doctor", "nurse", "medical", "teacher", "professor", "lawyer", "legal", "government", "bank", "hr", "admin"], 0.78):
+        return "Classic", "it is formal, simple, and safest for conservative or ATS-heavy applications"
+    return "Modern", "it is the safest all-round choice when you want a professional resume with a little visual polish"
+
+
+def template_suggestion_response(q: str, ctx: dict[str, Any]) -> str:
+    requested_role = extract_template_role(q, ctx)
+    if requested_role:
+        requested_role = correct_common_role_words(requested_role)
+
+    if any(word in q for word in ["ats", "traditional", "simple company", "government"]):
+        pick = "**Classic** is the best template for that."
+        reason = "It is black-and-white, traditional, and the safest option for ATS-heavy applications."
+    elif requested_role:
+        template, role_reason = template_choice_for_role(requested_role)
+        pick = f"For **{requested_role}**, **{template}** is the best template."
+        reason = role_reason.capitalize().replace("ats", "ATS") + "."
+    elif any(word in q for word in ["creative", "design", "designer", "bold", "stand out"]):
+        pick = "**Creative** is the best template for that."
+        reason = "It has a bold purple header and stronger visual styling, so it works better for creative or design-leaning roles."
+    elif any(word in q for word in ["minimal", "clean", "simple", "elegant"]):
+        pick = "**Minimal** is the best template for that."
+        reason = "It uses whitespace and light green accents, so it feels clean without looking plain."
+    else:
+        pick = "**Modern** is the best template."
+        reason = "It is the best all-round option in this app: professional, clean, and especially good for tech roles."
+
+    return (
+        f"{pick} {reason}\n\n"
+        "Quick guide:\n"
+        "1. **Modern** — best overall for most students, freshers, developers, and tech roles.\n"
+        "2. **Classic** — best when you want maximum ATS safety and a formal look.\n"
+        "3. **Minimal** — best for a clean, elegant resume with less visual weight.\n"
+        "4. **Creative** — best when you want to stand out, especially for design or creative profiles.\n\n"
+        "If you are unsure, use **Modern**."
+    )
 
 
 def generic_app_response(q: str, ctx: dict[str, Any]) -> str:
@@ -349,6 +837,16 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
     target_role = ctx.get("target_role") or ""
     resume_score = ctx.get("resume_score", 0)
 
+    role_change_followup = extract_target_role_from_query(q) and recent_target_role_context(ctx)
+    role_confirmation_reply = pending_role_confirmation(ctx)[0] and q in (
+        "yes", "y", "yeah", "yep", "correct", "no", "n", "nope"
+    )
+    if intent == "change_target_role" or is_target_role_change_question(q) or awaiting_target_role(ctx) or role_change_followup or role_confirmation_reply:
+        return target_role_change_response(q, ctx)
+
+    if intent == "theme_change" or is_theme_question(q):
+        return theme_change_response(q, ctx)
+
     if intent in ("greeting",) or q in ("hi", "hello", "hey"):
         role_line = f"Your target role is **{target_role}**." if target_role else "Set a target role on **Skill Gap** when you're ready."
         return (
@@ -375,6 +873,13 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
             "Off-topic questions (weather, jokes, general trivia) aren't supported — "
             "please keep questions related to careers and this app."
         )
+
+    if intent == "template_suggestion" or is_template_question(q):
+        return template_suggestion_response(q, ctx)
+
+    guide = app_guide_response(q)
+    if guide and is_app_navigation_question(q):
+        return guide
 
     if intent == "my_skills":
         if not user_skills:
@@ -415,6 +920,8 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
         )
 
     if intent == "roadmap":
+        if skill:
+            return skill_roadmap_response(skill, ctx)
         if not target_role:
             return "Set a target role on **Skill Gap**, then open **Roadmap**."
         if not missing:
@@ -427,13 +934,22 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
         extra = f"\n\n+{len(missing) - 3} more on **Roadmap**." if len(missing) > 3 else ""
         return f"Top priorities for **{target_role}**:\n\n{lines}{extra}"
 
-    if skill:
-        return skill_response(skill, ctx)
-
     learn_subject = extract_learning_subject(q)
     if learn_subject:
         sk = match_skill(learn_subject) or learn_subject
         return skill_response(sk.lower(), ctx)
+
+    if intent == "what_next":
+        if skill:
+            return next_step_response(skill, ctx)
+        return generic_app_response(q, ctx)
+
+    if skill:
+        return skill_response(skill, ctx)
+
+    guide = app_guide_response(q)
+    if guide:
+        return guide
 
     if is_off_topic(q):
         return OFF_TOPIC_REPLY
@@ -520,9 +1036,6 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
             "• DevOps — CKA, AWS Solutions Architect (after basics)\n\n"
             "Projects often matter more than certs for freshers."
         )
-
-    if intent == "what_next":
-        return generic_app_response(q, ctx)
 
     if intent == "app_help":
         return (

@@ -3,7 +3,7 @@ import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.auth import require_login, get_user
 from components.navbar import show_navbar
-from utils.chatbot_engine import get_response
+from utils.chatbot_engine import detect_page_navigation, get_response, normalize_query
 
 st.set_page_config(page_title="Chatbot · SkillGap", page_icon="🤖", layout="wide", initial_sidebar_state="collapsed")
 require_login()
@@ -34,18 +34,35 @@ user_skills  = db_user.get("skills", [])
 missing      = db_user.get("missing_skills", [])
 target_role  = db_user.get("target_role", "")
 resume_score = db_user.get("resume_score", 0)
+theme        = db_user.get("theme", "dark")
 name         = st.session_state.user.get("name", "there").split()[0]
 
 CHAT_CTX = {
+    "email": st.session_state.email,
     "name": name,
     "user_skills": user_skills,
     "missing": missing,
     "target_role": target_role,
     "resume_score": resume_score,
+    "theme": theme,
 }
 
 def reply(text: str) -> str:
+    CHAT_CTX["chat_history"] = st.session_state.get("chat_history", [])[-10:]
     return get_response(text, CHAT_CTX)
+
+def handle_chat_submit(text: str):
+    cleaned = text.strip()
+    st.session_state.chat_history.append({"role": "user", "text": cleaned})
+    page_label, page_path = detect_page_navigation(normalize_query(cleaned))
+    if page_path:
+        if page_label == "Chatbot":
+            st.session_state.chat_history.append({"role": "bot", "text": "You are already on **Chatbot**."})
+            st.rerun()
+        st.session_state.chat_history.append({"role": "bot", "text": f"Opening **{page_label}**..."})
+        st.switch_page(page_path)
+    st.session_state.chat_history.append({"role": "bot", "text": reply(cleaned)})
+    st.rerun()
 
 st.markdown("## 🤖 SkillGap Chatbot")
 st.caption("Career, skills, resumes, roadmaps, interviews, and learning — ask anything related to the app.")
@@ -98,9 +115,7 @@ with st.form("chat_form", clear_on_submit=True):
         sent = st.form_submit_button("Send", use_container_width=True, type="primary")
 
 if sent and user_input.strip():
-    st.session_state.chat_history.append({"role": "user", "text": user_input.strip()})
-    st.session_state.chat_history.append({"role": "bot", "text": reply(user_input.strip())})
-    st.rerun()
+    handle_chat_submit(user_input)
 
 if len(st.session_state.chat_history) > 3:
     if st.button("🗑️ Clear Chat"):
