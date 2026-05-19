@@ -4,6 +4,8 @@ import re
 from difflib import SequenceMatcher
 from typing import Any
 
+from utils.readiness import calculate_readiness
+
 SKILL_TIPS: dict[str, str] = {
     "python": "Start with python.org tutorial. Build small scripts, then move to Flask/FastAPI. Practice on HackerRank.",
     "javascript": "Use javascript.info — best free resource. Build DOM projects, then learn ES6+, then React.",
@@ -890,6 +892,8 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
     if intent == "missing_skills":
         if not target_role:
             return "Select a target role on **Skill Gap** first."
+        if not ctx.get("gap_analyzed"):
+            return "Run **Skill Gap** first so I can compare your skills with the target role."
         if not missing:
             return f"You match all core skills for **{target_role}**."
         return (
@@ -912,11 +916,16 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
     if intent == "target_role":
         if not target_role:
             return "No target role set. Choose one on **Skill Gap**."
-        total = len(user_skills) + len(missing)
-        pct = int(len(user_skills) / total * 100) if total else 0
+        if not ctx.get("gap_analyzed"):
+            return (
+                f"Target role: **{target_role}**. Readiness is not calculated yet. "
+                "Open **Skill Gap** and run the analysis."
+            )
+        pct = calculate_readiness(user_skills, missing, True, ctx.get("gap_result", {}))
+        matched_count = len((ctx.get("gap_result") or {}).get("matched_skills") or user_skills)
         return (
             f"Target role: **{target_role}** — **{pct}%** skill match "
-            f"({len(user_skills)} matched, {len(missing)} missing)."
+            f"({matched_count} matched, {len(missing)} missing)."
         )
 
     if intent == "roadmap":
@@ -924,6 +933,8 @@ def get_response(user_input: str, ctx: dict[str, Any]) -> str:
             return skill_roadmap_response(skill, ctx)
         if not target_role:
             return "Set a target role on **Skill Gap**, then open **Roadmap**."
+        if not ctx.get("gap_analyzed"):
+            return "Run **Skill Gap** first, then I can build a roadmap from the missing skills."
         if not missing:
             return f"You're well covered for **{target_role}**. Use **Roadmap** for advanced topics."
         top = missing[:3]

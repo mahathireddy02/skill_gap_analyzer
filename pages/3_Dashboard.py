@@ -1,7 +1,9 @@
 import streamlit as st
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from utils.auth import require_login, get_user
+from utils.auth import require_login, get_user, update_user
+from utils.readiness import calculate_readiness, has_gap_analysis
+from utils.skill_analyzer import analyze_skill_gap
 from components.navbar import show_navbar
 
 st.set_page_config(page_title="Dashboard · SkillGap", page_icon="🏠", layout="wide", initial_sidebar_state="collapsed")
@@ -66,8 +68,26 @@ resume_score = db_user.get("resume_score", 0)
 skills       = db_user.get("skills", [])
 missing      = db_user.get("missing_skills", [])
 target_role  = db_user.get("target_role", "Not set")
-total        = len(skills) + len(missing)
-readiness    = int(len(skills) / total * 100) if total else 0
+
+if skills and target_role != "Not set" and not has_gap_analysis(db_user):
+    try:
+        gap_result = analyze_skill_gap(skills, target_role)
+        missing = gap_result.get("missing_skills", [])
+        db_user.update({
+            "missing_skills": missing,
+            "gap_result": gap_result,
+            "gap_analyzed": True,
+        })
+        update_user(email, {
+            "missing_skills": missing,
+            "gap_result": gap_result,
+            "gap_analyzed": True,
+        })
+    except ValueError:
+        pass
+
+readiness    = calculate_readiness(skills, missing, has_gap_analysis(db_user), db_user.get("gap_result", {}))
+readiness_note = "" if has_gap_analysis(db_user) else "Run Skill Gap Analyzer to calculate readiness"
 
 # ── Welcome banner ────────────────────────────────────────────────────────────
 st.markdown(f"""
@@ -82,6 +102,7 @@ st.markdown(f"""
     <div style="font-size:0.9rem;opacity:0.8;">
       🎯 Target Role: <strong>{target_role}</strong> &nbsp;·&nbsp; 📈 Readiness: <strong>{readiness}%</strong>
     </div>
+    <div style="font-size:0.78rem;opacity:0.68;margin-top:0.25rem;">{readiness_note}</div>
     <div style="margin-top:0.9rem;background:rgba(255,255,255,0.15);border-radius:999px;height:6px;width:260px;overflow:hidden;">
       <div style="width:{readiness}%;height:100%;background:rgba(255,255,255,0.9);border-radius:999px;"></div>
     </div>

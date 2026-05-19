@@ -11,11 +11,11 @@ import io
 import mimetypes
 import os
 import re
+import shutil
+import subprocess
+import tempfile
 import zipfile
 from difflib import SequenceMatcher
-
-import pdfplumber
-from docx import Document
 
 # ── Skill Alias Normalization Map ─────────────────────────────────────────────
 SKILL_ALIASES = {
@@ -149,6 +149,11 @@ SECTION_PATTERNS = {
 
 def extract_text_from_pdf(file_obj) -> str:
     """Extract all text from a PDF file object using pdfplumber."""
+    try:
+        import pdfplumber
+    except ImportError as exc:
+        raise RuntimeError("PDF parsing requires pdfplumber. Run: pip install -r requirements.txt") from exc
+
     lines = []
     with pdfplumber.open(file_obj) as pdf:
         for page in pdf.pages:
@@ -166,6 +171,11 @@ def extract_text_from_pdf(file_obj) -> str:
 
 def extract_text_from_docx(file_obj) -> str:
     """Extract all text from a DOCX file object."""
+    try:
+        from docx import Document
+    except ImportError as exc:
+        raise RuntimeError("DOCX parsing requires python-docx. Run: pip install -r requirements.txt") from exc
+
     doc = Document(file_obj)
     lines = []
     for para in doc.paragraphs:
@@ -267,6 +277,50 @@ def _extract_text_from_image_with_tesseract(data: bytes) -> str:
     return pytesseract.image_to_string(image).strip()
 
 
+def _extract_text_from_image_with_tesseract_cli(data: bytes) -> str:
+    tesseract_cmd = shutil.which("tesseract")
+    if not tesseract_cmd:
+        raise RuntimeError("Tesseract executable is not installed or not on PATH.")
+
+    try:
+        from PIL import Image
+    except ImportError as exc:
+        raise RuntimeError("Pillow is unavailable for image OCR.") from exc
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        image_path = os.path.join(tmpdir, "resume.png")
+        image = Image.open(io.BytesIO(data)).convert("RGB")
+        image.save(image_path)
+
+        result = subprocess.run(
+            [tesseract_cmd, image_path, "stdout", "--psm", "6"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(result.stderr.strip() or "Tesseract OCR failed.")
+        return result.stdout.strip()
+
+
+def _extract_text_from_image_with_rapidocr(data: bytes) -> str:
+    try:
+        from rapidocr_onnxruntime import RapidOCR
+    except ImportError as exc:
+        raise RuntimeError("RapidOCR is unavailable.") from exc
+
+    ocr = RapidOCR()
+    result, _ = ocr(data)
+    if not result:
+        return ""
+    return "\n".join(
+        item[1].strip()
+        for item in result
+        if len(item) >= 2 and isinstance(item[1], str) and item[1].strip()
+    )
+
+
 def _extract_text_from_image_with_easyocr(data: bytes) -> str:
     try:
         from PIL import Image
@@ -306,6 +360,20 @@ def extract_text_from_image(file_obj, filename: str) -> str:
         errors.append(f"local OCR: {exc}")
 
     try:
+        text = _extract_text_from_image_with_tesseract_cli(data)
+        if text:
+            return text
+    except Exception as exc:
+        errors.append(f"tesseract CLI: {exc}")
+
+    try:
+        text = _extract_text_from_image_with_rapidocr(data)
+        if text:
+            return text
+    except Exception as exc:
+        errors.append(f"rapidocr: {exc}")
+
+    try:
         text = _extract_text_from_image_with_easyocr(data)
         if text:
             return text
@@ -315,7 +383,9 @@ def extract_text_from_image(file_obj, filename: str) -> str:
     detail = " ".join(errors) if errors else "No OCR provider is configured."
     raise ValueError(
         "Image resume text could not be read automatically on this deployment. "
-        "Please try uploading a clearer image, or use a PDF/DOCX/TXT version."
+        "Install an OCR option from requirements.txt or Tesseract, set GEMINI_API_KEY, "
+        "or upload a PDF/DOCX/TXT version. "
+        f"Details: {detail}"
     ) from RuntimeError(detail)
 
 

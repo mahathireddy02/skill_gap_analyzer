@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from utils.auth import require_login, get_user
 from components.navbar import show_navbar
 from utils.chatbot_engine import detect_page_navigation, get_response, normalize_query
+from utils.readiness import has_gap_analysis
 
 st.set_page_config(page_title="Chatbot · SkillGap", page_icon="🤖", layout="wide", initial_sidebar_state="collapsed")
 require_login()
@@ -35,6 +36,7 @@ missing      = db_user.get("missing_skills", [])
 target_role  = db_user.get("target_role", "")
 resume_score = db_user.get("resume_score", 0)
 theme        = db_user.get("theme", "dark")
+gap_analyzed = has_gap_analysis(db_user)
 name         = st.session_state.user.get("name", "there").split()[0]
 
 CHAT_CTX = {
@@ -42,6 +44,8 @@ CHAT_CTX = {
     "name": name,
     "user_skills": user_skills,
     "missing": missing,
+    "gap_result": db_user.get("gap_result", {}),
+    "gap_analyzed": gap_analyzed,
     "target_role": target_role,
     "resume_score": resume_score,
     "theme": theme,
@@ -72,8 +76,10 @@ if "chat_history" not in st.session_state:
     intro = f"Hey {name}! I'm your SkillGap assistant.\n\n"
     if target_role:
         intro += f"Target role: **{target_role}**. "
-    if user_skills:
+    if user_skills and gap_analyzed:
         intro += f"**{len(user_skills)}** skills detected, **{len(missing)}** gaps.\n\n"
+    elif user_skills:
+        intro += f"**{len(user_skills)}** skills detected. Run **Skill Gap** to calculate readiness.\n\n"
     else:
         intro += "Upload your resume on **Resume Score** to get started.\n\n"
     intro += "Ask about skills, learning paths, interviews, or type **help**."

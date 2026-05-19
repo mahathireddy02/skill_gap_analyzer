@@ -73,6 +73,8 @@ with col1:
                             "target_role":    target_role,
                             "missing_skills": result["missing_skills"],
                             "skills":         skills_to_use,
+                            "gap_result":     result,
+                            "gap_analyzed":   True,
                         })
                         st.session_state["gap_result"] = result
                     except ValueError as e:
@@ -87,6 +89,8 @@ with col1:
                     update_user(st.session_state.email, {
                         "target_role":    target_role,
                         "missing_skills": result["missing_skills"],
+                        "gap_result":     result,
+                        "gap_analyzed":   True,
                     })
                     st.session_state["gap_result"] = result
                 except ValueError as e:

@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from utils.auth import require_login, get_user
+from utils.auth import require_login, get_user, update_user
+from utils.readiness import calculate_readiness, has_gap_analysis
+from utils.skill_analyzer import analyze_skill_gap
 from components.navbar import show_navbar
 
 st.set_page_config(page_title="Analytics · SkillGap", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
@@ -30,8 +32,25 @@ skills       = db_user.get("skills", [])
 missing      = db_user.get("missing_skills", [])
 resume_score = db_user.get("resume_score", 0)
 role         = db_user.get("target_role", "N/A")
-total        = len(skills) + len(missing)
-readiness    = int(len(skills) / total * 100) if total else 0
+
+if skills and role != "N/A" and not has_gap_analysis(db_user):
+    try:
+        gap_result = analyze_skill_gap(skills, role)
+        missing = gap_result.get("missing_skills", [])
+        db_user.update({
+            "missing_skills": missing,
+            "gap_result": gap_result,
+            "gap_analyzed": True,
+        })
+        update_user(st.session_state.email, {
+            "missing_skills": missing,
+            "gap_result": gap_result,
+            "gap_analyzed": True,
+        })
+    except ValueError:
+        pass
+
+readiness    = calculate_readiness(skills, missing, has_gap_analysis(db_user), db_user.get("gap_result", {}))
 
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("📄 Resume Score",   f"{resume_score}%")
@@ -43,11 +62,11 @@ st.markdown("---")
 cl, cr = st.columns(2)
 with cl:
     st.markdown("### 🧠 Skill Match")
-    if skills or missing:
+    if has_gap_analysis(db_user):
         df = pd.DataFrame({"Category": ["✅ Matched", "❌ Missing"], "Count": [len(skills), len(missing)]}).set_index("Category")
         st.bar_chart(df)
     else:
-        st.info("No skill data yet.")
+        st.info("Run Skill Gap Analyzer to calculate matched and missing role skills.")
 
 with cr:
     st.markdown("### 📄 Resume Score")
@@ -65,6 +84,7 @@ st.line_chart(pd.DataFrame({"Resume Score": scores}, index=weeks))
 
 if role != "N/A":
     st.markdown("---")
-    st.info(f"🎯 Target Role: **{role}** | Readiness: **{readiness}%**")
+    status = f"**{readiness}%**" if has_gap_analysis(db_user) else "**Not calculated yet**"
+    st.info(f"🎯 Target Role: **{role}** | Readiness: {status}")
 
 st.markdown("</div>", unsafe_allow_html=True)
