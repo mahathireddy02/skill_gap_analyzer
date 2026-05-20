@@ -105,11 +105,6 @@ if "resume_uploader_reset" not in st.session_state:
 
 uploaded = st.file_uploader(
     "📁 Upload Resume",
-    type=[
-        "pdf", "docx", "doc", "txt", "md", "markdown", "csv", "tsv",
-        "rtf", "html", "htm", "odt", "jpg", "jpeg", "png", "webp",
-        "bmp", "tif", "tiff",
-    ],
     help="Upload your resume in any common file format.",
     key=f"resume_upload_{st.session_state['resume_uploader_reset']}",
 )
