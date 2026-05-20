@@ -34,7 +34,6 @@ html,body,.stApp{margin:0!important;padding:0!important;background:""" + bg_colo
 .block-container{padding:1.5rem 2.5rem 2rem!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
-<<<<<<< HEAD
 div[data-testid="stButton"] button[kind="secondary"]{
     background-color: """ + bg_color + """!important;
     color: """ + text_color + """!important;
@@ -67,38 +66,28 @@ div[data-testid="stAlert"] {
 h1, h2, h3, h4, p, label, .stMarkdown {color: """ + text_color + """!important;}
 small, .stCaptionContainer p {color: """ + secondary_text + """!important;}
 hr {border-color: """ + border_color + """!important; opacity: 0.6;}
-h3 {
-    border-bottom: 1px solid """ + border_color + """;
-    padding-bottom: 8px;
-    margin-top: 25px !important;
-}
-/* Align trash icon and buttons better with input fields */
-div[data-testid="column"] {display: flex; flex-direction: column; justify-content: flex-end;}
-div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"] {align-items: flex-end !important;}
-=======
 .resume-shell{max-width:980px;margin:0 auto;padding:0 1rem 1.5rem;}
-.template-pill{background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.25);border-radius:10px;padding:0.55rem 0.9rem;font-size:0.88rem;margin:0.65rem 0 0.35rem;}
+.template-pill{background:""" + info_bg + """;border:1px solid """ + info_border + """;border-radius:10px;padding:0.55rem 0.9rem;font-size:0.88rem;margin:0.65rem 0 0.35rem;color:""" + text_color + """;}
 .wizard-wrap{display:flex;align-items:center;gap:0.65rem;margin:0.9rem 0 0.45rem;}
 .wizard-step{flex:1;height:6px;border-radius:999px;background:rgba(148,163,184,0.22);}
 .wizard-done{background:linear-gradient(90deg,#7c3aed,#4f46e5);}
 .wizard-active{background:linear-gradient(90deg,#a78bfa,#818cf8);}
-.wizard-label{font-size:0.8rem;color:#6b7280;font-weight:800;white-space:nowrap;}
-.wizard-names{display:grid;grid-template-columns:repeat(5,1fr);gap:0.55rem;margin-bottom:1.1rem;color:#6b7280;font-size:0.74rem;font-weight:800;text-align:center;}
+.wizard-label{font-size:0.8rem;color:""" + secondary_text + """;font-weight:800;white-space:nowrap;}
+.wizard-names{display:grid;grid-template-columns:repeat(5,1fr);gap:0.55rem;margin-bottom:1.1rem;color:""" + secondary_text + """;font-size:0.74rem;font-weight:800;text-align:center;}
 .wizard-current{color:#7c3aed;}
-.step-card{border:1px solid rgba(148,163,184,0.18);border-radius:14px;background:rgba(255,255,255,0.035);padding:1.2rem;margin-bottom:1rem;}
-.step-title{font-size:1.05rem;font-weight:900;margin-bottom:0.15rem;}
-.step-note{font-size:0.84rem;color:#6b7280;margin-bottom:0.9rem;}
+.step-card{border:1px solid """ + border_color + """;border-radius:14px;background:""" + (info_bg if theme == "light" else "rgba(255,255,255,0.035)") + """;padding:1.2rem;margin-bottom:1rem;}
+.step-title{font-size:1.05rem;font-weight:900;margin-bottom:0.15rem;color:""" + text_color + """;}
+.step-note{font-size:0.84rem;color:""" + secondary_text + """;margin-bottom:0.9rem;}
 .summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;margin-bottom:1rem;}
-.summary-pill{border:1px solid rgba(148,163,184,0.18);border-radius:10px;padding:0.65rem;background:rgba(124,58,237,0.045);}
-.summary-label{font-size:0.7rem;font-weight:900;color:#6b7280;text-transform:uppercase;}
-.summary-value{font-size:0.92rem;font-weight:800;margin-top:0.2rem;}
+.summary-pill{border:1px solid """ + border_color + """;border-radius:10px;padding:0.65rem;background:""" + info_bg + """;}
+.summary-label{font-size:0.7rem;font-weight:900;color:""" + secondary_text + """;text-transform:uppercase;}
+.summary-value{font-size:0.92rem;font-weight:800;margin-top:0.2rem;color:""" + text_color + """;}
 div[data-testid="column"] {display:flex;flex-direction:column;justify-content:flex-end;}
 div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"] {align-items:flex-end!important;}
 @media (max-width: 760px){
     .wizard-names{display:none;}
     .summary-strip{grid-template-columns:1fr 1fr;}
 }
->>>>>>> 1a72780 (Resume builder step wise)
 </style>
 """, unsafe_allow_html=True)
 
@@ -118,12 +107,6 @@ if not selected_template:
         st.switch_page("pages/10_Resume_Builder.py")
     st.stop()
 
-<<<<<<< HEAD
-if "num_skills" not in st.session_state:
-    st.session_state.num_skills = 3
-=======
-db_user = get_user(st.session_state.email) or {}
-
 st.session_state.setdefault("rb_step", 1)
 st.session_state.setdefault("rb_num_skills", 3)
 st.session_state.setdefault("rb_num_edu", 1)
@@ -131,7 +114,6 @@ st.session_state.setdefault("rb_num_exp", 0)
 st.session_state.setdefault("rb_num_proj", 2)
 st.session_state.setdefault("rb_name", db_user.get("name", ""))
 st.session_state.setdefault("rb_email", st.session_state.email)
-
 
 def collect_skills():
     skills_data = {}
@@ -246,7 +228,6 @@ def render_summary(resume_data):
 
 
 st.markdown('<div class="resume-shell">', unsafe_allow_html=True)
->>>>>>> 1a72780 (Resume builder step wise)
 
 meta = TEMPLATE_META.get(selected_template, {"icon": "📝"})
 top_left, top_right = st.columns([3, 1])
@@ -258,13 +239,7 @@ with top_right:
         st.switch_page("pages/10_Resume_Builder.py")
 
 st.markdown(
-<<<<<<< HEAD
-    f'<div style="background:{info_bg};border:1px solid {info_border};'
-    f'border-radius:10px;padding:0.5rem 1rem;font-size:0.88rem;margin:0.6rem 0 0.2rem;color:{text_color};">'
-    f'{meta["icon"]} Using <strong style="color:#7c3aed;">{selected_template}</strong> template</div>',
-=======
-    f'<div class="template-pill">{meta["icon"]} Using <strong>{selected_template}</strong> template</div>',
->>>>>>> 1a72780 (Resume builder step wise)
+    f'<div class="template-pill">{meta["icon"]} Using <strong style="color:#7c3aed;">{selected_template}</strong> template</div>',
     unsafe_allow_html=True,
 )
 
