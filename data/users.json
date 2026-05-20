@@ -962,5 +962,18 @@
       "role_description": "Builds both frontend and backend of web applications."
     },
     "gap_analyzed": true
+  },
+  "madhuriireddy1@gmail.com": {
+    "name": "Madhuri Reddy",
+    "password": "8a9bcf1e51e812d0af8465a8dbcc9f741064bf0af3b3d08e6b0246437c19f7fb",
+    "skills": [],
+    "missing_skills": [],
+    "resume_score": 0,
+    "target_role": "Full Stack Developer",
+    "skill_level": "Beginner",
+    "time_availability": "5\u201310 hrs",
+    "experience_type": "Student",
+    "security_q": "What was the name of your first school?",
+    "security_a": "7fff36d2db80e6d7e7593a9f7b133c8e7415c8c761c2befe0a19e01d6cc5d9ae"
   }
 }
