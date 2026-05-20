@@ -15,7 +15,7 @@ st.markdown("""
 [data-testid="stSidebar"],[data-testid="collapsedControl"],section[data-testid="stSidebar"],
 .stDeployButton,[class*="viewerBadge"],[class*="toolbar"]
 {display:none!important;visibility:hidden!important;}
-html,body,.stApp{margin:0!important;padding:0!important;background:#0a0e17!important;}
+html,body,.stApp{margin:0!important;padding:0!important;}
 .block-container{padding:1rem 2rem!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
@@ -29,6 +29,30 @@ show_navbar("Roadmap")
 
 db_user = get_user(st.session_state.email)
 role    = db_user.get("target_role", "").strip()
+theme   = db_user.get("theme", "dark")
+
+if theme == "light":
+    st.markdown("""
+    <style>
+    html,body,.stApp{background:#f8fafc!important;color:#172033!important;}
+    .page-body{background:#f8fafc!important;color:#172033!important;}
+    .page-body h1,.page-body h2,.page-body h3,.page-body p,.page-body span,
+    .page-body div,.page-body label,.page-body li,.page-body strong{color:#172033!important;}
+    div[data-testid="stMetric"]{background:#ffffff!important;border:1px solid #dbe3ef!important;border-radius:12px!important;}
+    div[data-testid="stMetric"] label,div[data-testid="stMetric"] p{color:#64748b!important;}
+    div[data-testid="stMetric"] div{color:#172033!important;}
+    div[data-testid="stExpander"]{background-color:#ffffff!important;border:1px solid #dbe3ef!important;border-radius:12px!important;}
+    div[data-testid="stExpander"] summary{background-color:#ffffff!important;color:#172033!important;border-radius:12px!important;}
+    div[data-testid="stExpander"] summary:hover{background-color:#f1f5f9!important;}
+    div[data-testid="stExpander"] summary p,div[data-testid="stExpander"] summary span,div[data-testid="stExpander"] summary svg{color:#172033!important;fill:#172033!important;}
+    div[data-testid="stCheckbox"] label,div[data-testid="stCheckbox"] span{color:#172033!important;}
+    div[data-testid="stCheckbox"] div[role="checkbox"]{background-color:#ffffff!important;border:1px solid #cbd5e1!important;}
+    div[data-testid="stCheckbox"] div[role="checkbox"][aria-checked="true"]{background-color:#7c3aed!important;border-color:#7c3aed!important;}
+    div[data-testid="stCaptionContainer"] p{color:#5b6472!important;}
+    div[data-testid="stAlert"]{background:#ffffff!important;color:#172033!important;border-color:#dbe3ef!important;}
+    div[data-testid="stAlert"] p{color:#172033!important;}
+    </style>
+    """, unsafe_allow_html=True)
 
 # Always use freshest missing_skills tied to the current role
 # Priority: live gap_result in session > saved gap_result in DB > saved missing_skills
@@ -82,8 +106,10 @@ st.caption(f"Target Role: **{role}** · {len(missing)} skills to learn")
 # ── Settings Form ─────────────────────────────────────────────────────────────
 with st.expander("⚙️ Customize Roadmap", expanded="roadmap_result" not in st.session_state):
     st.markdown(
-        f'<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);'
-        f'border-radius:8px;padding:0.4rem 0.9rem;font-size:0.82rem;color:#a78bfa;margin-bottom:0.8rem;">'
+        f'<div style="background:rgba(124,58,237,{"0.06" if theme=="light" else "0.1"});'
+        f'border:1px solid rgba(124,58,237,0.25);'
+        f'border-radius:8px;padding:0.4rem 0.9rem;font-size:0.82rem;'
+        f'color:{"#4f46e5" if theme=="light" else "#a78bfa"};margin-bottom:0.8rem;">'
         f'ℹ️ Pre-filled from your profile — <strong>{_saved_level}</strong>, '
         f'<strong>{_saved_time}</strong>/week, <strong>{_saved_exp}</strong>. Adjust if needed.</div>',
         unsafe_allow_html=True,
@@ -201,6 +227,27 @@ train_pos     = (done_weeks / total_weeks) if total_weeks else 0
 n_stations    = len(stations)
 # Each station needs ~200px min; clamp between 900 and 6000
 svg_width     = max(900, n_stations * 200)
+map_theme_css = """
+  body{background:#f8fafc;color:#172033;}
+  #map-wrap::-webkit-scrollbar-track{background:#e5e7eb;}
+  #map-wrap::-webkit-scrollbar-thumb{background:#7c3aed;}
+  .s-label{fill:#172033;}
+  .s-weeks{fill:#64748b;}
+  .track-bg{stroke:#cbd5e1;}
+  .track-rail{stroke:rgba(15,23,42,0.14);}
+  .station-upcoming .s-circle{fill:#eef2ff;stroke:#818cf8;}
+  .station-upcoming .s-icon{fill:#4f46e5;}
+  #detail{background:linear-gradient(135deg,#ffffff,#eef2ff);border-color:#c4b5fd;color:#172033;box-shadow:0 24px 80px rgba(15,23,42,0.20);}
+  #overlay{background:rgba(248,250,252,0.7);} /* Lighter overlay for light theme */
+  .d-close{background:#eef2ff;color:#172033;}
+  .d-close:hover{background:#e0e7ff;}
+  .badge-upcoming{background:#eef2ff;color:#4f46e5;border-color:#c7d2fe;}
+  .d-meta,.ph-row,.d-resources li,.prog-label{color:#5b6472;}
+  .d-section{color:#4f46e5;}
+  .d-project{background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6;}
+  .prog-bar{background:#e5e7eb;}
+  .track-rail{stroke:rgba(203,213,225,0.5);} /* Lighter rail for light theme */
+""" if theme == "light" else ""
 
 # ── HTML/SVG Journey Map ──────────────────────────────────────────────────────
 html = f"""
@@ -287,6 +334,7 @@ html = f"""
   .prog-bar{{height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;}}
   .prog-fill{{height:100%;background:linear-gradient(90deg,#7c3aed,#34d399);border-radius:999px;
     transition:width 1s ease;}}
+  {map_theme_css}
 </style>
 </head>
 <body>
@@ -596,6 +644,18 @@ for icon, title, desc, unlocked in [
         f'</div>'
     )
 
+badge_theme_css = """
+body{background:#f8fafc;color:#172033;}
+h2{color:#172033;}
+.ba-on{background:linear-gradient(145deg,#ffffff,#eef2ff);border-color:#c4b5fd;box-shadow:0 4px 18px rgba(79,70,229,0.12);}
+.ba-off{background:#ffffff;border-color:#dbe3ef;opacity:0.58;filter:grayscale(0.65);}
+.ba-title{color:#172033;}
+.ba-on .ba-title{color:#4f46e5;}
+.ba-desc{color:#64748b;}
+.ba-status{color:#94a3b8;}
+.ba-on .ba-status{color:#059669;}
+""" if theme == "light" else ""
+
 components.html(f"""
 <!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
@@ -626,6 +686,7 @@ h2 span{{font-size:1.3rem;}}
 .ba-desc{{font-size:0.63rem;color:rgba(255,255,255,0.35);text-align:center;line-height:1.4;}}
 .ba-status{{font-size:0.63rem;font-weight:700;margin-top:0.2rem;color:#4b5563;}}
 .ba-on .ba-status{{color:#34d399;}}
+{badge_theme_css}
 </style>
 </head><body>
 <h2><span>🏆</span> Achievements</h2>

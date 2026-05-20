@@ -124,6 +124,8 @@ def show_navbar(active="Dashboard"):
 
         /* Checkboxes and toggles */
         div[data-testid="stCheckbox"] span{color:#1a1a2e!important;}
+        div[data-testid="stCheckbox"] div[role="checkbox"]{background-color:#fff!important;border:1px solid #d1d5db!important;}
+        div[data-testid="stCheckbox"] div[role="checkbox"][aria-checked="true"]{background-color:#7c3aed!important;border-color:#7c3aed!important;}
         div[data-testid="stToggle"] span{color:#1a1a2e!important;}
 
         /* Sidebar / page body */

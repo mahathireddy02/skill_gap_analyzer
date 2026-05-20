@@ -53,11 +53,11 @@
     "roadmap_result": {
       "role": "Full Stack Developer",
       "skill_level": "beginner",
-      "summary": "Full Stack Developer | Beginner | 3 skills | 4 weeks | 1.0h/day",
+      "summary": "Full Stack Developer | Beginner | 3 skills | 13 weeks | 1.0h/day",
       "timeline": {
-        "total_weeks": 4,
-        "total_hours": 28,
-        "total_months": 0.9,
+        "total_weeks": 13,
+        "total_hours": 91,
+        "total_months": 3.0,
         "hours_per_week": 7.0,
         "daily_hours": 1.0
       },
@@ -66,10 +66,12 @@
           "phase_num": 1,
           "skill": "graphql",
           "start_week": 1,
-          "end_week": 1,
-          "hours": 7,
+          "end_week": 4,
+          "hours": 28,
           "phases": {
-            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
+            "beginner": "Learn fundamentals through official documentation and beginner tutorials",
+            "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
+            "advanced": "Contribute to open source, build portfolio projects, get certified"
           },
           "resources": [
             "Official documentation",
@@ -81,9 +83,9 @@
         {
           "phase_num": 2,
           "skill": "aws",
-          "start_week": 2,
-          "end_week": 3,
-          "hours": 14,
+          "start_week": 5,
+          "end_week": 11,
+          "hours": 49,
           "phases": {
             "beginner": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
             "intermediate": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
@@ -99,11 +101,13 @@
         {
           "phase_num": 3,
           "skill": "ci/cd",
-          "start_week": 4,
-          "end_week": 4,
-          "hours": 7,
+          "start_week": 12,
+          "end_week": 13,
+          "hours": 14,
           "phases": {
-            "beginner": "[1w sprint] CI/CD concepts, GitHub Actions basics, automated testing"
+            "beginner": "CI/CD concepts, GitHub Actions basics, automated testing",
+            "intermediate": "Multi-stage pipelines, Docker integration, deployment automation",
+            "advanced": "GitOps, ArgoCD, advanced workflows, secrets management"
           },
           "resources": [
             "GitHub Actions docs",
@@ -117,13 +121,40 @@
           "week": 1,
           "skill": "graphql",
           "focus": "Beginner - Graphql",
-          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 2,
+          "skill": "graphql",
+          "focus": "Beginner - Graphql",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 3,
+          "skill": "graphql",
+          "focus": "Intermediate - Graphql",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 4,
+          "skill": "graphql",
+          "focus": "Advanced - Graphql",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
           "hours": 7.0,
           "daily_hrs": 1.0,
           "project": "Build a small project applying this skill end-to-end"
         },
         {
-          "week": 2,
+          "week": 5,
           "skill": "aws",
           "focus": "Beginner - Aws",
           "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
@@ -132,36 +163,90 @@
           "project": ""
         },
         {
-          "week": 3,
+          "week": 6,
+          "skill": "aws",
+          "focus": "Beginner - Aws",
+          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 7,
+          "skill": "aws",
+          "focus": "Beginner - Aws",
+          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 8,
           "skill": "aws",
           "focus": "Intermediate - Aws",
           "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
           "hours": 7.0,
           "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 9,
+          "skill": "aws",
+          "focus": "Intermediate - Aws",
+          "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 10,
+          "skill": "aws",
+          "focus": "Advanced - Aws",
+          "tasks": "Well-Architected Framework, cost optimization, security, certifications",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 11,
+          "skill": "aws",
+          "focus": "Advanced - Aws",
+          "tasks": "Well-Architected Framework, cost optimization, security, certifications",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
           "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
         },
         {
-          "week": 4,
+          "week": 12,
           "skill": "ci/cd",
           "focus": "Beginner - Ci/Cd",
-          "tasks": "[1w sprint] CI/CD concepts, GitHub Actions basics, automated testing",
+          "tasks": "CI/CD concepts, GitHub Actions basics, automated testing",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 13,
+          "skill": "ci/cd",
+          "focus": "Intermediate - Ci/Cd",
+          "tasks": "Multi-stage pipelines, Docker integration, deployment automation",
           "hours": 7.0,
           "daily_hrs": 1.0,
           "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
         }
       ],
       "tips": [
-        "Your 4-week plan covers 3 skills at 1.0h/day.",
+        "Your 13-week plan covers 3 skills at 1.0h/day.",
         "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
         "Complete the mini-project at the end of each skill to solidify learning.",
         "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
-        "Your 4-week window covers ~25% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+        "Your 13-week window covers ~83% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
         "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends."
       ],
       "tight_deadline": true
     },
     "checked_weeks": [],
-    "theme": "dark",
+    "theme": "light",
     "bio": "",
     "reset_token": "Sc1YfBg36i2cZ1Q4VmUGLp9cQpjJ3QKqXu_CFwERT0Q",
     "reset_expiry": 1778599262.6127052,
