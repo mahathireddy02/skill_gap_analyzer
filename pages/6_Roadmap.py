@@ -210,8 +210,7 @@ html = f"""
 <meta charset="utf-8">
 <style>
   *{{box-sizing:border-box;margin:0;padding:0;}}
-  body{{background:#0a0e17;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden;}}
-
+  body{{background:#fff;font-family:'Inter',system-ui,sans-serif;color:#333;overflow-x:hidden;}}
   #map-wrap{{width:100%;overflow-x:auto;overflow-y:visible;padding:20px 0 10px;-webkit-overflow-scrolling:touch;}}
   #map-wrap::-webkit-scrollbar{{height:4px;}}
   #map-wrap::-webkit-scrollbar-track{{background:rgba(255,255,255,0.04);}}
@@ -225,32 +224,32 @@ html = f"""
   @keyframes pulse{{0%,100%{{r:18;}}50%{{r:22;}}}}
 
   .station-done   .s-icon{{fill:#fff;font-size:14px;}}
-  .station-active .s-icon{{fill:#fff;font-size:14px;}}
-  .station-upcoming .s-icon{{fill:#6366f1;font-size:14px;}}
+  .station-active .s-icon{{fill:#000;font-size:14px;}}
+  .station-upcoming .s-icon{{fill:#555;font-size:14px;}}
 
-  .s-label{{font-size:12px;font-weight:700;fill:#e2e8f0;text-anchor:middle;}}
-  .s-weeks{{font-size:10px;fill:#94a3b8;text-anchor:middle;}}
+  .s-label{{font-size:12px;font-weight:700;fill:#000;text-anchor:middle;}}
+  .s-weeks{{font-size:10px;fill:#000;text-anchor:middle;}}
 
   .station-group{{cursor:pointer;transition:transform .2s;}}
   .station-group:hover .s-circle{{stroke-width:3;}}
 
   /* Track */
-  .track-bg{{stroke:#1e1b4b;stroke-width:8;fill:none;stroke-linecap:round;}}
+  .track-bg{{stroke:#ccc;stroke-width:8;fill:none;stroke-linecap:round;}}
   .track-done{{stroke:url(#trackGrad);stroke-width:8;fill:none;stroke-linecap:round;stroke-dasharray:var(--dash);stroke-dashoffset:0;transition:stroke-dasharray 1s ease;}}
-  .track-rail{{stroke:rgba(255,255,255,0.06);stroke-width:2;fill:none;stroke-dasharray:12 18;}}
+  .track-rail{{stroke:#eee;stroke-width:2;fill:none;stroke-dasharray:12 18;}}
 
   /* Train */
   #train{{transition:all 1.2s cubic-bezier(.4,0,.2,1);}}
-  #train-glow{{filter:drop-shadow(0 0 12px #a78bfa);}}
+  #train-glow{{filter:drop-shadow(0 0 8px #0000cc88);}}
 
   /* Detail panel */
   #detail{{
     position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.92);
-    background:linear-gradient(135deg,#152238,#0a0e17);
-    border:1px solid rgba(167,139,250,0.3);
+    background:#fff;
+    border:1px solid #ccc;
     border-radius:20px;padding:24px 28px;width:min(520px,90vw);
     max-height:80vh;overflow-y:auto;
-    box-shadow:0 24px 80px rgba(0,0,0,0.7);
+    box-shadow:0 12px 40px rgba(0,0,0,0.2);
     opacity:0;pointer-events:none;
     transition:all .25s cubic-bezier(.4,0,.2,1);
     z-index:9999;
@@ -262,29 +261,29 @@ html = f"""
 
   .d-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}}
   .d-title{{font-size:1.25rem;font-weight:800;}}
-  .d-close{{background:rgba(255,255,255,0.08);border:none;color:#fff;width:32px;height:32px;
+  .d-close{{background:#f0f0f0;border:1px solid #ccc;color:#000;width:32px;height:32px;
     border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}}
-  .d-close:hover{{background:rgba(255,255,255,0.15);}}
+  .d-close:hover{{background:#e0e0e0;}}
   .d-badge{{display:inline-block;padding:3px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;margin-bottom:14px;}}
-  .badge-done{{background:#10b98122;color:#34d399;border:1px solid #10b98144;}}
-  .badge-active{{background:#7c3aed22;color:#a78bfa;border:1px solid #7c3aed44;}}
-  .badge-upcoming{{background:#1e1b4b;color:#6366f1;border:1px solid #4338ca44;}}
-  .d-meta{{color:#94a3b8;font-size:0.85rem;margin-bottom:16px;}}
-  .ph-row{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.83rem;line-height:1.5;color:#cbd5e1;}}
+  .badge-done{{background:#e6ffe6;color:#006600;border:1px solid #ccffcc;}}
+  .badge-active{{background:#e6e6ff;color:#0000cc;border:1px solid #ccccff;}}
+  .badge-upcoming{{background:#f0f0f0;color:#333333;border:1px solid #cccccc;}}
+  .d-meta{{color:#000;font-size:0.85rem;margin-bottom:16px;}}
+  .ph-row{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.83rem;line-height:1.5;color:#000;}}
   .ph-badge{{flex-shrink:0;padding:2px 8px;border-radius:6px;font-size:0.72rem;font-weight:700;margin-top:1px;}}
-  .ph-beginner{{background:#10b98122;color:#34d399;}}
-  .ph-intermediate{{background:#f59e0b22;color:#fbbf24;}}
-  .ph-advanced{{background:#ef444422;color:#f87171;}}
-  .d-section{{font-size:0.78rem;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;}}
+  .ph-beginner{{background:#e6ffe6;color:#006600;}}
+  .ph-intermediate{{background:#fff8e6;color:#cc6600;}}
+  .ph-advanced{{background:#ffe6e6;color:#cc0000;}}
+  .d-section{{font-size:0.78rem;font-weight:700;color:#000;text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;}}
   .d-resources ul{{padding-left:16px;}}
-  .d-resources li{{font-size:0.83rem;color:#94a3b8;margin-bottom:4px;}}
+  .d-resources li{{font-size:0.83rem;color:#000;margin-bottom:4px;}}
   .d-project{{background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);
-    border-radius:10px;padding:10px 14px;font-size:0.83rem;color:#c4b5fd;margin-top:12px;}}
+    border-radius:10px;padding:10px 14px;font-size:0.83rem;color:#000;margin-top:12px;}}
 
   /* Progress bar */
   #prog-wrap{{padding:0 24px 16px;}}
-  .prog-label{{display:flex;justify-content:space-between;font-size:0.8rem;color:#94a3b8;margin-bottom:6px;}}
-  .prog-bar{{height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;}}
+  .prog-label{{display:flex;justify-content:space-between;font-size:0.8rem;color:#555;margin-bottom:6px;}}
+  .prog-bar{{height:6px;background:#eee;border-radius:999px;overflow:hidden;}}
   .prog-fill{{height:100%;background:linear-gradient(90deg,#7c3aed,#34d399);border-radius:999px;
     transition:width 1s ease;}}
 </style>
@@ -600,32 +599,30 @@ components.html(f"""
 <!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif;}}
-body{{background:#0a0e17;color:#fff;padding:1rem 0.5rem 2rem;}}
-h2{{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}}
+body{{background:#fff;color:#333;padding:1rem 0.5rem 2rem;}}
+h2{{font-size:1.1rem;font-weight:800;color:#000;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}}
 h2 span{{font-size:1.3rem;}}
 .ba-grid{{display:flex;flex-wrap:wrap;gap:0.7rem;}}
 .ba-card{{
     width:120px;border-radius:16px;padding:1rem 0.6rem;
     display:flex;flex-direction:column;align-items:center;gap:0.3rem;
     transition:transform 0.25s;cursor:default;
+    background:#fff;border:1.5px solid #ccccff;box-shadow:0 4px 18px rgba(0,0,0,0.1);
 }}
 .ba-card:hover{{transform:translateY(-4px);}}
 .ba-on{{
-    background:linear-gradient(145deg,rgba(124,58,237,0.25),rgba(79,70,229,0.15));
-    border:1.5px solid rgba(167,139,250,0.5);
-    box-shadow:0 4px 18px rgba(124,58,237,0.2);
+    background:#fff;border:1.5px solid #ccccff;box-shadow:0 4px 18px rgba(0,0,0,0.1);
 }}
 .ba-off{{
-    background:rgba(255,255,255,0.02);
-    border:1.5px solid rgba(255,255,255,0.05);
-    opacity:0.35;filter:grayscale(0.8);
+    background:#f8f8f8;border:1.5px solid #e0e0e0;opacity:0.6;filter:none;
 }}
 .ba-icon{{font-size:2rem;}}
-.ba-title{{font-size:0.75rem;font-weight:800;text-align:center;color:#e2e8f0;}}
-.ba-on .ba-title{{color:#a78bfa;}}
-.ba-desc{{font-size:0.63rem;color:rgba(255,255,255,0.35);text-align:center;line-height:1.4;}}
-.ba-status{{font-size:0.63rem;font-weight:700;margin-top:0.2rem;color:#4b5563;}}
+.ba-title{{font-size:0.75rem;font-weight:800;text-align:center;color:#000;}}
+.ba-on .ba-title{{color:#0000cc;}}
+.ba-desc{{font-size:0.63rem;color:#555;text-align:center;line-height:1.4;}}
+.ba-status{{font-size:0.63rem;font-weight:700;margin-top:0.2rem;color:#000;}}
 .ba-on .ba-status{{color:#34d399;}}
+.ba-on .ba-status{{color:#006600;}}
 </style>
 </head><body>
 <h2><span>🏆</span> Achievements</h2>

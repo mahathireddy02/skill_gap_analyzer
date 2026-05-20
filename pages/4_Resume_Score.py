@@ -84,6 +84,56 @@ st.markdown("")
 # ── Target role: fixed from signup, change only via Profile ────────────────
 db_user     = get_user(st.session_state.email)
 target_role = db_user.get("target_role", "").strip()
+theme       = db_user.get("theme", "dark")
+
+if theme == "light":
+    st.markdown("""
+    <style>
+    div[data-testid="stFileUploader"],
+    div[data-testid="stFileUploader"] *,
+    div[data-testid="stFileUploader"] label,
+    div[data-testid="stFileUploader"] section,
+    div[data-testid="stFileUploader"] small,
+    div[data-testid="stFileUploader"] span,
+    div[data-testid="stFileUploader"] p {
+        color:#000000!important;
+    }
+    div[data-testid="stFileUploader"] section {
+        background:#ffffff!important;
+        border-color:#7c3aed!important;
+    }
+    div[data-testid="stFileUploader"] button {
+        background-color: #f3f4f6!important;
+        border: 1px solid #d1d5db!important;
+    }
+    div[data-testid="stCaptionContainer"],
+    div[data-testid="stCaptionContainer"] * {
+        color:#000000!important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+    <style>
+    div[data-testid="stFileUploader"],
+    div[data-testid="stFileUploader"] *,
+    div[data-testid="stFileUploader"] label,
+    div[data-testid="stFileUploader"] section,
+    div[data-testid="stFileUploader"] small,
+    div[data-testid="stFileUploader"] span,
+    div[data-testid="stFileUploader"] p {
+        color:#ffffff!important;
+    }
+    div[data-testid="stFileUploader"] section {
+        background:rgba(255,255,255,0.07)!important;
+        border-color:rgba(196,181,253,0.55)!important;
+    }
+    div[data-testid="stCaptionContainer"],
+    div[data-testid="stCaptionContainer"] * {
+        color:#ffffff!important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 if not target_role:
     st.warning("⚠️ No target role set. Please update it in your Profile.")
