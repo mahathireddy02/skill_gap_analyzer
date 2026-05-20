@@ -17,20 +17,39 @@
     "name": "Mahathi Reddy",
     "password": "caa506f1b0e40f6e9708a4d911921afbde0f2b6291c2fbc0e23d07d49186254f",
     "skills": [
+      "agile",
       "css",
+      "docker",
       "express",
+      "git",
+      "github",
       "html",
+      "java",
       "javascript",
+      "linux",
       "mongodb",
       "mysql",
+      "next",
       "node",
-      "react"
+      "object oriented programming",
+      "postgresql",
+      "postman",
+      "python",
+      "react",
+      "rest api",
+      "sql",
+      "tailwind",
+      "typescript"
     ],
-    "resume_score": 53,
+    "resume_score": 95,
     "security_q": "What is your favourite movie?",
     "security_a": "e9eb3b2dd9e02057e659f87cfefe3ef0eb7d05557cf7ddcff2c20e5903d12262",
-    "target_role": "Fronend De",
-    "missing_skills": [],
+    "target_role": "Full Stack Developer",
+    "missing_skills": [
+      "graphql",
+      "aws",
+      "ci/cd"
+    ],
     "roadmap_result": {
       "role": "backden devleoper",
       "skill_level": "beginner",
@@ -652,7 +671,122 @@
     "theme": "dark",
     "bio": "",
     "reset_token": "Sc1YfBg36i2cZ1Q4VmUGLp9cQpjJ3QKqXu_CFwERT0Q",
-    "reset_expiry": 1778599262.6127052
+    "reset_expiry": 1778599262.6127052,
+    "gap_result": {
+      "role": "Full Stack Developer",
+      "score": 89.8,
+      "grade": "A",
+      "matched_skills": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "node",
+        "sql",
+        "git",
+        "typescript",
+        "rest api",
+        "docker",
+        "postgresql",
+        "python",
+        "next",
+        "mongodb"
+      ],
+      "missing_skills": [
+        "graphql",
+        "aws",
+        "ci/cd"
+      ],
+      "partial_matches": [
+        {
+          "required": "redis",
+          "user_has": "express",
+          "similarity": 0.5,
+          "tier": "nice_to_have"
+        }
+      ],
+      "strengths": [
+        "css",
+        "docker",
+        "express",
+        "git",
+        "github",
+        "html",
+        "java",
+        "javascript",
+        "linux",
+        "mongodb",
+        "mysql",
+        "next",
+        "node",
+        "object oriented programming",
+        "postgresql",
+        "postman",
+        "python",
+        "react",
+        "rest api",
+        "sql",
+        "tailwind",
+        "typescript"
+      ],
+      "core_coverage": 100.0,
+      "important_coverage": 100.0,
+      "tier_breakdown": {
+        "core": {
+          "matched": 7,
+          "total": 7,
+          "coverage": 100.0
+        },
+        "important": {
+          "matched": 5,
+          "total": 5,
+          "coverage": 100.0
+        },
+        "nice_to_have": {
+          "matched": 2,
+          "total": 6,
+          "coverage": 33.3
+        }
+      },
+      "recommendations": [
+        "graphql",
+        "aws",
+        "ci/cd"
+      ],
+      "role_description": "Builds both frontend and backend of web applications."
+    },
+    "gap_analyzed": true,
+    "resume_score_history": [
+      {
+        "date": "20 May 2026, 05:18 PM",
+        "filename": "sample_resume.pdf",
+        "file_type": "PDF",
+        "file_hash": "861f95d921af96c2aaa9806b1b847ed0df05edc3e72e1bacf4754d07c66eb40c",
+        "content_hash": "",
+        "target_role": "Fronend De",
+        "score": 2,
+        "delta": -51,
+        "skills_count": 0
+      },
+      {
+        "date": "20 May 2026, 06:00 PM",
+        "filename": "Full_Stack_Developer_Resume_Template.docx",
+        "file_type": "DOCX",
+        "file_hash": "efc6042c8ce9126919637f3d0b683b7af6c8431109c69b49163875aa24f7309f",
+        "content_hash": "9eebfc7fe09083a2417efcbd358685c9b1d27ac2537b9c14390d262cee42e6ef",
+        "target_role": "Web Developer",
+        "score": 95,
+        "delta": 93,
+        "skills_count": 23
+      }
+    ],
+    "resume_file_hashes": [
+      "861f95d921af96c2aaa9806b1b847ed0df05edc3e72e1bacf4754d07c66eb40c",
+      "efc6042c8ce9126919637f3d0b683b7af6c8431109c69b49163875aa24f7309f"
+    ],
+    "resume_content_hashes": [
+      "9eebfc7fe09083a2417efcbd358685c9b1d27ac2537b9c14390d262cee42e6ef"
+    ]
   },
   "madhurigurram.g@gmail.com": {
     "name": "Madhuri Reddy Gurram",

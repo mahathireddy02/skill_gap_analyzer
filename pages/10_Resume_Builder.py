@@ -1,5 +1,6 @@
 import streamlit as st
 import sys, os
+import base64
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.auth import require_login, get_user
 from utils.resume_builder import build_resume_pdf, validate_resume_data
@@ -18,6 +19,12 @@ html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+.template-preview-card{height:340px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;margin-bottom:6px;background:#fff;}
+.template-preview-frame{width:100%;height:286px;border:0;background:#fff;display:block;}
+.template-preview-footer{min-height:54px;padding:0.5rem 0.75rem;display:flex;justify-content:space-between;align-items:center;gap:0.6rem;
+    background:#f8fafc;border-top:1px solid #e5e7eb;}
+.template-preview-tags{font-size:0.66rem;font-weight:800;color:#111827;line-height:1.25;}
+.template-preview-name{font-size:0.72rem;font-weight:900;white-space:nowrap;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -65,172 +72,68 @@ TEMPLATE_META = {
     },
 }
 
+
+PREVIEW_SAMPLE_DATA = {
+    "name": "John Smith",
+    "email": "john@email.com",
+    "phone": "+91 9876543210",
+    "location": "Mumbai",
+    "linkedin": "linkedin.com/in/johnsmith",
+    "github": "github.com/johnsmith",
+    "summary": "Results-driven Software Engineer with experience building scalable web applications, APIs, and data-driven products.",
+    "skills": {
+        "Languages": {"skills": ["Python", "Java", "SQL"], "level": "Expert"},
+        "Tools": {"skills": ["Docker", "Git", "AWS"], "level": "Intermediate"},
+        "Frameworks": {"skills": ["FastAPI", "React"], "level": "Intermediate"},
+    },
+    "experience": [{
+        "title": "Software Engineer",
+        "company": "Google",
+        "duration": "2022 - Present",
+        "responsibilities": [
+            "Built scalable REST APIs for production workflows",
+            "Reduced service latency by 30%",
+        ],
+    }],
+    "education": [{
+        "degree": "B.Tech Computer Science",
+        "institution": "ABC University",
+        "year": "2020 - 2024",
+        "gpa": "8.5",
+    }],
+    "projects": [{
+        "title": "Skill Gap Analyzer",
+        "description": "AI-assisted resume and career readiness platform",
+        "tech": ["Python", "Streamlit"],
+        "link": "",
+    }],
+    "certifications": ["AWS Certified Cloud Practitioner"],
+}
+
+
+@st.cache_data(show_spinner=False)
+def _preview_pdf_b64(template: str) -> str:
+    pdf = build_resume_pdf(PREVIEW_SAMPLE_DATA, template=template)
+    return base64.b64encode(pdf).decode("ascii")
+
+
+def _preview_pdf_card(template: str, meta: dict, border: str, shadow: str) -> str:
+    pdf_b64 = _preview_pdf_b64(template)
+    tags = " | ".join(meta["tags"])
+    return f"""
+<div class="template-preview-card" style="border:{border};box-shadow:{shadow};">
+  <iframe class="template-preview-frame"
+          src="data:application/pdf;base64,{pdf_b64}#toolbar=0&navpanes=0&scrollbar=0&view=FitH"></iframe>
+  <div class="template-preview-footer">
+    <div class="template-preview-tags">{tags}</div>
+    <div class="template-preview-name" style="color:{meta['accent']};">{meta['icon']} {template}</div>
+  </div>
+</div>"""
+
 # ── Template preview cards ────────────────────────────────────────────────────
 st.markdown("### 🎨 Choose a Template")
-st.caption("Each card shows a live preview of the template style. Click **Select** to choose one.")
+st.caption("Each card is rendered from the same PDF template used for download. Click **Select** to choose one.")
 st.markdown("")
-
-def _preview_classic(border, shadow):
-    return f"""
-<div style="border:{border};border-radius:14px;overflow:hidden;box-shadow:{shadow};margin-bottom:6px;background:#fff;height:100%;display:flex;flex-direction:column;">
-  <div style="background:#fff;padding:10px 12px 6px;flex:1;overflow:hidden;">
-    <div style="border-top:2.5px solid #000;padding-top:5px;">
-      <div style="font-size:0.9rem;font-weight:900;color:#000;text-align:center;font-family:Georgia,serif;">John Smith</div>
-      <div style="font-size:0.55rem;color:#555;text-align:center;margin-top:2px;font-family:Georgia,serif;">john@email.com &nbsp;·&nbsp; +91 9876543210 &nbsp;·&nbsp; Mumbai</div>
-    </div>
-    <div style="border-top:2.5px solid #000;border-bottom:0.5px solid #000;margin:5px 0 3px;"></div>
-  </div>
-  <div style="background:#fff;padding:0 12px 8px;">
-    <div style="border-top:0.5px solid #000;text-align:center;padding:2px 0 1px;">
-      <span style="font-size:0.58rem;font-weight:900;color:#000;font-family:Georgia,serif;letter-spacing:0.08em;">WORK EXPERIENCE</span>
-    </div>
-    <div style="border-top:1.5px solid #000;margin-bottom:4px;"></div>
-    <div style="display:flex;justify-content:space-between;">
-      <span style="font-size:0.6rem;font-weight:700;color:#000;font-family:Georgia,serif;">Software Engineer</span>
-      <span style="font-size:0.52rem;color:#666;font-style:italic;font-family:Georgia,serif;">2022–Present</span>
-    </div>
-    <div style="font-size:0.55rem;color:#444;font-style:italic;font-family:Georgia,serif;margin-bottom:2px;">Google</div>
-    <div style="font-size:0.52rem;color:#222;font-family:Georgia,serif;">• Built scalable REST APIs</div>
-    <div style="font-size:0.52rem;color:#222;font-family:Georgia,serif;">• Reduced latency by 30%</div>
-    <div style="border-top:0.5px solid #000;text-align:center;padding:2px 0 1px;margin-top:5px;">
-      <span style="font-size:0.58rem;font-weight:900;color:#000;font-family:Georgia,serif;letter-spacing:0.08em;">SKILLS</span>
-    </div>
-    <div style="border-top:1.5px solid #000;margin-bottom:3px;"></div>
-    <div style="font-size:0.52rem;color:#222;font-family:Georgia,serif;"><b>Languages:</b> Python, Java, SQL</div>
-    <div style="font-size:0.52rem;color:#222;font-family:Georgia,serif;"><b>Tools:</b> Docker, Git, AWS</div>
-  </div>
-  <div style="background:#f5f5f5;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div style="color:#000;font-size:0.62rem;font-weight:800;">
-      Traditional | ATS-Safe | B&W
-    </div>
-    <div style="font-size:0.65rem;font-weight:800;color:#000;">📄 Classic</div>
-  </div>
-</div>"""
-
-def _preview_modern(border, shadow):
-    return f"""
-<div style="border:{border};border-radius:14px;overflow:hidden;box-shadow:{shadow};margin-bottom:6px;height:100%;display:flex;flex-direction:column;">
-  <div style="background:#1e1b4b;padding:9px 12px;">
-    <div style="font-size:0.88rem;font-weight:800;color:#fff;">John Smith</div>
-    <div style="font-size:0.58rem;color:#818cf8;margin-top:1px;">Results-driven Software Engineer</div>
-  </div>
-  <div style="display:flex;">
-    <div style="background:#312e81;padding:7px 8px;width:38%;flex-shrink:0;">
-      <div style="border-top:0.5px solid #4338ca;margin-bottom:3px;"></div>
-      <div style="font-size:0.55rem;font-weight:700;color:#818cf8;letter-spacing:0.06em;margin-bottom:2px;">CONTACT</div>
-      <div style="font-size:0.5rem;font-weight:700;color:#fff;">Email</div>
-      <div style="font-size:0.5rem;color:#c7d2fe;margin-bottom:2px;">john@email.com</div>
-      <div style="font-size:0.5rem;font-weight:700;color:#fff;">Phone</div>
-      <div style="font-size:0.5rem;color:#c7d2fe;margin-bottom:3px;">+91 9876543210</div>
-      <div style="border-top:0.5px solid #4338ca;margin-bottom:3px;"></div>
-      <div style="font-size:0.55rem;font-weight:700;color:#818cf8;letter-spacing:0.06em;margin-bottom:2px;">SKILLS</div>
-      <div style="font-size:0.5rem;font-weight:700;color:#fff;">Languages</div>
-      <div style="font-size:0.5rem;color:#c7d2fe;margin-bottom:2px;">Python, Java, SQL</div>
-      <div style="font-size:0.5rem;font-weight:700;color:#fff;">Tools</div>
-      <div style="font-size:0.5rem;color:#c7d2fe;">Docker, Git, AWS</div>
-    </div>
-    <div style="background:#f8f9ff;padding:7px 9px;flex:1;">
-      <div style="font-size:0.58rem;font-weight:800;color:#4f46e5;letter-spacing:0.06em;">EXPERIENCE</div>
-      <div style="border-bottom:1.5px solid #4f46e5;margin-bottom:3px;"></div>
-      <div style="display:flex;justify-content:space-between;">
-        <span style="font-size:0.58rem;font-weight:700;color:#1f2937;">Software Engineer</span>
-        <span style="font-size:0.5rem;color:#6b7280;font-style:italic;">2022–Now</span>
-      </div>
-      <div style="font-size:0.52rem;color:#4f46e5;margin-bottom:2px;">Google</div>
-      <div style="font-size:0.5rem;color:#374151;">• Built scalable REST APIs</div>
-      <div style="font-size:0.5rem;color:#374151;">• Reduced latency by 30%</div>
-    </div>
-  </div>
-  <div style="background:#f0f0ff;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div style="color:#000;font-size:0.62rem;font-weight:800;">
-      Popular | Tech | Clean
-    </div>
-    <div style="font-size:0.65rem;font-weight:800;color:#4f46e5;">✨ Modern</div>
-  </div>
-</div>"""
-
-def _preview_minimal(border, shadow):
-    return f"""
-<div style="border:{border};border-radius:14px;overflow:hidden;box-shadow:{shadow};margin-bottom:6px;background:#fff;height:100%;display:flex;flex-direction:column;">
-  <div style="background:#fff;padding:10px 12px 5px;">
-    <div style="font-size:1rem;font-weight:900;color:#111827;">John Smith</div>
-    <div style="border-top:1.5px solid #059669;margin:4px 0 3px;"></div>
-    <div style="font-size:0.52rem;color:#6b7280;">john@email.com &nbsp;·&nbsp; +91 9876543210 &nbsp;·&nbsp; Mumbai</div>
-  </div>
-  <div style="background:#fff;padding:4px 12px 8px;">
-    <div style="font-size:0.6rem;font-weight:800;color:#059669;margin-top:5px;">Experience</div>
-    <div style="border-top:0.6px solid #059669;margin-bottom:4px;"></div>
-    <div style="border-left:3px solid #059669;padding-left:7px;margin-bottom:4px;">
-      <div style="display:flex;justify-content:space-between;">
-        <span style="font-size:0.58rem;font-weight:700;color:#111827;">Software Engineer</span>
-        <span style="font-size:0.5rem;color:#9ca3af;font-style:italic;">2022–Present</span>
-      </div>
-      <div style="font-size:0.52rem;color:#059669;margin-bottom:2px;">Google</div>
-      <div style="font-size:0.5rem;color:#374151;">• Built scalable REST APIs</div>
-    </div>
-    <div style="font-size:0.6rem;font-weight:800;color:#059669;margin-top:4px;">Skills</div>
-    <div style="border-top:0.6px solid #059669;margin-bottom:4px;"></div>
-    <div style="display:flex;">
-      <span style="font-size:0.52rem;font-weight:700;color:#111827;width:38%;">Languages</span>
-      <span style="font-size:0.52rem;color:#374151;">Python, Java, SQL</span>
-    </div>
-    <div style="display:flex;">
-      <span style="font-size:0.52rem;font-weight:700;color:#111827;width:38%;">Tools</span>
-      <span style="font-size:0.52rem;color:#374151;">Docker, Git, AWS</span>
-    </div>
-  </div>
-  <div style="background:#f9fafb;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div style="color:#000;font-size:0.62rem;font-weight:800;">
-      Clean | Simple | Green
-    </div>
-    <div style="font-size:0.65rem;font-weight:800;color:#059669;">🎯 Minimal</div>
-  </div>
-</div>"""
-
-def _preview_creative(border, shadow):
-    return f"""
-<div style="border:{border};border-radius:14px;overflow:hidden;box-shadow:{shadow};margin-bottom:6px;height:100%;display:flex;flex-direction:column;">
-  <div style="background:#7c3aed;padding:10px 12px;">
-    <div style="font-size:0.9rem;font-weight:900;color:#fff;">John Smith</div>
-    <div style="font-size:0.58rem;color:#ddd6fe;margin-top:1px;">Results-driven Software Engineer</div>
-    <div style="font-size:0.5rem;color:#c4b5fd;margin-top:3px;">john@email.com &nbsp;|&nbsp; +91 9876543210 &nbsp;|&nbsp; Mumbai</div>
-  </div>
-  <div style="background:#fff;padding:6px 12px 8px;">
-    <div style="background:#7c3aed;border-left:4px solid #6d28d9;padding:3px 8px;margin-bottom:5px;">
-      <span style="font-size:0.58rem;font-weight:800;color:#fff;letter-spacing:0.07em;">SKILLS</span>
-    </div>
-    <div style="margin-bottom:4px;">
-      <span style="font-size:0.5rem;font-weight:700;color:#7c3aed;">Languages &nbsp;</span>
-      <span style="background:#ede9fe;color:#5b21b6;font-size:0.5rem;font-weight:700;padding:1px 6px;border-radius:999px;margin:1px;display:inline-block;">Python</span>
-      <span style="background:#ede9fe;color:#5b21b6;font-size:0.5rem;font-weight:700;padding:1px 6px;border-radius:999px;margin:1px;display:inline-block;">Java</span>
-      <span style="background:#ede9fe;color:#5b21b6;font-size:0.5rem;font-weight:700;padding:1px 6px;border-radius:999px;margin:1px;display:inline-block;">SQL</span>
-    </div>
-    <div style="background:#7c3aed;border-left:4px solid #6d28d9;padding:3px 8px;margin-bottom:5px;">
-      <span style="font-size:0.58rem;font-weight:800;color:#fff;letter-spacing:0.07em;">EXPERIENCE</span>
-    </div>
-    <div style="background:#f5f3ff;border-left:4px solid #7c3aed;padding:4px 7px;">
-      <div style="display:flex;justify-content:space-between;">
-        <span style="font-size:0.58rem;font-weight:700;color:#1e1b4b;">Software Engineer</span>
-        <span style="font-size:0.5rem;color:#6b7280;font-style:italic;">2022–Now</span>
-      </div>
-      <div style="font-size:0.52rem;color:#7c3aed;margin-bottom:2px;">Google</div>
-      <div style="font-size:0.5rem;color:#374151;">• Built scalable REST APIs</div>
-    </div>
-  </div>
-  <div style="background:#f5f3ff;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
-    <div style="color:#000;font-size:0.62rem;font-weight:800;">
-      Bold | Creative | Purple
-    </div>
-    <div style="font-size:0.65rem;font-weight:800;color:#7c3aed;">🎨 Creative</div>
-  </div>
-</div>"""
-
-_PREVIEW_FN = {
-    "Classic":  _preview_classic,
-    "Modern":   _preview_modern,
-    "Minimal":  _preview_minimal,
-    "Creative": _preview_creative,
-}
 
 cols = st.columns(4, gap="small")
 for col, (tmpl, meta) in zip(cols, TEMPLATE_META.items()):
@@ -239,9 +142,7 @@ for col, (tmpl, meta) in zip(cols, TEMPLATE_META.items()):
         border = f"3px solid {meta['accent']}" if is_sel else "2px solid #e5e7eb"
         shadow = f"0 6px 24px {meta['accent']}44" if is_sel else "0 2px 8px rgba(0,0,0,0.06)"
         st.markdown(
-            f'<div style="height:340px;display:flex;flex-direction:column;">'
-            + _PREVIEW_FN[tmpl](border, shadow)
-            + '</div>',
+            _preview_pdf_card(tmpl, meta, border, shadow),
             unsafe_allow_html=True
         )
         btn_label = "✅ Selected" if is_sel else f"Select {tmpl}"
