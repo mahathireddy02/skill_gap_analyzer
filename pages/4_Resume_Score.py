@@ -110,10 +110,10 @@ uploaded = st.file_uploader(
         "rtf", "html", "htm", "odt", "jpg", "jpeg", "png", "webp",
         "bmp", "tif", "tiff",
     ],
-    help="Accepts PDF, DOCX, TXT, images, and other resume file formats.",
+    help="Upload your resume in any common file format.",
     key=f"resume_upload_{st.session_state['resume_uploader_reset']}",
 )
-st.caption("Accepted formats: PDF, DOCX, TXT, MD, CSV, TSV, RTF, HTML, ODT, JPG, PNG, WEBP, BMP, TIFF.")
+st.caption("All common resume file formats are accepted.")
 
 if st.session_state.get("resume_history_deleted_message"):
     st.success(st.session_state.pop("resume_history_deleted_message"))
@@ -468,90 +468,6 @@ if "resume_result" in st.session_state:
     if score_history:
         st.markdown("---")
         render_score_history(score_history)
-
-    st.markdown("---")
-    st.markdown("### 🔍 Extracted Resume Data")
-
-    contact_vals = {k: v for k, v in contact.items() if v and k != "name"}
-    if contact_vals:
-        icons_map = {"email": "📧", "phone": "📞", "linkedin": "💼", "github": "🐙"}
-        cc = st.columns(len(contact_vals))
-        for i, (k, v) in enumerate(contact_vals.items()):
-            with cc[i]:
-                st.markdown(
-                    f'<div class="contact-card">'
-                    f'<div class="contact-label">{icons_map.get(k,"")} {k.title()}</div>'
-                    f'<div class="contact-value">{html.escape(v)}</div>'
-                    f'</div>',
-                    unsafe_allow_html=True,
-                )
-        st.markdown("")
-
-    if categorized:
-        st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
-        st.markdown('<div class="data-grid-title">🧠 Skills by Category</div>', unsafe_allow_html=True)
-        for cat, skill_list in categorized.items():
-            if skill_list:
-                st.markdown(f"*{cat}*")
-                chips = "".join(
-                    f'<span class="skill-chip">{html.escape(s.title())}</span>' for s in skill_list
-                )
-                st.markdown(chips, unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown("")
-
-    d1, d2, d3 = st.columns(3)
-
-    with d1:
-        if education:
-            st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
-            st.markdown('<div class="data-grid-title">🎓 Education</div>', unsafe_allow_html=True)
-            for edu in education:
-                degree = html.escape(edu.get("degree", ""))
-                institution = html.escape(edu.get("institution", ""))
-                yr = html.escape(edu.get("year", ""))
-                st.markdown(f"""
-                <div class="info-pill">
-                    <strong>{degree}</strong><br>
-                    <span style="color:#6b7280;font-size:0.8rem;">
-                        {institution}{" · " + yr if yr else ""}
-                    </span>
-                </div>""", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-
-    with d2:
-        if experience:
-            st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
-            st.markdown('<div class="data-grid-title">💼 Experience</div>', unsafe_allow_html=True)
-            for exp in experience[:3]:
-                resps = exp.get("responsibilities", [])
-                title = html.escape(exp.get("title", ""))
-                company = html.escape(exp.get("company", ""))
-                dur = html.escape(exp.get("duration", ""))
-                resp_line = f'<br><span style="font-size:0.76rem;color:#9ca3af;">• {html.escape(resps[0][:70])}</span>' if resps else ""
-                st.markdown(f"""
-                <div class="info-pill">
-                    <strong>{title}</strong><br>
-                    <span style="color:#6b7280;font-size:0.8rem;">
-                        {company}{" · " + dur if dur else ""}
-                    </span>{resp_line}
-                </div>""", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-
-    with d3:
-        if projects:
-            st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
-            st.markdown('<div class="data-grid-title">🛠️ Projects</div>', unsafe_allow_html=True)
-            for proj in projects[:3]:
-                tech = proj.get("tech", [])
-                title = html.escape(proj.get("title", ""))
-                tech_line = f'<span style="color:#7c3aed;font-size:0.78rem;">{html.escape(", ".join(tech[:4]))}</span>' if tech else ""
-                st.markdown(f"""
-                <div class="info-pill">
-                    <strong>{title}</strong><br>
-                    {tech_line}
-                </div>""", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
 
 # ── Builder CTA ───────────────────────────────────────────────────────────────
 st.markdown("""

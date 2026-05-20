@@ -284,13 +284,33 @@
   "madhurigurram.g@gmail.com": {
     "name": "Madhuri Reddy Gurram",
     "password": "8a9bcf1e51e812d0af8465a8dbcc9f741064bf0af3b3d08e6b0246437c19f7fb",
-    "skills": [],
-    "resume_score": 0,
+    "skills": [
+      "graphql",
+      "react"
+    ],
+    "resume_score": 70,
     "security_q": "What was the name of your first school?",
     "security_a": "7fff36d2db80e6d7e7593a9f7b133c8e7415c8c761c2befe0a19e01d6cc5d9ae",
     "target_role": "Full Stack Developer",
     "bio": "",
-    "missing_skills": [],
+    "missing_skills": [
+      "html",
+      "css",
+      "javascript",
+      "node",
+      "sql",
+      "git",
+      "typescript",
+      "rest api",
+      "docker",
+      "postgresql",
+      "python",
+      "next",
+      "redis",
+      "aws",
+      "ci/cd",
+      "mongodb"
+    ],
     "roadmap_result": {
       "role": "full stack developer",
       "skill_level": "beginner",
@@ -692,11 +712,96 @@
     "theme": "dark",
     "reset_token": "BJzd_8uwUQVzfDVU7f1C9Sg1zxN1coILk5AY9yilEAM",
     "reset_expiry": 1779126034.37814,
-    "resume_score_history": [],
-    "gap_result": {},
-    "gap_analyzed": false,
-    "resume_file_hashes": [],
-    "resume_content_hashes": []
+    "resume_score_history": [
+      {
+        "date": "20 May 2026, 08:05 PM",
+        "filename": "sample_resume.png",
+        "file_type": "PNG",
+        "file_hash": "1e5643d50b26f7ae6af5b0e44ef01ec2d6c726714aea7edebfac2ab816d3c872",
+        "content_hash": "5fe113550cd48e124415d9977e0b37baff7c4197e23f63a380255155ef53819f",
+        "target_role": "Full Stack Developer",
+        "score": 70,
+        "delta": 0,
+        "skills_count": 2
+      }
+    ],
+    "gap_result": {
+      "role": "Full Stack Developer",
+      "score": 11.0,
+      "grade": "F",
+      "matched_skills": [
+        "react",
+        "graphql"
+      ],
+      "missing_skills": [
+        "html",
+        "css",
+        "javascript",
+        "node",
+        "sql",
+        "git",
+        "typescript",
+        "rest api",
+        "docker",
+        "postgresql",
+        "python",
+        "next",
+        "redis",
+        "aws",
+        "ci/cd",
+        "mongodb"
+      ],
+      "partial_matches": [],
+      "strengths": [
+        "graphql",
+        "react"
+      ],
+      "core_coverage": 14.3,
+      "important_coverage": 0.0,
+      "tier_breakdown": {
+        "core": {
+          "matched": 1,
+          "total": 7,
+          "coverage": 14.3
+        },
+        "important": {
+          "matched": 0,
+          "total": 5,
+          "coverage": 0.0
+        },
+        "nice_to_have": {
+          "matched": 1,
+          "total": 6,
+          "coverage": 16.7
+        }
+      },
+      "recommendations": [
+        "html",
+        "css",
+        "javascript",
+        "node",
+        "sql",
+        "git",
+        "typescript",
+        "rest api",
+        "docker",
+        "postgresql",
+        "python",
+        "next",
+        "redis",
+        "aws",
+        "ci/cd",
+        "mongodb"
+      ],
+      "role_description": "Builds both frontend and backend of web applications."
+    },
+    "gap_analyzed": true,
+    "resume_file_hashes": [
+      "1e5643d50b26f7ae6af5b0e44ef01ec2d6c726714aea7edebfac2ab816d3c872"
+    ],
+    "resume_content_hashes": [
+      "5fe113550cd48e124415d9977e0b37baff7c4197e23f63a380255155ef53819f"
+    ]
   },
   "gurrammadhuri4444@gmail.com": {
     "name": "Madhuri Reddy",
