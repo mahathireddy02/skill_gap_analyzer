@@ -24,6 +24,9 @@ html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+/* Align trash icon and buttons better with input fields */
+div[data-testid="column"] {display: flex; flex-direction: column; justify-content: flex-end;}
+div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"] {align-items: flex-end !important;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -100,8 +103,7 @@ for i in range(st.session_state.num_skills):
     with s3:
         level = st.selectbox("Level", ["Basic", "Intermediate", "Expert"], key=f"slvl_{i}")
     with s4:
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("🗑️", key=f"sdel_{i}"):
+        if st.button("🗑️", key=f"sdel_{i}", use_container_width=True):
             st.session_state.num_skills = max(1, st.session_state.num_skills - 1)
             st.rerun()
     if cat.strip() and val.strip():
