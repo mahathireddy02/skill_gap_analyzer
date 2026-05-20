@@ -217,9 +217,14 @@ with tab3:
     st.warning("Clears your resume score, skills, missing skills, and roadmap progress. Your account stays active.")
     if st.button("🗑️ Reset My Data", key="reset_data"):
         update_user(email, {
-            "skills": [], "missing_skills": [],
-            "resume_score": 0, "target_role": "", "checked_weeks": []
+            "skills": [], "missing_skills": [], "gap_result": {}, "gap_analyzed": False,
+            "resume_score": 0, "target_role": "", "checked_weeks": [], "roadmap_result": None,
+            "resume_score_history": [],
+            "resume_file_hashes": [],
+            "resume_content_hashes": []
         })
+        for key in ["resume_result", "resume_file_key", "duplicate_resume_key", "gap_result"]:
+            st.session_state.pop(key, None)
         st.success("✅ All data reset.")
         st.rerun()
 
