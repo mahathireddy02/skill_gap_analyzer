@@ -14,16 +14,63 @@ from utils.resume_builder import build_resume_pdf, validate_resume_data
 st.set_page_config(page_title="Resume Details", page_icon="📝", layout="wide", initial_sidebar_state="collapsed")
 require_login()
 
+db_user = get_user(st.session_state.email)
+theme = db_user.get("theme", "dark")
+
+bg_color = "#ffffff" if theme == "light" else "#0a0e17"
+text_color = "#000000" if theme == "light" else "#ffffff"
+border_color = "#e5e7eb" if theme == "light" else "rgba(255,255,255,0.1)"
+secondary_text = "#4b5563" if theme == "light" else "rgba(255,255,255,0.5)"
+info_bg = "#f9fafb" if theme == "light" else "rgba(124,58,237,0.08)"
+info_border = "#e5e7eb" if theme == "light" else "rgba(124,58,237,0.25)"
+
 st.markdown("""
 <style>
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stSidebarNav"],
 [data-testid="stSidebar"],[data-testid="collapsedControl"],section[data-testid="stSidebar"],
 .stDeployButton,[class*="viewerBadge"],[class*="toolbar"]
 {display:none!important;visibility:hidden!important;}
-html,body{margin:0!important;padding:0!important;}
-.block-container{padding:0!important;max-width:100%!important;}
+html,body,.stApp{margin:0!important;padding:0!important;background:""" + bg_color + """!important;color:""" + text_color + """!important;}
+.block-container{padding:1.5rem 2.5rem 2rem!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+div[data-testid="stButton"] button[kind="secondary"]{
+    background-color: """ + bg_color + """!important;
+    color: """ + text_color + """!important;
+    border: 1px solid """ + border_color + """!important;
+}
+div[data-testid="stTextInput"] input,
+div[data-testid="stTextArea"] textarea,
+div[data-testid="stNumberInput"] input,
+div[data-testid="stSelectbox"] > div > div {
+    background-color: """ + bg_color + """!important;
+    color: """ + text_color + """!important;
+    border: 1px solid """ + border_color + """!important;
+}
+div[data-testid="stTextInput"] input:hover,
+div[data-testid="stTextArea"] textarea:hover,
+div[data-testid="stNumberInput"] input:hover,
+div[data-testid="stSelectbox"] > div > div:hover {
+    background-color: """ + (info_bg if theme == "light" else "rgba(255,255,255,0.05)") + """!important;
+}
+div[data-testid="stExpander"] {
+    background-color: """ + bg_color + """!important;
+    border: 1px solid """ + border_color + """!important;
+    border-radius: 12px !important;
+}
+div[data-testid="stAlert"] {
+    background-color: """ + bg_color + """!important;
+    border: 1px solid """ + border_color + """!important;
+    color: """ + text_color + """!important;
+}
+h1, h2, h3, h4, p, label, .stMarkdown {color: """ + text_color + """!important;}
+small, .stCaptionContainer p {color: """ + secondary_text + """!important;}
+hr {border-color: """ + border_color + """!important; opacity: 0.6;}
+h3 {
+    border-bottom: 1px solid """ + border_color + """;
+    padding-bottom: 8px;
+    margin-top: 25px !important;
+}
 /* Align trash icon and buttons better with input fields */
 div[data-testid="column"] {display: flex; flex-direction: column; justify-content: flex-end;}
 div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"] {align-items: flex-end !important;}
@@ -46,8 +93,6 @@ if not selected_template:
         st.switch_page("pages/10_Resume_Builder.py")
     st.stop()
 
-db_user = get_user(st.session_state.email)
-
 if "num_skills" not in st.session_state:
     st.session_state.num_skills = 3
 
@@ -62,9 +107,9 @@ with top_right:
         st.switch_page("pages/10_Resume_Builder.py")
 
 st.markdown(
-    f'<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.25);'
-    f'border-radius:10px;padding:0.5rem 1rem;font-size:0.88rem;margin:0.6rem 0 0.2rem;">'
-    f'{meta["icon"]} Using <strong>{selected_template}</strong> template</div>',
+    f'<div style="background:{info_bg};border:1px solid {info_border};'
+    f'border-radius:10px;padding:0.5rem 1rem;font-size:0.88rem;margin:0.6rem 0 0.2rem;color:{text_color};">'
+    f'{meta["icon"]} Using <strong style="color:#7c3aed;">{selected_template}</strong> template</div>',
     unsafe_allow_html=True,
 )
 
