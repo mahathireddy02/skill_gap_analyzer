@@ -102,14 +102,9 @@ st.markdown(
 # ── File uploader ─────────────────────────────────────────────────────────────
 uploaded = st.file_uploader(
     "📁 Upload Resume",
-    type=[
-        "pdf", "docx", "doc", "txt", "md", "markdown", "csv", "tsv",
-        "rtf", "html", "htm", "odt", "jpg", "jpeg", "png", "webp",
-        "bmp", "tif", "tiff",
-    ],
-    help="Accepts PDF, DOCX, TXT, images, and other resume file formats.",
+    help="Upload your resume to get an ATS score.",
 )
-st.caption("Accepted formats: PDF, DOCX, TXT, MD, CSV, TSV, RTF, HTML, ODT, JPG, PNG, WEBP, BMP, TIFF.")
+st.caption("All file formats are accepted.")
 
 
 def render_score_history(score_history):

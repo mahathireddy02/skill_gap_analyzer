@@ -819,13 +819,13 @@
       "mongodb"
     ],
     "roadmap_result": {
-      "role": "full stack developer",
+      "role": "Full Stack Developer",
       "skill_level": "beginner",
-      "summary": "full stack developer | Beginner | 15 skills | 15 weeks | 1.0h/day",
+      "summary": "Full Stack Developer | Beginner | 16 skills | 13 weeks | 1.0h/day",
       "timeline": {
-        "total_weeks": 15,
+        "total_weeks": 13,
         "total_hours": 91,
-        "total_months": 3.5,
+        "total_months": 3.0,
         "hours_per_week": 7.0,
         "daily_hours": 1.0
       },
@@ -880,25 +880,9 @@
         },
         {
           "phase_num": 4,
-          "skill": "react",
+          "skill": "node",
           "start_week": 4,
           "end_week": 4,
-          "hours": 7,
-          "phases": {
-            "beginner": "[1w sprint] Components, JSX, props, state, event handling"
-          },
-          "resources": [
-            "Official React Docs (react.dev)",
-            "Traversy Media React (YouTube)",
-            "freeCodeCamp React"
-          ],
-          "project": "Build a task manager or e-commerce product listing app"
-        },
-        {
-          "phase_num": 5,
-          "skill": "node",
-          "start_week": 5,
-          "end_week": 5,
           "hours": 7,
           "phases": {
             "beginner": "[1w sprint] Node.js basics, npm, modules, file system, HTTP module"
@@ -910,41 +894,26 @@
           "project": "Build a REST API with Express + JWT authentication"
         },
         {
+          "phase_num": 5,
+          "skill": "sql",
+          "start_week": 5,
+          "end_week": 5,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] SELECT, WHERE, ORDER BY, INSERT, UPDATE, DELETE, JOINs"
+          },
+          "resources": [
+            "SQLZoo",
+            "Mode Analytics SQL Tutorial",
+            "W3Schools SQL"
+          ],
+          "project": "Analyze a public dataset with SQL queries"
+        },
+        {
           "phase_num": 6,
-          "skill": "git",
+          "skill": "rest api",
           "start_week": 6,
           "end_week": 6,
-          "hours": 7,
-          "phases": {
-            "beginner": "[1w sprint] init, add, commit, push, pull, clone, status"
-          },
-          "resources": [
-            "GitHub Hello World guide",
-            "Atlassian Git tutorials",
-            "Learn Git Branching (interactive)"
-          ],
-          "project": "Contribute to an open-source project on GitHub"
-        },
-        {
-          "phase_num": 7,
-          "skill": "typescript",
-          "start_week": 7,
-          "end_week": 7,
-          "hours": 7,
-          "phases": {
-            "beginner": "[1w sprint] Types, interfaces, enums, type inference, tsconfig basics"
-          },
-          "resources": [
-            "TypeScript Handbook (typescriptlang.org)",
-            "Matt Pocock TS tutorials (YouTube)"
-          ],
-          "project": "Rewrite a JavaScript project in TypeScript"
-        },
-        {
-          "phase_num": 8,
-          "skill": "rest api",
-          "start_week": 8,
-          "end_week": 8,
           "hours": 7,
           "phases": {
             "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
@@ -957,10 +926,10 @@
           "project": "Build a small project applying this skill end-to-end"
         },
         {
-          "phase_num": 9,
+          "phase_num": 7,
           "skill": "docker",
-          "start_week": 9,
-          "end_week": 9,
+          "start_week": 7,
+          "end_week": 7,
           "hours": 7,
           "phases": {
             "beginner": "[1w sprint] Containers vs VMs, Docker CLI, Dockerfile, images, containers"
@@ -971,6 +940,37 @@
             "Docker Docs"
           ],
           "project": "Containerize a Python Flask/FastAPI app with Docker Compose"
+        },
+        {
+          "phase_num": 8,
+          "skill": "postgresql",
+          "start_week": 8,
+          "end_week": 8,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] Setup, psql CLI, basic CRUD, data types"
+          },
+          "resources": [
+            "PostgreSQL official tutorial",
+            "Hussein Nasser DB (YouTube)"
+          ],
+          "project": "Design and query a relational database for a real app"
+        },
+        {
+          "phase_num": 9,
+          "skill": "python",
+          "start_week": 9,
+          "end_week": 9,
+          "hours": 7,
+          "phases": {
+            "beginner": "[1w sprint] Variables, data types, loops, functions, lists, dicts"
+          },
+          "resources": [
+            "Python.org tutorial",
+            "freeCodeCamp Python (YouTube)",
+            "Automate the Boring Stuff"
+          ],
+          "project": "Build a CLI task manager or web scraper"
         },
         {
           "phase_num": 10,
@@ -990,7 +990,7 @@
         },
         {
           "phase_num": 11,
-          "skill": "graphql",
+          "skill": "redis",
           "start_week": 11,
           "end_week": 11,
           "hours": 7,
@@ -1006,25 +1006,9 @@
         },
         {
           "phase_num": 12,
-          "skill": "redis",
+          "skill": "aws",
           "start_week": 12,
           "end_week": 12,
-          "hours": 7,
-          "phases": {
-            "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
-          },
-          "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
-          ],
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "phase_num": 13,
-          "skill": "aws",
-          "start_week": 13,
-          "end_week": 13,
           "hours": 7,
           "phases": {
             "beginner": "[1w sprint] IAM, EC2, S3, VPC basics, AWS Free Tier setup"
@@ -1037,25 +1021,10 @@
           "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
         },
         {
-          "phase_num": 14,
-          "skill": "ci/cd",
-          "start_week": 14,
-          "end_week": 14,
-          "hours": 7,
-          "phases": {
-            "beginner": "[1w sprint] CI/CD concepts, GitHub Actions basics, automated testing"
-          },
-          "resources": [
-            "GitHub Actions docs",
-            "TechWorld with Nana CI/CD (YouTube)"
-          ],
-          "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
-        },
-        {
-          "phase_num": 15,
+          "phase_num": 13,
           "skill": "mongodb",
-          "start_week": 15,
-          "end_week": 15,
+          "start_week": 13,
+          "end_week": 13,
           "hours": 7,
           "phases": {
             "beginner": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials"
@@ -1098,15 +1067,6 @@
         },
         {
           "week": 4,
-          "skill": "react",
-          "focus": "Beginner - React",
-          "tasks": "[1w sprint] Components, JSX, props, state, event handling",
-          "hours": 7.0,
-          "daily_hrs": 1.0,
-          "project": "Build a task manager or e-commerce product listing app"
-        },
-        {
-          "week": 5,
           "skill": "node",
           "focus": "Beginner - Node",
           "tasks": "[1w sprint] Node.js basics, npm, modules, file system, HTTP module",
@@ -1115,25 +1075,16 @@
           "project": "Build a REST API with Express + JWT authentication"
         },
         {
+          "week": 5,
+          "skill": "sql",
+          "focus": "Beginner - Sql",
+          "tasks": "[1w sprint] SELECT, WHERE, ORDER BY, INSERT, UPDATE, DELETE, JOINs",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Analyze a public dataset with SQL queries"
+        },
+        {
           "week": 6,
-          "skill": "git",
-          "focus": "Beginner - Git",
-          "tasks": "[1w sprint] init, add, commit, push, pull, clone, status",
-          "hours": 7.0,
-          "daily_hrs": 1.0,
-          "project": "Contribute to an open-source project on GitHub"
-        },
-        {
-          "week": 7,
-          "skill": "typescript",
-          "focus": "Beginner - Typescript",
-          "tasks": "[1w sprint] Types, interfaces, enums, type inference, tsconfig basics",
-          "hours": 7.0,
-          "daily_hrs": 1.0,
-          "project": "Rewrite a JavaScript project in TypeScript"
-        },
-        {
-          "week": 8,
           "skill": "rest api",
           "focus": "Beginner - Rest Api",
           "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
@@ -1142,13 +1093,31 @@
           "project": "Build a small project applying this skill end-to-end"
         },
         {
-          "week": 9,
+          "week": 7,
           "skill": "docker",
           "focus": "Beginner - Docker",
           "tasks": "[1w sprint] Containers vs VMs, Docker CLI, Dockerfile, images, containers",
           "hours": 7.0,
           "daily_hrs": 1.0,
           "project": "Containerize a Python Flask/FastAPI app with Docker Compose"
+        },
+        {
+          "week": 8,
+          "skill": "postgresql",
+          "focus": "Beginner - Postgresql",
+          "tasks": "[1w sprint] Setup, psql CLI, basic CRUD, data types",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Design and query a relational database for a real app"
+        },
+        {
+          "week": 9,
+          "skill": "python",
+          "focus": "Beginner - Python",
+          "tasks": "[1w sprint] Variables, data types, loops, functions, lists, dicts",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": "Build a CLI task manager or web scraper"
         },
         {
           "week": 10,
@@ -1161,15 +1130,6 @@
         },
         {
           "week": 11,
-          "skill": "graphql",
-          "focus": "Beginner - Graphql",
-          "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
-          "hours": 7.0,
-          "daily_hrs": 1.0,
-          "project": "Build a small project applying this skill end-to-end"
-        },
-        {
-          "week": 12,
           "skill": "redis",
           "focus": "Beginner - Redis",
           "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
@@ -1178,7 +1138,7 @@
           "project": "Build a small project applying this skill end-to-end"
         },
         {
-          "week": 13,
+          "week": 12,
           "skill": "aws",
           "focus": "Beginner - Aws",
           "tasks": "[1w sprint] IAM, EC2, S3, VPC basics, AWS Free Tier setup",
@@ -1187,16 +1147,7 @@
           "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
         },
         {
-          "week": 14,
-          "skill": "ci/cd",
-          "focus": "Beginner - Ci/Cd",
-          "tasks": "[1w sprint] CI/CD concepts, GitHub Actions basics, automated testing",
-          "hours": 7.0,
-          "daily_hrs": 1.0,
-          "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
-        },
-        {
-          "week": 15,
+          "week": 13,
           "skill": "mongodb",
           "focus": "Beginner - Mongodb",
           "tasks": "[1w sprint] Learn fundamentals through official documentation and beginner tutorials",
@@ -1206,11 +1157,12 @@
         }
       ],
       "tips": [
-        "Your 15-week plan covers all 15 skills at 1.0h/day.",
+        "Your 13-week plan covers 13 skills at 1.0h/day.",
+        "\u26a0\ufe0f Timeline too short: 3 skill(s) excluded (git, typescript, ci/cd). Consider extending to 2-3 months.",
         "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
         "Complete the mini-project at the end of each skill to solidify learning.",
         "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
-        "Your 15-week window covers ~18% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+        "Your 13-week window covers ~18% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
         "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends."
       ],
       "tight_deadline": true
@@ -1227,25 +1179,6 @@
         "target_role": "Full Stack Developer",
         "score": 70,
         "delta": 68,
-        "skills_count": 2
-      },
-      {
-        "date": "19 May 2026, 11:01 PM",
-        "filename": "sample_resume.png",
-        "file_type": "PNG",
-        "target_role": "Full Stack Developer",
-        "score": 70,
-        "delta": 0,
-        "skills_count": 2
-      },
-      {
-        "date": "19 May 2026, 11:07 PM",
-        "filename": "sample_resume.png",
-        "file_type": "PNG",
-        "file_hash": "1e5643d50b26f7ae6af5b0e44ef01ec2d6c726714aea7edebfac2ab816d3c872",
-        "target_role": "Full Stack Developer",
-        "score": 70,
-        "delta": 0,
         "skills_count": 2
       }
     ],
@@ -1320,8 +1253,7 @@
       "role_description": "Builds both frontend and backend of web applications."
     },
     "gap_analyzed": true,
-    "resume_file_hashes": [
-      "1e5643d50b26f7ae6af5b0e44ef01ec2d6c726714aea7edebfac2ab816d3c872"
-    ]
+    "resume_file_hashes": [],
+    "resume_content_hashes": []
   }
 }
