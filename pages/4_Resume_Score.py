@@ -29,17 +29,17 @@ div[data-testid="stButton"] button[kind="primary"]{
 .tip-row{padding:0.45rem 0.8rem;border-left:3px solid #7c3aed;
     border-radius:0 8px 8px 0;background:rgba(124,58,237,0.05);
     margin-bottom:0.4rem;font-size:0.85rem;}
-.bd-row{display:flex;justify-content:space-between;align-items:center;
+.bd-row{display:flex;justify-content:space-between;
     font-size:0.83rem;padding:0.25rem 0;}
 .bd-score{font-weight:700;color:#7c3aed;}
 .info-pill{background:rgba(255,255,255,0.055);border:1px solid rgba(148,163,184,0.16);
     border-radius:10px;padding:0.72rem 0.85rem;margin-bottom:0.6rem;font-size:0.84rem;
-    min-height:85px;overflow-wrap:anywhere;display:flex;flex-direction:column;justify-content:center;}
+    min-height:74px;overflow-wrap:anywhere;}
 .cta-box{border:2px dashed rgba(124,58,237,0.3);border-radius:14px;
     padding:1.2rem 1.5rem;text-align:center;margin-top:1.5rem;
     background:rgba(124,58,237,0.03);}
 .history-card{border:1px solid rgba(124,58,237,0.2);border-radius:14px;
-    padding:1rem;background:rgba(124,58,237,0.04);margin:0.75rem 0;}
+    padding:0.9rem 1rem;background:rgba(124,58,237,0.04);margin:0.75rem 0;}
 .history-row{display:grid;grid-template-columns:1.1fr 1.2fr 0.7fr 0.7fr 0.7fr 0.6fr;
     gap:0.7rem;align-items:center;padding:0.5rem 0;border-bottom:1px solid rgba(148,163,184,0.22);
     font-size:0.84rem;}
@@ -62,8 +62,8 @@ div[data-testid="stButton"] button[kind="primary"]{
 .detail-panel{border:1px solid rgba(148,163,184,0.18);border-radius:14px;
     background:rgba(255,255,255,0.035);padding:1rem;margin-bottom:0.9rem;}
 .contact-card{border:1px solid rgba(148,163,184,0.16);border-radius:12px;
-    background:rgba(124,58,237,0.055);padding:0.7rem 0.85rem;min-height:85px;
-    overflow-wrap:anywhere;display:flex;flex-direction:column;justify-content:center;}
+    background:rgba(124,58,237,0.055);padding:0.7rem 0.85rem;min-height:74px;
+    overflow-wrap:anywhere;}
 .contact-label{font-size:0.74rem;color:#6b7280;font-weight:900;text-transform:uppercase;}
 .contact-value{font-size:0.84rem;font-weight:700;margin-top:0.25rem;}
 @media (max-width: 760px){
@@ -84,56 +84,6 @@ st.markdown("")
 # ── Target role: fixed from signup, change only via Profile ────────────────
 db_user     = get_user(st.session_state.email)
 target_role = db_user.get("target_role", "").strip()
-theme       = db_user.get("theme", "dark")
-
-if theme == "light":
-    st.markdown("""
-    <style>
-    div[data-testid="stFileUploader"],
-    div[data-testid="stFileUploader"] *,
-    div[data-testid="stFileUploader"] label,
-    div[data-testid="stFileUploader"] section,
-    div[data-testid="stFileUploader"] small,
-    div[data-testid="stFileUploader"] span,
-    div[data-testid="stFileUploader"] p {
-        color:#000000!important;
-    }
-    div[data-testid="stFileUploader"] section {
-        background:#ffffff!important;
-        border-color:#7c3aed!important;
-    }
-    div[data-testid="stFileUploader"] button {
-        background-color: #f3f4f6!important;
-        border: 1px solid #d1d5db!important;
-    }
-    div[data-testid="stCaptionContainer"],
-    div[data-testid="stCaptionContainer"] * {
-        color:#000000!important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-else:
-    st.markdown("""
-    <style>
-    div[data-testid="stFileUploader"],
-    div[data-testid="stFileUploader"] *,
-    div[data-testid="stFileUploader"] label,
-    div[data-testid="stFileUploader"] section,
-    div[data-testid="stFileUploader"] small,
-    div[data-testid="stFileUploader"] span,
-    div[data-testid="stFileUploader"] p {
-        color:#ffffff!important;
-    }
-    div[data-testid="stFileUploader"] section {
-        background:rgba(255,255,255,0.07)!important;
-        border-color:rgba(196,181,253,0.55)!important;
-    }
-    div[data-testid="stCaptionContainer"],
-    div[data-testid="stCaptionContainer"] * {
-        color:#ffffff!important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
 
 if not target_role:
     st.warning("⚠️ No target role set. Please update it in your Profile.")
@@ -150,32 +100,22 @@ st.markdown(
 )
 
 # ── File uploader ─────────────────────────────────────────────────────────────
-if "resume_uploader_reset" not in st.session_state:
-    st.session_state["resume_uploader_reset"] = 0
-
 uploaded = st.file_uploader(
     "📁 Upload Resume",
-    help="Upload your resume in any common file format.",
-    key=f"resume_upload_{st.session_state['resume_uploader_reset']}",
+    type=[
+        "pdf", "docx", "doc", "txt", "md", "markdown", "csv", "tsv",
+        "rtf", "html", "htm", "odt", "jpg", "jpeg", "png", "webp",
+        "bmp", "tif", "tiff",
+    ],
+    help="Accepts PDF, DOCX, TXT, images, and other resume file formats.",
 )
-st.caption("All common resume file formats are accepted.")
-
-if st.session_state.get("resume_history_deleted_message"):
-    st.success(st.session_state.pop("resume_history_deleted_message"))
+st.caption("Accepted formats: PDF, DOCX, TXT, MD, CSV, TSV, RTF, HTML, ODT, JPG, PNG, WEBP, BMP, TIFF.")
 
 
 def render_score_history(score_history):
     if not score_history:
         return
     st.markdown("### 📈 Resume Score History")
-    if st.button("🗑️ Clear All History", key="clear_all_resume_history"):
-        update = build_resume_history_update([])
-        update_user(st.session_state.email, update)
-        st.session_state.user.update(update)
-        clear_resume_upload_state(reset_uploader=True)
-        st.session_state["resume_history_deleted_message"] = "Resume score history has been deleted completely."
-        st.rerun()
-
     st.markdown(
         '<div class="history-row history-head">'
         '<div>Date</div><div>Resume</div><div>Score</div><div>Change</div><div>Skills</div><div>Action</div></div>',
@@ -213,69 +153,19 @@ def delete_history_item(index: int):
     if not 0 <= index < len(history):
         return
     new_history = history[:index] + history[index + 1:]
-    update = build_resume_history_update(
-        new_history,
-        clear_current_analysis=index == len(history) - 1,
-    )
-    update_user(st.session_state.email, update)
-    st.session_state.user.update(update)
-    if "resume_result" in st.session_state:
-        st.session_state["resume_result"]["score_history"] = new_history
-    clear_resume_upload_state(reset_uploader=True)
-    if new_history:
-        st.session_state["resume_history_deleted_message"] = "Resume score history item has been deleted completely."
-    else:
-        st.session_state["resume_history_deleted_message"] = "Resume score history has been deleted completely."
-
-
-def clear_resume_upload_state(reset_uploader=False):
-    for key in ["resume_file_key", "duplicate_resume_key", "resume_result", "gap_result"]:
-        st.session_state.pop(key, None)
-    st.session_state["resume_file_key"] = ""  # Explicit reset to force uploader re-eval
-    if reset_uploader:
-        st.session_state["resume_uploader_reset"] = st.session_state.get("resume_uploader_reset", 0) + 1
-
-
-def collect_history_hashes(score_history):
-    file_hashes = [item.get("file_hash") for item in score_history if item.get("file_hash")]
-    content_hashes = [item.get("content_hash") for item in score_history if item.get("content_hash")]
-    return file_hashes, content_hashes
-
-
-def build_resume_history_update(score_history, clear_current_analysis=True):
-    file_hashes, content_hashes = collect_history_hashes(score_history)
-    latest = score_history[-1] if score_history else {}
+    file_hashes = [item.get("file_hash") for item in new_history if item.get("file_hash")]
+    content_hashes = [item.get("content_hash") for item in new_history if item.get("content_hash")]
+    latest = new_history[-1] if new_history else {}
     update = {
-        "resume_score_history": score_history,
+        "resume_score_history": new_history,
         "resume_file_hashes": list(dict.fromkeys(file_hashes))[-50:],
         "resume_content_hashes": list(dict.fromkeys(content_hashes))[-50:],
         "resume_score": latest.get("score", 0),
     }
-    if clear_current_analysis:
-        update.update({
-            "skills": [],
-            "missing_skills": [],
-            "gap_result": {},
-            "gap_analyzed": False,
-        })
-    return update
-
-
-def sync_resume_hash_cache(user):
-    score_history = user.get("resume_score_history", [])
-    file_hashes, content_hashes = collect_history_hashes(score_history)
-    update = {
-        "resume_file_hashes": list(dict.fromkeys(file_hashes))[-50:],
-        "resume_content_hashes": list(dict.fromkeys(content_hashes))[-50:],
-    }
-    if (
-        user.get("resume_file_hashes", []) != update["resume_file_hashes"]
-        or user.get("resume_content_hashes", []) != update["resume_content_hashes"]
-    ):
-        update_user(st.session_state.email, update)
-        st.session_state.user.update(update)
-        user = {**user, **update}
-    return user
+    update_user(st.session_state.email, update)
+    st.session_state.user.update(update)
+    st.session_state["resume_file_key"] = ""
+    st.session_state.pop("resume_result", None)
 
 
 def get_uploaded_file_hash(file_obj) -> str:
@@ -295,23 +185,26 @@ def get_resume_content_hash(raw_text: str) -> str:
 if uploaded and target_role:
     file_hash = get_uploaded_file_hash(uploaded)
     file_key = file_hash
-
-    # Clear stale duplicate key if a different file is uploaded
-    if st.session_state.get("duplicate_resume_key") and st.session_state.get("duplicate_resume_key") != file_key:
-        st.session_state.pop("duplicate_resume_key", None)
-
-    if (
-        st.session_state.get("duplicate_resume_key") == file_key
-        and st.session_state.get("resume_file_key") == file_key
-    ):
+    if st.session_state.get("duplicate_resume_key") == file_key:
         st.warning("This exact resume content has already been analyzed. Change the resume content before uploading it again.")
     if st.session_state.get("resume_file_key") != file_key:
         latest_user = get_user(st.session_state.email) or {}
-        latest_user = sync_resume_hash_cache(latest_user)
-        saved_history = latest_user.get("resume_score_history", [])
-        history_hashes, history_content_hashes = collect_history_hashes(saved_history)
-        analyzed_hashes = list(dict.fromkeys(history_hashes))
-        analyzed_content_hashes = list(dict.fromkeys(history_content_hashes))
+        history_hashes = [
+            item.get("file_hash")
+            for item in latest_user.get("resume_score_history", [])
+            if item.get("file_hash")
+        ]
+        history_content_hashes = [
+            item.get("content_hash")
+            for item in latest_user.get("resume_score_history", [])
+            if item.get("content_hash")
+        ]
+        analyzed_hashes = list(dict.fromkeys(
+            (latest_user.get("resume_file_hashes", []) or []) + history_hashes
+        ))
+        analyzed_content_hashes = list(dict.fromkeys(
+            (latest_user.get("resume_content_hashes", []) or []) + history_content_hashes
+        ))
         duplicate_resume = file_hash in analyzed_hashes
 
         if duplicate_resume:
@@ -319,6 +212,7 @@ if uploaded and target_role:
             st.session_state["duplicate_resume_key"] = file_key
             st.session_state["resume_file_key"] = file_key
             st.session_state.pop("resume_result", None)
+            saved_history = latest_user.get("resume_score_history", [])
             if saved_history:
                 st.markdown("---")
                 render_score_history(saved_history)
@@ -360,9 +254,8 @@ if uploaded and target_role:
                         "skills_count": len(skills),
                     }
                     score_history = (score_history + [history_entry])[-10:]
-                    history_hashes, history_content_hashes = collect_history_hashes(score_history)
-                    analyzed_hashes = list(dict.fromkeys(history_hashes))[-50:]
-                    analyzed_content_hashes = list(dict.fromkeys(history_content_hashes))[-50:]
+                    analyzed_hashes = (analyzed_hashes + [file_hash])[-50:]
+                    analyzed_content_hashes = (analyzed_content_hashes + ([content_hash] if content_hash else []))[-50:]
                     update_user(st.session_state.email, {
                         "resume_score":         score,
                         "resume_score_history": score_history,
@@ -410,7 +303,6 @@ elif not uploaded:
     st.info("👆 Upload your resume to get started.")
     st.session_state.pop("resume_result", None)
     st.session_state.pop("resume_file_key", None)
-    st.session_state.pop("duplicate_resume_key", None)
     saved_history = db_user.get("resume_score_history", [])
     if saved_history:
         st.markdown("---")
@@ -513,6 +405,90 @@ if "resume_result" in st.session_state:
     if score_history:
         st.markdown("---")
         render_score_history(score_history)
+
+    st.markdown("---")
+    st.markdown("### 🔍 Extracted Resume Data")
+
+    contact_vals = {k: v for k, v in contact.items() if v and k != "name"}
+    if contact_vals:
+        icons_map = {"email": "📧", "phone": "📞", "linkedin": "💼", "github": "🐙"}
+        cc = st.columns(len(contact_vals))
+        for i, (k, v) in enumerate(contact_vals.items()):
+            with cc[i]:
+                st.markdown(
+                    f'<div class="contact-card">'
+                    f'<div class="contact-label">{icons_map.get(k,"")} {k.title()}</div>'
+                    f'<div class="contact-value">{html.escape(v)}</div>'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
+        st.markdown("")
+
+    if categorized:
+        st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
+        st.markdown('<div class="data-grid-title">🧠 Skills by Category</div>', unsafe_allow_html=True)
+        for cat, skill_list in categorized.items():
+            if skill_list:
+                st.markdown(f"*{cat}*")
+                chips = "".join(
+                    f'<span class="skill-chip">{html.escape(s.title())}</span>' for s in skill_list
+                )
+                st.markdown(chips, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("")
+
+    d1, d2, d3 = st.columns(3)
+
+    with d1:
+        if education:
+            st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
+            st.markdown('<div class="data-grid-title">🎓 Education</div>', unsafe_allow_html=True)
+            for edu in education:
+                degree = html.escape(edu.get("degree", ""))
+                institution = html.escape(edu.get("institution", ""))
+                yr = html.escape(edu.get("year", ""))
+                st.markdown(f"""
+                <div class="info-pill">
+                    <strong>{degree}</strong><br>
+                    <span style="color:#6b7280;font-size:0.8rem;">
+                        {institution}{" · " + yr if yr else ""}
+                    </span>
+                </div>""", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+    with d2:
+        if experience:
+            st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
+            st.markdown('<div class="data-grid-title">💼 Experience</div>', unsafe_allow_html=True)
+            for exp in experience[:3]:
+                resps = exp.get("responsibilities", [])
+                title = html.escape(exp.get("title", ""))
+                company = html.escape(exp.get("company", ""))
+                dur = html.escape(exp.get("duration", ""))
+                resp_line = f'<br><span style="font-size:0.76rem;color:#9ca3af;">• {html.escape(resps[0][:70])}</span>' if resps else ""
+                st.markdown(f"""
+                <div class="info-pill">
+                    <strong>{title}</strong><br>
+                    <span style="color:#6b7280;font-size:0.8rem;">
+                        {company}{" · " + dur if dur else ""}
+                    </span>{resp_line}
+                </div>""", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+    with d3:
+        if projects:
+            st.markdown('<div class="detail-panel">', unsafe_allow_html=True)
+            st.markdown('<div class="data-grid-title">🛠️ Projects</div>', unsafe_allow_html=True)
+            for proj in projects[:3]:
+                tech = proj.get("tech", [])
+                title = html.escape(proj.get("title", ""))
+                tech_line = f'<span style="color:#7c3aed;font-size:0.78rem;">{html.escape(", ".join(tech[:4]))}</span>' if tech else ""
+                st.markdown(f"""
+                <div class="info-pill">
+                    <strong>{title}</strong><br>
+                    {tech_line}
+                </div>""", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
 # ── Builder CTA ───────────────────────────────────────────────────────────────
 st.markdown("""
