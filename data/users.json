@@ -53,11 +53,11 @@
     "roadmap_result": {
       "role": "Full Stack Developer",
       "skill_level": "beginner",
-      "summary": "Full Stack Developer | Beginner | 3 skills | 9 weeks | 1.0h/day",
+      "summary": "Full Stack Developer | Beginner | 3 skills | 13 weeks | 1.0h/day",
       "timeline": {
-        "total_weeks": 9,
-        "total_hours": 63,
-        "total_months": 2.1,
+        "total_weeks": 13,
+        "total_hours": 91,
+        "total_months": 3.0,
         "hours_per_week": 7.0,
         "daily_hours": 1.0
       },
@@ -66,8 +66,8 @@
           "phase_num": 1,
           "skill": "graphql",
           "start_week": 1,
-          "end_week": 2,
-          "hours": 14,
+          "end_week": 4,
+          "hours": 28,
           "phases": {
             "beginner": "Learn fundamentals through official documentation and beginner tutorials",
             "intermediate": "Build small projects and follow structured courses on Udemy/Coursera",
@@ -83,9 +83,9 @@
         {
           "phase_num": 2,
           "skill": "aws",
-          "start_week": 3,
-          "end_week": 7,
-          "hours": 35,
+          "start_week": 5,
+          "end_week": 11,
+          "hours": 49,
           "phases": {
             "beginner": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
             "intermediate": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
@@ -101,8 +101,8 @@
         {
           "phase_num": 3,
           "skill": "ci/cd",
-          "start_week": 8,
-          "end_week": 9,
+          "start_week": 12,
+          "end_week": 13,
           "hours": 14,
           "phases": {
             "beginner": "CI/CD concepts, GitHub Actions basics, automated testing",
@@ -129,35 +129,35 @@
         {
           "week": 2,
           "skill": "graphql",
-          "focus": "Intermediate - Graphql",
-          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
+          "focus": "Beginner - Graphql",
+          "tasks": "Learn fundamentals through official documentation and beginner tutorials",
           "hours": 7.0,
           "daily_hrs": 1.0,
-          "project": "Build a small project applying this skill end-to-end"
+          "project": ""
         },
         {
           "week": 3,
-          "skill": "aws",
-          "focus": "Beginner - Aws",
-          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "skill": "graphql",
+          "focus": "Intermediate - Graphql",
+          "tasks": "Build small projects and follow structured courses on Udemy/Coursera",
           "hours": 7.0,
           "daily_hrs": 1.0,
           "project": ""
         },
         {
           "week": 4,
-          "skill": "aws",
-          "focus": "Beginner - Aws",
-          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "skill": "graphql",
+          "focus": "Advanced - Graphql",
+          "tasks": "Contribute to open source, build portfolio projects, get certified",
           "hours": 7.0,
           "daily_hrs": 1.0,
-          "project": ""
+          "project": "Build a small project applying this skill end-to-end"
         },
         {
           "week": 5,
           "skill": "aws",
-          "focus": "Intermediate - Aws",
-          "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
+          "focus": "Beginner - Aws",
+          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
           "hours": 7.0,
           "daily_hrs": 1.0,
           "project": ""
@@ -165,6 +165,24 @@
         {
           "week": 6,
           "skill": "aws",
+          "focus": "Beginner - Aws",
+          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 7,
+          "skill": "aws",
+          "focus": "Beginner - Aws",
+          "tasks": "IAM, EC2, S3, VPC basics, AWS Free Tier setup",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 8,
+          "skill": "aws",
           "focus": "Intermediate - Aws",
           "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
           "hours": 7.0,
@@ -172,7 +190,25 @@
           "project": ""
         },
         {
-          "week": 7,
+          "week": 9,
+          "skill": "aws",
+          "focus": "Intermediate - Aws",
+          "tasks": "Lambda, RDS, CloudFormation, ECS, Route53, CloudWatch",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 10,
+          "skill": "aws",
+          "focus": "Advanced - Aws",
+          "tasks": "Well-Architected Framework, cost optimization, security, certifications",
+          "hours": 7.0,
+          "daily_hrs": 1.0,
+          "project": ""
+        },
+        {
+          "week": 11,
           "skill": "aws",
           "focus": "Advanced - Aws",
           "tasks": "Well-Architected Framework, cost optimization, security, certifications",
@@ -181,7 +217,7 @@
           "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
         },
         {
-          "week": 8,
+          "week": 12,
           "skill": "ci/cd",
           "focus": "Beginner - Ci/Cd",
           "tasks": "CI/CD concepts, GitHub Actions basics, automated testing",
@@ -190,7 +226,7 @@
           "project": ""
         },
         {
-          "week": 9,
+          "week": 13,
           "skill": "ci/cd",
           "focus": "Intermediate - Ci/Cd",
           "tasks": "Multi-stage pipelines, Docker integration, deployment automation",
@@ -200,11 +236,11 @@
         }
       ],
       "tips": [
-        "Your 9-week plan covers 3 skills at 1.0h/day.",
+        "Your 13-week plan covers 3 skills at 1.0h/day.",
         "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
         "Complete the mini-project at the end of each skill to solidify learning.",
         "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
-        "Your 9-week window covers ~57% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+        "Your 13-week window covers ~83% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
         "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends."
       ],
       "tight_deadline": true
