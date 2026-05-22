@@ -29,7 +29,8 @@ def show_navbar(active="Dashboard"):
         _text_color  = "#1a1a2e"
         _theme_css   = (
         """
-        html,body,.stApp{background:""" + BG_LIGHT + """!important;color:#1a1a2e!important;}
+        html,body,.stApp,[data-testid="stAppViewContainer"],[data-testid="stHeader"],
+        .main,.block-container{background:""" + BG_LIGHT + """!important;color:#1a1a2e!important;}
 
         /* All text elements */
         div[data-testid="stMarkdownContainer"] p,
@@ -56,12 +57,14 @@ def show_navbar(active="Dashboard"):
         /* Inputs */
         div[data-testid="stTextInput"] input,
         div[data-testid="stTextArea"] textarea,
-        div[data-testid="stNumberInput"] input
+        div[data-testid="stNumberInput"] input,
+        div[data-testid="stSelectbox"] > div > div,
+        div[data-testid="stMultiSelect"] > div > div
         {background:#fff!important;color:#1a1a2e!important;border-color:#d1d5db!important;}
 
-        /* Select boxes */
-        div[data-testid="stSelectbox"] > div > div
-        {background:#fff!important;color:#1a1a2e!important;border-color:#d1d5db!important;}
+        /* Chat elements */
+        div[data-testid="stChatMessage"] {background:#fff!important;border:1px solid #e2e8f0!important;}
+        div[data-testid="stChatInput"] textarea {background:#fff!important;color:#1a1a2e!important;}
 
         /* Metrics */
         div[data-testid="stMetric"]{background:#fff!important;border:1px solid #e5e7eb!important;border-radius:12px;}
@@ -77,57 +80,51 @@ def show_navbar(active="Dashboard"):
 
         /* Roadmap Page Specific Overrides */
         /* SVG Journey Map */
-        #journey-svg .track-bg{stroke:#e5e7eb!important;}
-        #journey-svg .track-rail{stroke:#cbd5e1!important;}
-        #journey-svg .station-done .s-circle{fill:#d1fae5!important;stroke:#6ee7b7!important;}
-        #journey-svg .station-active .s-circle{fill:#ede9fe!important;stroke:#a78bfa!important;}
-        #journey-svg .station-upcoming .s-circle{fill:#f1f5f9!important;stroke:#cbd5e1!important;}
+        #journey-svg .track-bg{stroke:#1a1a2e!important;}
+        #journey-svg .track-rail{stroke:#1a1a2e!important;}
+        #journey-svg .station-done .s-circle{fill:#fff!important;stroke:#1a1a2e!important;}
+        #journey-svg .station-active .s-circle{fill:#fff!important;stroke:#1a1a2e!important;}
+        #journey-svg .station-upcoming .s-circle{fill:#fff!important;stroke:#1a1a2e!important;}
         #journey-svg .s-icon{fill:#1a1a2e!important;}
-        #journey-svg .station-upcoming .s-icon{fill:#4b5563!important;}
+        #journey-svg .station-upcoming .s-icon{fill:#1a1a2e!important;}
         #journey-svg .s-label{fill:#1a1a2e!important;}
-        #journey-svg .s-weeks{fill:#4b5563!important;}
-        #journey-svg #train-glow{filter:drop-shadow(0 0 8px rgba(167,139,250,0.2))!important;}
-        #journey-svg #train-body{fill:#7c3aed!important;}
+        #journey-svg .s-weeks{fill:#1a1a2e!important;}
+        #journey-svg #train-glow{filter:none!important;}
+        #journey-svg #train-body{fill:#1a1a2e!important;}
         #journey-svg #train-dot{fill:#fff!important;}
-        #journey-svg .flag-pole{stroke:#f59e0b!important;} /* Goal flag pole */
-        #journey-svg .flag-rect{fill:#10b981!important;} /* Goal flag rect */
-        #journey-svg .goal-lbl{fill:#10b981!important;} /* Goal label */
+        #journey-svg .flag-pole{stroke:#1a1a2e!important;}
+        #journey-svg .flag-rect{fill:#1a1a2e!important;}
+        #journey-svg .goal-lbl{fill:#1a1a2e!important;}
 
         /* Detail Panel */
-        #detail{background:#fff!important;border:1px solid #e5e7eb!important;box-shadow:0 12px 30px rgba(0,0,0,0.1)!important;}
+        #detail{background:#fff!important;border:2px solid #1a1a2e!important;box-shadow:none!important;}
         #detail .d-title{color:#1a1a2e!important;}
-        #detail .d-close{background:#f1f5f9!important;color:#4b5563!important;}
-        #detail .badge-done{background:#d1fae5!important;color:#065f46!important;border:1px solid #6ee7b7!important;}
-        #detail .badge-active{background:#ede9fe!important;color:#5b21b6!important;border:1px solid #a78bfa!important;}
-        #detail .badge-upcoming{background:#f1f5f9!important;color:#4b5563!important;border:1px solid #cbd5e1!important;}
-        #detail .d-meta{color:#4b5563!important;}
-        #detail .ph-row{color:#374151!important;}
-        #detail .ph-badge.ph-beginner{background:#d1fae5!important;color:#065f46!important;}
-        #detail .ph-badge.ph-intermediate{background:#fef3c7!important;color:#92400e!important;}
-        #detail .ph-badge.ph-advanced{background:#fee2e2!important;color:#991b1b!important;}
-        #detail .d-section{color:#7c3aed!important;}
-        #detail .d-resources li{color:#4b5563!important;}
-        #detail .d-project{background:#ede9fe!important;border:1px solid #a78bfa!important;color:#5b21b6!important;}
-        #overlay{background:rgba(0,0,0,0.3)!important;backdrop-filter:blur(2px)!important;}
+        #detail .d-close{background:#fff!important;color:#1a1a2e!important;border:1px solid #1a1a2e!important;}
+        #detail .badge-done, #detail .badge-active, #detail .badge-upcoming{background:#fff!important;color:#1a1a2e!important;border:1.5px solid #1a1a2e!important;}
+        #detail .d-meta{color:#1a1a2e!important;}
+        #detail .ph-row{color:#1a1a2e!important;}
+        #detail .ph-badge{background:#fff!important;color:#1a1a2e!important;border:1px solid #1a1a2e!important;}
+        #detail .d-section{color:#1a1a2e!important;text-decoration:underline;}
+        #detail .d-resources li{color:#1a1a2e!important;}
+        #detail .d-project{background:#fff!important;border:2px solid #1a1a2e!important;color:#1a1a2e!important;}
+        #overlay{background:rgba(255,255,255,0.7)!important;backdrop-filter:blur(2px)!important;}
 
         /* Progress Bar */
-        #prog-wrap .prog-label{color:#4b5563!important;}
-        #prog-wrap .prog-bar{background:#e5e7eb!important;}
-        #prog-wrap .prog-fill{background:linear-gradient(90deg,#7c3aed,#34d399)!important;}
+        #prog-wrap .prog-label{color:#1a1a2e!important;}
+        #prog-wrap .prog-bar{background:#fff!important;border:1px solid #1a1a2e!important;}
+        #prog-wrap .prog-fill{background:#1a1a2e!important;}
 
         /* Achievements */
         .ba-grid h2{color:#1a1a2e!important;}
-        .ba-card{background:#fff!important;border:1.5px solid #e5e7eb!important;}
-        .ba-on{background:linear-gradient(145deg,rgba(124,58,237,0.1),rgba(79,70,229,0.08))!important;
-            border:1.5px solid rgba(167,139,250,0.3)!important;
-            box-shadow:0 4px 12px rgba(124,58,237,0.1)!important;}
-        .ba-off{background:#f1f5f9!important;border:1.5px solid #e2e8f0!important;opacity:0.7!important;filter:none!important;}
+        .ba-card{background:#fff!important;border:2px solid #1a1a2e!important;}
+        .ba-on{background:#fff!important;border:2px solid #1a1a2e!important;box-shadow:none!important;}
+        .ba-off{background:#fff!important;border:1px solid #e5e7eb!important;opacity:0.4!important;}
         .ba-icon{color:#1a1a2e!important;}
         .ba-title{color:#1a1a2e!important;}
-        .ba-on .ba-title{color:#7c3aed!important;}
-        .ba-desc{color:#4b5563!important;}
-        .ba-status{color:#4b5563!important;}
-        .ba-on .ba-status{color:#065f46!important;}
+        .ba-on .ba-title{color:#1a1a2e!important;font-weight:800!important;}
+        .ba-desc{color:#1a1a2e!important;}
+        .ba-status{color:#1a1a2e!important;}
+        .ba-on .ba-status{color:#1a1a2e!important;font-weight:700!important;}
         /* Ensure the HTML component's body background is light */
         .stHtml body{background:""" + COLOR_BG_LIGHT + """!important;}
 
@@ -149,7 +146,9 @@ def show_navbar(active="Dashboard"):
         .sc-val{color:#1a1a2e!important;}
         .sc-lbl{color:#6b7280!important;}
         .feat-card,.fc-wrap,.score-card,.ats-card,.suggestion-card,
-        .roadmap-card,.customize-card,.customize-box{background:#fff!important;border-color:#e5e7eb!important;}
+        .roadmap-card,.customize-card,.customize-box,
+        .auth-card{background:#ffffff!important;border-color:#e5e7eb!important;
+                   backdrop-filter:none!important;box-shadow:0 10px 25px -5px rgba(0,0,0,0.05)!important;}
         .fct{color:#1a1a2e!important;}
         .fcd{color:#4b5563!important;}
         .fcb{background:rgba(124,58,237,0.1)!important;color:#7c3aed!important;}
@@ -159,11 +158,18 @@ def show_navbar(active="Dashboard"):
         .feat-card div, .feat-card p, .feat-card span,
         .stat-card div, .stat-card p, .stat-card span,
         .score-card div, .score-card p, .score-card span,
-        .ats-card div, .ats-card p, .ats-card span
+        .ats-card div, .ats-card p, .ats-card span,
         .roadmap-card div, .roadmap-card p, .roadmap-card span,
         .customize-card div, .customize-card p, .customize-card span,
-        .customize-box div, .customize-box p, .customize-box span
+        .customize-box div, .customize-box p, .customize-box span,
+        .auth-card div, .auth-card p, .auth-card span,
+        .auth-title, .prog-lbl, .auth-card h1, .auth-card h2, .auth-card h3, .auth-card h4
         {color:#1a1a2e!important;}
+        .auth-sub, .prog-lbl{color:#1a1a2e!important;}
+        .auth-card div[style*="color:#c4b5fd"] {color:#7c3aed!important;}
+        .prog-step{background:#94a3b8!important;}
+        .prog-done{background:#000000!important;}
+        .prog-active{background:#7c3aed!important;}
         .fc-wrap div[style*="rgba(255,255,255,0.55)"],
         .fc-wrap div[style*="color:#fff"],
         .feat-card div[style*="color:#fff"]
