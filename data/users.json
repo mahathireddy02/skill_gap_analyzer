@@ -74,9 +74,8 @@
             "advanced": "Contribute to open source, build portfolio projects, get certified"
           },
           "resources": [
-            "Official documentation",
-            "YouTube tutorials",
-            "freeCodeCamp"
+            "Udemy courses (search skill name)",
+            "Coursera specializations"
           ],
           "project": "Build a small project applying this skill end-to-end"
         },
@@ -92,9 +91,7 @@
             "advanced": "Well-Architected Framework, cost optimization, security, certifications"
           },
           "resources": [
-            "AWS Free Tier",
-            "freeCodeCamp AWS (YouTube)",
-            "AWS Skill Builder"
+            "AWS Certified Solutions Architect (Udemy \u2013 Stephane Maarek)"
           ],
           "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
         },
@@ -110,8 +107,7 @@
             "advanced": "GitOps, ArgoCD, advanced workflows, secrets management"
           },
           "resources": [
-            "GitHub Actions docs",
-            "TechWorld with Nana CI/CD (YouTube)"
+            "GitHub Actions \u2013 The Complete Guide (Udemy)"
           ],
           "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
         }
@@ -240,13 +236,12 @@
         "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
         "Complete the mini-project at the end of each skill to solidify learning.",
         "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
-        "Your 13-week window covers ~83% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
-        "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends."
+        "Your 13-week window covers ~83% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice."
       ],
       "tight_deadline": true
     },
     "checked_weeks": [],
-    "theme": "dark",
+    "theme": "light",
     "bio": "",
     "reset_token": "Sc1YfBg36i2cZ1Q4VmUGLp9cQpjJ3QKqXu_CFwERT0Q",
     "reset_expiry": 1778599262.6127052,

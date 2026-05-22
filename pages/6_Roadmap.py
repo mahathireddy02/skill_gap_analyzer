@@ -9,25 +9,177 @@ from components.navbar import show_navbar
 st.set_page_config(page_title="Roadmap · SkillGap", page_icon="🛤️", layout="wide", initial_sidebar_state="collapsed")
 require_login()
 
-st.markdown("""
+db_user = get_user(st.session_state.email)
+theme = db_user.get("theme", "dark")
+is_light = theme == "light"
+
+page_bg = "#f8fafc" if is_light else "#0a0e17"
+page_text = "#172033" if is_light else "#ffffff"
+page_muted = "#5b6472" if is_light else "rgba(255,255,255,0.58)"
+card_bg = "#ffffff" if is_light else "rgba(255,255,255,0.05)"
+card_border = "#dbe3ef" if is_light else "rgba(255,255,255,0.08)"
+input_bg = "#ffffff" if is_light else "rgba(255,255,255,0.07)"
+input_border = "#cbd5e1" if is_light else "rgba(255,255,255,0.15)"
+prefill_bg = "#eef2ff" if is_light else "rgba(124,58,237,0.1)"
+prefill_border = "#c7d2fe" if is_light else "rgba(124,58,237,0.2)"
+prefill_text = "#4338ca" if is_light else "#a78bfa"
+prefill_strong = "#312e81" if is_light else "#ddd6fe"
+
+st.markdown(f"""
 <style>
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stSidebarNav"],
 [data-testid="stSidebar"],[data-testid="collapsedControl"],section[data-testid="stSidebar"],
 .stDeployButton,[class*="viewerBadge"],[class*="toolbar"]
-{display:none!important;visibility:hidden!important;}
-html,body,.stApp{margin:0!important;padding:0!important;background:#0a0e17!important;}
-.block-container{padding:1rem 2rem!important;max-width:100%!important;}
-div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
-div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
-div[data-testid="stMetric"]{background:rgba(255,255,255,0.05);border-radius:12px;padding:0.8rem 1rem;border:1px solid rgba(255,255,255,0.08);}
-div[data-testid="stMetric"] label{color:rgba(255,255,255,0.5)!important;}
-div[data-testid="stMetric"] div{color:#fff!important;}
+{{display:none!important;visibility:hidden!important;}}
+html,body,.stApp{{margin:0!important;padding:0!important;background:{page_bg}!important;color:{page_text}!important;}}
+.block-container{{padding:1rem 2rem!important;max-width:100%!important;}}
+div[data-testid="stButton"] button{{font-weight:700!important;border-radius:10px!important;}}
+div[data-testid="stButton"] button[kind="primary"]{{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}}
+div[data-testid="stMetric"]{{background:{card_bg}!important;border-radius:12px;padding:0.8rem 1rem;border:1px solid {card_border}!important;}}
+div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricLabel"] p{{color:{page_muted}!important;}}
+div[data-testid="stMetric"] div, div[data-testid="stMetric"] [data-testid="stMetricValue"]{{color:{page_text}!important;}}
+h1,h2,h3,h4,h5,h6,
+div[data-testid="stMarkdownContainer"] h1,
+div[data-testid="stMarkdownContainer"] h2,
+div[data-testid="stMarkdownContainer"] h3,
+div[data-testid="stMarkdownContainer"] p,
+label,
+div[data-testid="stExpander"] summary,
+div[data-testid="stExpander"] summary span,
+div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p,
+div[data-testid="stCheckbox"] span,
+div[data-testid="stRadio"] label span,
+div[data-testid="stSelectbox"] label,
+div[data-testid="stSlider"] label,
+div[data-testid="stTextInput"] label
+{{color:{page_text}!important;}}
+div[data-testid="stCaptionContainer"],
+div[data-testid="stCaptionContainer"] p{{color:{page_muted}!important;}}
+div[data-testid="stExpander"]{{background:{card_bg}!important;border:1px solid {card_border}!important;border-radius:12px!important;}}
+div[data-testid="stSelectbox"] div[data-baseweb="select"],
+div[data-testid="stTextInput"] input,
+div[data-testid="stRadio"] label,
+div[data-testid="stSlider"] div[data-testid="stTickBar"]{{
+    background:{input_bg}!important;
+    color:{page_text}!important;
+    border-color:{input_border}!important;
+}}
+div[data-testid="stSelectbox"] div[data-baseweb="select"] *,
+div[data-testid="stTextInput"] input::placeholder,
+div[data-testid="stRadio"] label *,
+div[data-testid="stSlider"] * {{
+    color:{page_text}!important;
+}}
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] *,
+div[role="listbox"],
+div[role="listbox"] *,
+ul[role="listbox"],
+ul[role="listbox"] * {{
+    background:{input_bg}!important;
+    color:{page_text}!important;
+}}
+div[role="option"],
+li[role="option"] {{
+    background:{input_bg}!important;
+    color:{page_text}!important;
+}}
+div[role="option"]:hover,
+li[role="option"]:hover,
+div[aria-selected="true"],
+li[aria-selected="true"] {{
+    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    color:{page_text}!important;
+}}
+.roadmap-prefill{{
+    background:{prefill_bg}!important;
+    border:1px solid {prefill_border}!important;
+    border-radius:8px;
+    padding:0.4rem 0.9rem;
+    font-size:0.82rem;
+    color:{prefill_text}!important;
+    margin-bottom:0.8rem;
+}}
+.roadmap-prefill strong{{color:{prefill_strong}!important;}}
 </style>
 """, unsafe_allow_html=True)
 
 show_navbar("Roadmap")
 
-db_user = get_user(st.session_state.email)
+st.markdown(f"""
+<style>
+div[data-testid="stExpander"] details,
+div[data-testid="stExpander"] summary,
+div[data-testid="stExpander"] summary *,
+div[data-testid="stExpander"] summary p,
+div[data-testid="stExpander"] summary span,
+div[data-testid="stExpander"] summary svg,
+div[data-testid="stExpander"] [data-testid="stMarkdownContainer"],
+div[data-testid="stExpander"] [data-testid="stMarkdownContainer"] *,
+div[data-testid="stCheckbox"] label,
+div[data-testid="stCheckbox"] label *,
+div[data-testid="stCheckbox"] p,
+div[data-testid="stCheckbox"] span,
+div[data-testid="stCaptionContainer"],
+div[data-testid="stCaptionContainer"] * {{
+    color:{page_text if is_light else "#ffffff"}!important;
+}}
+div[data-testid="stExpander"] {{
+    background:{card_bg}!important;
+    border:1px solid {card_border}!important;
+}}
+div[data-testid="stExpander"] details,
+div[data-testid="stExpander"] summary,
+div[data-testid="stCheckbox"] label {{
+    background:{card_bg}!important;
+}}
+div[data-testid="stCheckbox"] [data-baseweb="checkbox"],
+div[data-testid="stCheckbox"] [data-baseweb="checkbox"] *,
+div[data-testid="stCheckbox"] span[data-baseweb="checkbox"] {{
+    background:{input_bg}!important;
+    border-color:{input_border}!important;
+    color:{page_text}!important;
+}}
+div[data-testid="stCheckbox"] input + div,
+div[data-testid="stCheckbox"] input + div *,
+div[data-testid="stCheckbox"] input ~ div,
+div[data-testid="stCheckbox"] input ~ div * {{
+    background:{input_bg}!important;
+    border-color:{input_border}!important;
+    color:{page_text}!important;
+}}
+div[data-testid="stCheckbox"] input:checked + div,
+div[data-testid="stCheckbox"] input:checked + div *,
+div[data-testid="stCheckbox"] input:checked ~ div,
+div[data-testid="stCheckbox"] input:checked ~ div * {{
+    background:#7c3aed!important;
+    border-color:#7c3aed!important;
+    color:#ffffff!important;
+    fill:#ffffff!important;
+}}
+div[data-testid="stCheckbox"] svg {{
+    color:{page_text}!important;
+    fill:{page_text}!important;
+}}
+div[data-testid="stCheckbox"] input:checked ~ div svg,
+div[data-testid="stCheckbox"] input:checked + div svg {{
+    color:#ffffff!important;
+    fill:#ffffff!important;
+}}
+div[data-testid="stExpander"] summary svg {{
+    fill:{page_text if is_light else "#ffffff"}!important;
+    color:{page_text if is_light else "#ffffff"}!important;
+}}
+div[data-testid="stExpander"] summary:hover {{
+    background:{"#eef2ff" if is_light else "rgba(255,255,255,0.04)"}!important;
+}}
+div[data-testid="stCaptionContainer"],
+div[data-testid="stCaptionContainer"] * {{
+    color:{page_muted}!important;
+}}
+</style>
+""", unsafe_allow_html=True)
+
 role    = db_user.get("target_role", "").strip()
 
 # Always use freshest missing_skills tied to the current role
@@ -82,8 +234,7 @@ st.caption(f"Target Role: **{role}** · {len(missing)} skills to learn")
 # ── Settings Form ─────────────────────────────────────────────────────────────
 with st.expander("⚙️ Customize Roadmap", expanded="roadmap_result" not in st.session_state):
     st.markdown(
-        f'<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);'
-        f'border-radius:8px;padding:0.4rem 0.9rem;font-size:0.82rem;color:#a78bfa;margin-bottom:0.8rem;">'
+        f'<div class="roadmap-prefill">'
         f'ℹ️ Pre-filled from your profile — <strong>{_saved_level}</strong>, '
         f'<strong>{_saved_time}</strong>/week, <strong>{_saved_exp}</strong>. Adjust if needed.</div>',
         unsafe_allow_html=True,
@@ -196,11 +347,59 @@ for phase in phases:
         "phases_html":    phases_html,
     })
 
+stations = []
+for entry in weekly:
+    week = entry["week"]
+    phase = next(
+        (p for p in phases if p["start_week"] <= week <= p["end_week"]),
+        {},
+    )
+    status = "done" if week in checked else "active" if week == current_week else "upcoming"
+    resources_html = "".join(f"<li>{r}</li>" for r in phase.get("resources", []))
+    phases_html = (
+        f'<div class="ph-row"><span class="ph-badge ph-beginner">Skill</span>'
+        f'<span>{entry.get("skill", "").title()}</span></div>'
+        f'<div class="ph-row"><span class="ph-badge ph-intermediate">Focus</span>'
+        f'<span>{entry.get("tasks", "")}</span></div>'
+    )
+    stations.append({
+        "id":       week,
+        "skill":    f"Week {week}",
+        "status":   status,
+        "weeks":    entry.get("focus", f"Week {week}"),
+        "hours":    entry.get("hours", 0),
+        "project":  entry.get("project", "") or phase.get("project", ""),
+        "resources_html": resources_html,
+        "phases_html":    phases_html,
+    })
+
 stations_json = json.dumps(stations)
 train_pos     = (done_weeks / total_weeks) if total_weeks else 0
 n_stations    = len(stations)
-# Each station needs ~200px min; clamp between 900 and 6000
-svg_width     = max(900, n_stations * 200)
+# Each weekly checkpoint needs enough room for a compact Week label.
+svg_width     = max(900, n_stations * 120)
+
+map_body_bg = "#f8fafc" if is_light else "#0a0e17"
+map_text = "#172033" if is_light else "#ffffff"
+map_label = "#172033" if is_light else "#e2e8f0"
+map_muted = "#5b6472" if is_light else "#94a3b8"
+map_track = "#cbd5e1" if is_light else "#1e1b4b"
+map_rail = "rgba(23,32,51,0.18)" if is_light else "rgba(255,255,255,0.06)"
+map_upcoming_fill = "#ffffff" if is_light else "#1e1b4b"
+map_upcoming_stroke = "#94a3b8" if is_light else "#4338ca"
+map_upcoming_icon = "#64748b" if is_light else "#6366f1"
+detail_bg = "#ffffff" if is_light else "linear-gradient(135deg,#152238,#0a0e17)"
+detail_border = "#dbe3ef" if is_light else "rgba(167,139,250,0.3)"
+detail_shadow = "0 20px 48px rgba(15,23,42,0.16)" if is_light else "0 24px 80px rgba(0,0,0,0.7)"
+overlay_bg = "rgba(248,250,252,0.72)" if is_light else "rgba(0,0,0,0.6)"
+close_bg = "#f8fafc" if is_light else "rgba(255,255,255,0.08)"
+close_hover = "#eef2ff" if is_light else "rgba(255,255,255,0.15)"
+project_bg = "#eef2ff" if is_light else "rgba(124,58,237,0.12)"
+project_border = "#c7d2fe" if is_light else "rgba(124,58,237,0.25)"
+project_text = "#4338ca" if is_light else "#c4b5fd"
+progress_bar_bg = "#e2e8f0" if is_light else "rgba(255,255,255,0.08)"
+scrollbar_track = "#e2e8f0" if is_light else "rgba(255,255,255,0.04)"
+scrollbar_thumb = "#94a3b8" if is_light else "#4338ca"
 
 # ── HTML/SVG Journey Map ──────────────────────────────────────────────────────
 html = f"""
@@ -210,34 +409,34 @@ html = f"""
 <meta charset="utf-8">
 <style>
   *{{box-sizing:border-box;margin:0;padding:0;}}
-  body{{background:#0a0e17;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden;}}
+  body{{background:{map_body_bg};font-family:'Inter',system-ui,sans-serif;color:{map_text};overflow-x:hidden;}}
 
   #map-wrap{{width:100%;overflow-x:auto;overflow-y:visible;padding:20px 0 10px;-webkit-overflow-scrolling:touch;}}
   #map-wrap::-webkit-scrollbar{{height:4px;}}
-  #map-wrap::-webkit-scrollbar-track{{background:rgba(255,255,255,0.04);}}
-  #map-wrap::-webkit-scrollbar-thumb{{background:#4338ca;border-radius:4px;}}
+  #map-wrap::-webkit-scrollbar-track{{background:{scrollbar_track};}}
+  #map-wrap::-webkit-scrollbar-thumb{{background:{scrollbar_thumb};border-radius:4px;}}
   #journey-svg{{display:block;min-width:{svg_width}px;}}
 
   /* Station circles */
   .station-done   .s-circle{{fill:#10b981;stroke:#34d399;filter:drop-shadow(0 0 8px #10b98188);}}
   .station-active .s-circle{{fill:#7c3aed;stroke:#a78bfa;filter:drop-shadow(0 0 14px #7c3aedaa);animation:pulse 1.6s ease-in-out infinite;}}
-  .station-upcoming .s-circle{{fill:#1e1b4b;stroke:#4338ca;}}
+  .station-upcoming .s-circle{{fill:{map_upcoming_fill};stroke:{map_upcoming_stroke};}}
   @keyframes pulse{{0%,100%{{r:18;}}50%{{r:22;}}}}
 
   .station-done   .s-icon{{fill:#fff;font-size:14px;}}
   .station-active .s-icon{{fill:#fff;font-size:14px;}}
-  .station-upcoming .s-icon{{fill:#6366f1;font-size:14px;}}
+  .station-upcoming .s-icon{{fill:{map_upcoming_icon};font-size:14px;}}
 
-  .s-label{{font-size:12px;font-weight:700;fill:#e2e8f0;text-anchor:middle;}}
-  .s-weeks{{font-size:10px;fill:#94a3b8;text-anchor:middle;}}
+  .s-label{{font-size:12px;font-weight:700;fill:{map_label};text-anchor:middle;}}
+  .s-weeks{{font-size:10px;fill:{map_muted};text-anchor:middle;}}
 
   .station-group{{cursor:pointer;transition:transform .2s;}}
   .station-group:hover .s-circle{{stroke-width:3;}}
 
   /* Track */
-  .track-bg{{stroke:#1e1b4b;stroke-width:8;fill:none;stroke-linecap:round;}}
+  .track-bg{{stroke:{map_track};stroke-width:8;fill:none;stroke-linecap:round;}}
   .track-done{{stroke:url(#trackGrad);stroke-width:8;fill:none;stroke-linecap:round;stroke-dasharray:var(--dash);stroke-dashoffset:0;transition:stroke-dasharray 1s ease;}}
-  .track-rail{{stroke:rgba(255,255,255,0.06);stroke-width:2;fill:none;stroke-dasharray:12 18;}}
+  .track-rail{{stroke:{map_rail};stroke-width:2;fill:none;stroke-dasharray:12 18;}}
 
   /* Train */
   #train{{transition:all 1.2s cubic-bezier(.4,0,.2,1);}}
@@ -246,45 +445,46 @@ html = f"""
   /* Detail panel */
   #detail{{
     position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.92);
-    background:linear-gradient(135deg,#152238,#0a0e17);
-    border:1px solid rgba(167,139,250,0.3);
+    background:{detail_bg};
+    border:1px solid {detail_border};
     border-radius:20px;padding:24px 28px;width:min(520px,90vw);
     max-height:80vh;overflow-y:auto;
-    box-shadow:0 24px 80px rgba(0,0,0,0.7);
+    box-shadow:{detail_shadow};
     opacity:0;pointer-events:none;
     transition:all .25s cubic-bezier(.4,0,.2,1);
     z-index:9999;
   }}
   #detail.open{{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1);}}
-  #overlay{{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  #overlay{{position:fixed;inset:0;background:{overlay_bg};backdrop-filter:blur(4px);
     opacity:0;pointer-events:none;transition:opacity .25s;z-index:9998;}}
   #overlay.open{{opacity:1;pointer-events:all;}}
 
   .d-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}}
-  .d-title{{font-size:1.25rem;font-weight:800;}}
-  .d-close{{background:rgba(255,255,255,0.08);border:none;color:#fff;width:32px;height:32px;
+  .d-title{{font-size:1.25rem;font-weight:800;color:{map_text};}}
+  .d-close{{background:{close_bg};border:none;color:{map_text};width:32px;height:32px;
     border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}}
-  .d-close:hover{{background:rgba(255,255,255,0.15);}}
+  .d-close:hover{{background:{close_hover};}}
   .d-badge{{display:inline-block;padding:3px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;margin-bottom:14px;}}
   .badge-done{{background:#10b98122;color:#34d399;border:1px solid #10b98144;}}
   .badge-active{{background:#7c3aed22;color:#a78bfa;border:1px solid #7c3aed44;}}
   .badge-upcoming{{background:#1e1b4b;color:#6366f1;border:1px solid #4338ca44;}}
-  .d-meta{{color:#94a3b8;font-size:0.85rem;margin-bottom:16px;}}
-  .ph-row{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.83rem;line-height:1.5;color:#cbd5e1;}}
+  .d-meta{{color:{map_muted};font-size:0.85rem;margin-bottom:16px;}}
+  .ph-row{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.83rem;line-height:1.5;color:{map_text};}}
   .ph-badge{{flex-shrink:0;padding:2px 8px;border-radius:6px;font-size:0.72rem;font-weight:700;margin-top:1px;}}
   .ph-beginner{{background:#10b98122;color:#34d399;}}
   .ph-intermediate{{background:#f59e0b22;color:#fbbf24;}}
   .ph-advanced{{background:#ef444422;color:#f87171;}}
   .d-section{{font-size:0.78rem;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;}}
   .d-resources ul{{padding-left:16px;}}
-  .d-resources li{{font-size:0.83rem;color:#94a3b8;margin-bottom:4px;}}
-  .d-project{{background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);
-    border-radius:10px;padding:10px 14px;font-size:0.83rem;color:#c4b5fd;margin-top:12px;}}
+  .d-resources li{{font-size:0.83rem;color:{map_muted};margin-bottom:4px;}}
+  .d-project{{background:{project_bg};border:1px solid {project_border};
+    border-radius:10px;padding:10px 14px;font-size:0.83rem;color:{project_text};margin-top:12px;}}
 
   /* Progress bar */
   #prog-wrap{{padding:0 24px 16px;}}
-  .prog-label{{display:flex;justify-content:space-between;font-size:0.8rem;color:#94a3b8;margin-bottom:6px;}}
-  .prog-bar{{height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;}}
+  .prog-label{{display:flex;justify-content:space-between;font-size:1.05rem;font-weight:800;color:{map_text};margin-bottom:10px;}}
+  .prog-label span:last-child{{color:#7c3aed;font-weight:900;}}
+  .prog-bar{{height:6px;background:{progress_bar_bg};border-radius:999px;overflow:hidden;}}
   .prog-fill{{height:100%;background:linear-gradient(90deg,#7c3aed,#34d399);border-radius:999px;
     transition:width 1s ease;}}
 </style>
@@ -596,12 +796,25 @@ for icon, title, desc, unlocked in [
         f'</div>'
     )
 
+ach_bg = "#f8fafc" if is_light else "#0a0e17"
+ach_text = "#172033" if is_light else "#ffffff"
+ach_card_on_bg = "#ffffff" if is_light else "linear-gradient(145deg,rgba(124,58,237,0.25),rgba(79,70,229,0.15))"
+ach_card_off_bg = "#ffffff" if is_light else "rgba(255,255,255,0.02)"
+ach_card_on_border = "#c7d2fe" if is_light else "rgba(167,139,250,0.5)"
+ach_card_off_border = "#e2e8f0" if is_light else "rgba(255,255,255,0.05)"
+ach_title = "#172033" if is_light else "#e2e8f0"
+ach_title_on = "#4338ca" if is_light else "#a78bfa"
+ach_desc = "#5b6472" if is_light else "rgba(255,255,255,0.35)"
+ach_status = "#64748b" if is_light else "#4b5563"
+ach_status_on = "#047857" if is_light else "#34d399"
+ach_shadow = "0 8px 22px rgba(15,23,42,0.08)" if is_light else "0 4px 18px rgba(124,58,237,0.2)"
+
 components.html(f"""
 <!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif;}}
-body{{background:#0a0e17;color:#fff;padding:1rem 0.5rem 2rem;}}
-h2{{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}}
+body{{background:{ach_bg};color:{ach_text};padding:1rem 0.5rem 2rem;}}
+h2{{font-size:1.1rem;font-weight:800;color:{ach_text};margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}}
 h2 span{{font-size:1.3rem;}}
 .ba-grid{{display:flex;flex-wrap:wrap;gap:0.7rem;}}
 .ba-card{{
@@ -611,21 +824,21 @@ h2 span{{font-size:1.3rem;}}
 }}
 .ba-card:hover{{transform:translateY(-4px);}}
 .ba-on{{
-    background:linear-gradient(145deg,rgba(124,58,237,0.25),rgba(79,70,229,0.15));
-    border:1.5px solid rgba(167,139,250,0.5);
-    box-shadow:0 4px 18px rgba(124,58,237,0.2);
+    background:{ach_card_on_bg};
+    border:1.5px solid {ach_card_on_border};
+    box-shadow:{ach_shadow};
 }}
 .ba-off{{
-    background:rgba(255,255,255,0.02);
-    border:1.5px solid rgba(255,255,255,0.05);
+    background:{ach_card_off_bg};
+    border:1.5px solid {ach_card_off_border};
     opacity:0.35;filter:grayscale(0.8);
 }}
 .ba-icon{{font-size:2rem;}}
-.ba-title{{font-size:0.75rem;font-weight:800;text-align:center;color:#e2e8f0;}}
-.ba-on .ba-title{{color:#a78bfa;}}
-.ba-desc{{font-size:0.63rem;color:rgba(255,255,255,0.35);text-align:center;line-height:1.4;}}
-.ba-status{{font-size:0.63rem;font-weight:700;margin-top:0.2rem;color:#4b5563;}}
-.ba-on .ba-status{{color:#34d399;}}
+.ba-title{{font-size:0.75rem;font-weight:800;text-align:center;color:{ach_title};}}
+.ba-on .ba-title{{color:{ach_title_on};}}
+.ba-desc{{font-size:0.63rem;color:{ach_desc};text-align:center;line-height:1.4;}}
+.ba-status{{font-size:0.63rem;font-weight:700;margin-top:0.2rem;color:{ach_status};}}
+.ba-on .ba-status{{color:{ach_status_on};}}
 </style>
 </head><body>
 <h2><span>🏆</span> Achievements</h2>

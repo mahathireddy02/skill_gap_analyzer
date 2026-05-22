@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import altair as alt
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.auth import require_login, get_user, update_user
@@ -10,14 +11,376 @@ from components.navbar import show_navbar
 st.set_page_config(page_title="Analytics · SkillGap", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
 require_login()
 
-st.markdown("""
+db_user = get_user(st.session_state.email)
+theme = db_user.get("theme", "dark")
+is_light = theme == "light"
+
+page_bg = "#f8fafc" if is_light else "#0a0e17"
+chart_bg = "#ffffff" if is_light else "rgba(255,255,255,0.04)"
+chart_text = "#172033" if is_light else "#ffffff"
+chart_muted = "#64748b" if is_light else "rgba(255,255,255,0.58)"
+chart_grid = "#e2e8f0" if is_light else "rgba(255,255,255,0.10)"
+chart_axis = "#94a3b8" if is_light else "rgba(255,255,255,0.25)"
+chart_height = 320
+
+st.markdown(f"""
 <style>
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stSidebarNav"],
 [data-testid="stSidebar"],[data-testid="collapsedControl"],section[data-testid="stSidebar"],
-.stDeployButton,[class*="viewerBadge"],[class*="toolbar"]
-{display:none!important;visibility:hidden!important;}
-html,body{margin:0!important;padding:0!important;}
-.block-container{padding:0!important;max-width:100%!important;}
+.stDeployButton,[class*="viewerBadge"]
+{{display:none!important;visibility:hidden!important;}}
+html,body,.stApp{{margin:0!important;padding:0!important;background:{page_bg}!important;color:{chart_text}!important;}}
+.block-container{{padding:0!important;max-width:100%!important;}}
+h1,h2,h3,h4,h5,h6,
+div[data-testid="stMarkdownContainer"],
+div[data-testid="stMarkdownContainer"] * {{
+    color:{chart_text}!important;
+}}
+div[data-testid="stMetric"] {{
+    background:{chart_bg}!important;
+    border:1px solid {chart_grid}!important;
+    border-radius:12px!important;
+}}
+div[data-testid="stMetricLabel"] p {{
+    color:{chart_muted}!important;
+}}
+div[data-testid="stMetricValue"] {{
+    color:{chart_text}!important;
+}}
+#vg-tooltip-element,
+#vg-tooltip-element table,
+#vg-tooltip-element tbody,
+#vg-tooltip-element tr,
+#vg-tooltip-element td,
+.vg-tooltip,
+.vg-tooltip table,
+.vg-tooltip tbody,
+.vg-tooltip tr,
+.vg-tooltip td {{
+    background:{chart_bg}!important;
+    color:{chart_text}!important;
+    border-color:{chart_grid}!important;
+}}
+#vg-tooltip-element,
+.vg-tooltip {{
+    border:1px solid {chart_grid}!important;
+    border-radius:8px!important;
+    box-shadow:0 12px 28px rgba(15,23,42,0.14)!important;
+}}
+#vg-tooltip-element td.key,
+.vg-tooltip td.key {{
+    color:{chart_muted}!important;
+}}
+#vg-tooltip-element td.value,
+.vg-tooltip td.value {{
+    color:{chart_text}!important;
+}}
+.vega-embed details,
+.vega-embed summary,
+.vega-embed .vega-actions,
+.vega-embed .vega-actions a,
+div[data-testid="stVegaLiteChart"] details,
+div[data-testid="stVegaLiteChart"] summary,
+div[data-testid="stVegaLiteChart"] .vega-actions,
+div[data-testid="stVegaLiteChart"] .vega-actions a,
+details[open],
+details[open] summary,
+details[open] .vega-actions,
+details[open] .vega-actions a {{
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    color:{chart_text}!important;
+    border-color:{chart_grid}!important;
+}}
+.vega-embed .vega-actions,
+div[data-testid="stVegaLiteChart"] .vega-actions,
+details[open] .vega-actions {{
+    border:1px solid {chart_grid}!important;
+    border-radius:8px!important;
+    box-shadow:0 12px 28px rgba(15,23,42,0.14)!important;
+    overflow:hidden!important;
+}}
+.vega-embed .vega-actions a,
+div[data-testid="stVegaLiteChart"] .vega-actions a,
+details[open] .vega-actions a {{
+    display:block!important;
+    padding:0.45rem 0.75rem!important;
+    text-decoration:none!important;
+    font-size:0.82rem!important;
+    line-height:1.2!important;
+}}
+.vega-embed .vega-actions a:hover,
+div[data-testid="stVegaLiteChart"] .vega-actions a:hover,
+details[open] .vega-actions a:hover,
+.vega-embed summary:hover,
+div[data-testid="stVegaLiteChart"] summary:hover,
+details[open] summary:hover {{
+    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    background-color:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    color:{chart_text}!important;
+}}
+.vega-embed summary svg,
+div[data-testid="stVegaLiteChart"] summary svg,
+details[open] summary svg,
+.vega-embed summary path,
+div[data-testid="stVegaLiteChart"] summary path,
+details[open] summary path {{
+    color:{chart_text}!important;
+    fill:{chart_text}!important;
+    stroke:{chart_text}!important;
+}}
+div[data-testid="stElementToolbar"],
+div[data-testid="stElementToolbar"] *,
+div[data-testid="stElementToolbarButton"],
+div[data-testid="stElementToolbarButton"] *,
+button[title*="fullscreen" i],
+button[title*="fullscreen" i] *,
+button[title*="download" i],
+button[title*="download" i] *,
+button[aria-label*="fullscreen" i],
+button[aria-label*="fullscreen" i] *,
+button[aria-label*="download" i],
+button[aria-label*="download" i] *,
+button[aria-label*="more" i],
+button[aria-label*="more" i] * {{
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    color:{chart_text}!important;
+    border-color:{chart_grid}!important;
+    fill:{chart_text}!important;
+    stroke:{chart_text}!important;
+}}
+div[data-testid="stElementToolbar"] button,
+div[data-testid="stElementToolbar"] [role="button"] {{
+    border:1px solid {chart_grid}!important;
+    border-radius:8px!important;
+    box-shadow:0 8px 20px rgba(15,23,42,0.12)!important;
+}}
+div[data-testid="stElementToolbar"] button:hover,
+div[data-testid="stElementToolbar"] [role="button"]:hover,
+button[title*="fullscreen" i]:hover,
+button[title*="download" i]:hover,
+button[aria-label*="fullscreen" i]:hover,
+button[aria-label*="download" i]:hover,
+button[aria-label*="more" i]:hover {{
+    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    background-color:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    color:{chart_text}!important;
+}}
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] *,
+div[role="menu"],
+div[role="menu"] *,
+ul[role="menu"],
+ul[role="menu"] *,
+div[role="menuitem"],
+div[role="menuitem"] *,
+li[role="menuitem"],
+li[role="menuitem"] * {{
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    color:{chart_text}!important;
+    border-color:{chart_grid}!important;
+}}
+div[role="menuitem"]:hover,
+li[role="menuitem"]:hover {{
+    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    background-color:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    color:{chart_text}!important;
+}}
+div[data-testid="stElementToolbar"] button,
+div[data-testid="stElementToolbar"] [role="button"],
+div[data-testid="stElementToolbarButton"],
+button[title*="fullscreen" i],
+button[title*="download" i],
+button[aria-label*="fullscreen" i],
+button[aria-label*="download" i],
+button[aria-label*="more" i],
+.vega-embed summary {{
+    opacity:1!important;
+    visibility:visible!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    background:{"#ffffff" if is_light else chart_bg}!important;
+    background-color:{"#ffffff" if is_light else chart_bg}!important;
+    color:{"#000000" if is_light else chart_text}!important;
+    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    border-radius:8px!important;
+    box-shadow:0 8px 20px rgba(15,23,42,0.16)!important;
+}}
+div[data-testid="stElementToolbar"] svg,
+div[data-testid="stElementToolbar"] path,
+div[data-testid="stElementToolbarButton"] svg,
+div[data-testid="stElementToolbarButton"] path,
+button[title*="fullscreen" i] svg,
+button[title*="fullscreen" i] path,
+button[title*="download" i] svg,
+button[title*="download" i] path,
+button[aria-label*="fullscreen" i] svg,
+button[aria-label*="fullscreen" i] path,
+button[aria-label*="download" i] svg,
+button[aria-label*="download" i] path,
+button[aria-label*="more" i] svg,
+button[aria-label*="more" i] path,
+.vega-embed summary svg,
+.vega-embed summary path {{
+    opacity:1!important;
+    color:{"#000000" if is_light else chart_text}!important;
+    fill:{"#000000" if is_light else chart_text}!important;
+    stroke:{"#000000" if is_light else chart_text}!important;
+}}
+.vega-embed .vega-actions,
+div[data-testid="stVegaLiteChart"] .vega-actions,
+details[open] .vega-actions,
+div[role="menu"],
+ul[role="menu"] {{
+    background:{"#ffffff" if is_light else chart_bg}!important;
+    background-color:{"#ffffff" if is_light else chart_bg}!important;
+    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    border-radius:8px!important;
+}}
+.vega-embed .vega-actions a,
+div[data-testid="stVegaLiteChart"] .vega-actions a,
+details[open] .vega-actions a,
+div[role="menuitem"],
+li[role="menuitem"] {{
+    background:{"#ffffff" if is_light else chart_bg}!important;
+    background-color:{"#ffffff" if is_light else chart_bg}!important;
+    color:{"#000000" if is_light else chart_text}!important;
+}}
+div[data-testid="stElementToolbar"],
+div[data-testid="stElementToolbarButton"],
+[data-testid*="ElementToolbar"],
+[data-testid*="ElementToolbar"] *,
+[class*="elementToolbar"],
+[class*="elementToolbar"] *,
+[class*="stElementToolbar"],
+[class*="stElementToolbar"] *,
+button[title*="full" i],
+button[title*="full" i] *,
+button[title*="view" i],
+button[title*="view" i] *,
+button[title*="data" i],
+button[title*="data" i] *,
+button[aria-label*="full" i],
+button[aria-label*="full" i] *,
+button[aria-label*="view" i],
+button[aria-label*="view" i] *,
+button[aria-label*="data" i],
+button[aria-label*="data" i] * {{
+    opacity:1!important;
+    visibility:visible!important;
+    display:inline-flex!important;
+    background:{"#ffffff" if is_light else chart_bg}!important;
+    background-color:{"#ffffff" if is_light else chart_bg}!important;
+    color:{"#000000" if is_light else chart_text}!important;
+    border-color:{"#000000" if is_light else chart_grid}!important;
+    fill:{"#000000" if is_light else chart_text}!important;
+    stroke:{"#000000" if is_light else chart_text}!important;
+}}
+button[title*="full" i],
+button[title*="view" i],
+button[title*="data" i],
+button[aria-label*="full" i],
+button[aria-label*="view" i],
+button[aria-label*="data" i] {{
+    min-width:32px!important;
+    min-height:32px!important;
+    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    border-radius:8px!important;
+}}
+div[data-testid="stElementToolbar"] button,
+div[data-testid="stElementToolbarButton"],
+[data-testid*="ElementToolbar"] button,
+[class*="elementToolbar"] button,
+[class*="stElementToolbar"] button,
+button[title*="full" i],
+button[title*="view" i],
+button[title*="data" i],
+button[aria-label*="full" i],
+button[aria-label*="view" i],
+button[aria-label*="data" i] {{
+    background:{"#ffffff" if is_light else chart_bg}!important;
+    background-color:{"#ffffff" if is_light else chart_bg}!important;
+    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    border-radius:8px!important;
+    box-shadow:none!important;
+    color:{"#000000" if is_light else chart_text}!important;
+}}
+div[data-testid="stElementToolbar"] button *,
+div[data-testid="stElementToolbarButton"] *,
+[data-testid*="ElementToolbar"] button *,
+[class*="elementToolbar"] button *,
+[class*="stElementToolbar"] button *,
+button[title*="full" i] *,
+button[title*="view" i] *,
+button[title*="data" i] *,
+button[aria-label*="full" i] *,
+button[aria-label*="view" i] *,
+button[aria-label*="data" i] * {{
+    background:transparent!important;
+    background-color:transparent!important;
+    color:{"#000000" if is_light else chart_text}!important;
+    box-shadow:none!important;
+}}
+div[data-testid="stElementToolbar"] button svg,
+div[data-testid="stElementToolbar"] button path,
+div[data-testid="stElementToolbarButton"] svg,
+div[data-testid="stElementToolbarButton"] path,
+[data-testid*="ElementToolbar"] button svg,
+[data-testid*="ElementToolbar"] button path,
+[class*="elementToolbar"] button svg,
+[class*="elementToolbar"] button path,
+[class*="stElementToolbar"] button svg,
+[class*="stElementToolbar"] button path,
+button[title*="full" i] svg,
+button[title*="full" i] path,
+button[title*="view" i] svg,
+button[title*="view" i] path,
+button[title*="data" i] svg,
+button[title*="data" i] path,
+button[aria-label*="full" i] svg,
+button[aria-label*="full" i] path,
+button[aria-label*="view" i] svg,
+button[aria-label*="view" i] path,
+button[aria-label*="data" i] svg,
+button[aria-label*="data" i] path {{
+    color:{"#000000" if is_light else chart_text}!important;
+    fill:{"#000000" if is_light else chart_text}!important;
+    stroke:{"#000000" if is_light else chart_text}!important;
+}}
+div[data-testid="stElementToolbar"] button[title*="full" i],
+div[data-testid="stElementToolbar"] button[title*="fullscreen" i],
+div[data-testid="stElementToolbar"] button[title*="view" i],
+div[data-testid="stElementToolbar"] button[title*="data" i],
+div[data-testid="stElementToolbar"] button[aria-label*="full" i],
+div[data-testid="stElementToolbar"] button[aria-label*="fullscreen" i],
+div[data-testid="stElementToolbar"] button[aria-label*="view" i],
+div[data-testid="stElementToolbar"] button[aria-label*="data" i],
+button[title*="full" i]:not([aria-label*="more" i]),
+button[title*="fullscreen" i]:not([aria-label*="more" i]),
+button[title*="view" i]:not([aria-label*="more" i]),
+button[title*="data" i]:not([aria-label*="more" i]),
+button[aria-label*="full" i]:not([aria-label*="more" i]),
+button[aria-label*="fullscreen" i]:not([aria-label*="more" i]),
+button[aria-label*="view" i]:not([aria-label*="more" i]),
+button[aria-label*="data" i]:not([aria-label*="more" i]) {{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+}}
+div[data-testid="stElementToolbar"] button[aria-label*="more" i],
+div[data-testid="stElementToolbar"] button[title*="more" i],
+button[aria-label*="more" i],
+button[title*="more" i],
+.vega-embed summary {{
+    display:inline-flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -27,7 +390,24 @@ st.markdown("## 📊 Analytics")
 st.markdown("Track your skill progress and readiness over time.")
 st.markdown("")
 
-db_user      = get_user(st.session_state.email)
+def themed_chart(chart):
+    return (
+        chart
+        .properties(background=chart_bg)
+        .configure_view(stroke=chart_grid)
+        .configure_axis(
+            labelColor=chart_muted,
+            titleColor=chart_text,
+            gridColor=chart_grid,
+            domainColor=chart_axis,
+            tickColor=chart_axis,
+        )
+        .configure_legend(
+            labelColor=chart_text,
+            titleColor=chart_text,
+        )
+    )
+
 skills       = db_user.get("skills", [])
 missing      = db_user.get("missing_skills", [])
 resume_score = db_user.get("resume_score", 0)
@@ -64,7 +444,18 @@ with cl:
     st.markdown("### 🧠 Skill Match")
     if has_gap_analysis(db_user):
         df = pd.DataFrame({"Category": ["✅ Matched", "❌ Missing"], "Count": [len(skills), len(missing)]}).set_index("Category")
-        st.bar_chart(df)
+        chart_df = df.reset_index()
+        chart = alt.Chart(chart_df).mark_bar(cornerRadiusTopLeft=5, cornerRadiusTopRight=5).encode(
+            x=alt.X("Category:N", title=None, axis=alt.Axis(labelAngle=0, labelLimit=110)),
+            y=alt.Y("Count:Q", title="Count"),
+            color=alt.Color(
+                "Category:N",
+                scale=alt.Scale(range=["#10b981", "#ef4444"]),
+                legend=None,
+            ),
+            tooltip=["Category", "Count"],
+        ).properties(height=chart_height)
+        st.altair_chart(themed_chart(chart), use_container_width=True)
     else:
         st.info("Run Skill Gap Analyzer to calculate matched and missing role skills.")
 
@@ -74,13 +465,26 @@ with cr:
     st.progress(resume_score / 100)
     df2 = pd.DataFrame({"Component": ["Skills","Sections","Length","Contact","Action Verbs"],
                         "Max Points": [40, 30, 15, 10, 5]}).set_index("Component")
-    st.bar_chart(df2)
+    chart_df2 = df2.reset_index()
+    chart = alt.Chart(chart_df2).mark_bar(cornerRadiusTopLeft=5, cornerRadiusTopRight=5).encode(
+        x=alt.X("Component:N", title=None, axis=alt.Axis(labelAngle=0, labelLimit=110)),
+        y=alt.Y("Max Points:Q", title="Max Points"),
+        color=alt.value("#7c3aed"),
+        tooltip=["Component", "Max Points"],
+    ).properties(height=chart_height)
+    st.altair_chart(themed_chart(chart), use_container_width=True)
 
 st.markdown("---")
 st.markdown("### 📅 Weekly Progress")
 weeks  = ["Week 1","Week 2","Week 3","Week 4","Week 5","Week 6"]
 scores = [20, 35, 45, 55, 68, resume_score if resume_score else 72]
-st.line_chart(pd.DataFrame({"Resume Score": scores}, index=weeks))
+progress_df = pd.DataFrame({"Week": weeks, "Resume Score": scores})
+line = alt.Chart(progress_df).mark_line(point=True, strokeWidth=3, color="#7c3aed").encode(
+    x=alt.X("Week:N", title=None, axis=alt.Axis(labelAngle=0)),
+    y=alt.Y("Resume Score:Q", title="Resume Score", scale=alt.Scale(domain=[0, 100])),
+    tooltip=["Week", "Resume Score"],
+).properties(height=320)
+st.altair_chart(themed_chart(line), use_container_width=True)
 
 if role != "N/A":
     st.markdown("---")
