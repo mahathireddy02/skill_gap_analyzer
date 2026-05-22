@@ -741,7 +741,7 @@
       "tight_deadline": true
     },
     "checked_weeks": [],
-    "theme": "light",
+    "theme": "dark",
     "reset_token": "BJzd_8uwUQVzfDVU7f1C9Sg1zxN1coILk5AY9yilEAM",
     "reset_expiry": 1779126034.37814,
     "resume_score_history": [
@@ -827,6 +827,9 @@
     },
     "gap_analyzed": true,
     "resume_file_hashes": [],
-    "resume_content_hashes": []
+    "resume_content_hashes": [],
+    "time_availability": "5\u201310 hrs",
+    "experience_type": "Student",
+    "skill_level": "Beginner"
   }
 }

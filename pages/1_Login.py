@@ -1,7 +1,7 @@
 import streamlit as st
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from utils.auth import login, send_reset_email, verify_reset_token, reset_password_with_token
+from utils.auth import login, get_security_question, reset_password, verify_security_answer
 from components.theme import BG_ANIMATED
 
 st.set_page_config(page_title="Login · SkillGap", page_icon="🔐", layout="wide", initial_sidebar_state="collapsed")
@@ -116,14 +116,6 @@ if st.session_state.get("user"):
 if "auth_mode" not in st.session_state:
     st.session_state.auth_mode = "login"
 
-# Handle reset link token from email
-params = st.query_params
-if "token" in params and "email" in params and st.session_state.auth_mode != "forgot2":
-    st.session_state.reset_token = params["token"]
-    st.session_state.reset_email = params["email"]
-    st.session_state.auth_mode   = "forgot2"
-    st.query_params.clear()
-
 # Back to home
 _, back_col, _ = st.columns([1, 6, 1])
 with back_col:
@@ -175,45 +167,77 @@ with center:
             st.switch_page("pages/2_Signup.py")
 
     # ══════════════════════════════════════════════════════
-    # FORGOT — Step 1: enter email, send reset link
+    # FORGOT — Step 1: enter email and load security question
     # ══════════════════════════════════════════════════════
     elif st.session_state.auth_mode == "forgot1":
         st.markdown("""
         <div class="auth-card">
             <span class="auth-icon">🔑</span>
             <div class="auth-title">Forgot Password?</div>
-            <div class="auth-sub">Enter your email and we'll send you a reset link</div>
+            <div class="auth-sub">Enter your email to answer your security question</div>
         </div>
         """, unsafe_allow_html=True)
 
         fe = st.text_input("Email Address", placeholder="you@example.com", key="fp_email")
 
-        if st.button("Send Reset Link →", use_container_width=True, type="primary", key="fp_send"):
+        if st.button("Continue →", use_container_width=True, type="primary", key="fp_send"):
             if not fe:
                 st.error("Please enter your email.")
             else:
-                ok, result = send_reset_email(fe.strip().lower())
-                if not ok:
-                    st.error(f"❌ {result}")
-                elif result.startswith("DEV_LINK:"):
-                    # Dev mode: no SMTP configured, show link directly
-                    link = result.replace("DEV_LINK:", "")
-                    st.success("✅ Reset link generated (dev mode — no SMTP configured):")
-                    st.code(link)
-                    st.info("💡 To enable real emails, set SMTP_EMAIL and SMTP_PASSWORD environment variables.")
+                email_for_reset = fe.strip().lower()
+                question = get_security_question(email_for_reset)
+                if question is None:
+                    st.error("❌ Email not found.")
+                elif not question:
+                    st.error("❌ No security question is set for this account.")
                 else:
-                    st.success(f"✅ Reset link sent to **{fe}**. Check your inbox!")
+                    st.session_state.reset_email = email_for_reset
+                    st.session_state.reset_question = question
+                    st.session_state.auth_mode = "forgot_security"
+                    st.rerun()
 
         if st.button("← Back to Login", key="fp_back1"):
             st.session_state.auth_mode = "login"
             st.rerun()
 
     # ══════════════════════════════════════════════════════
-    # RESET — arrived via token link (?token=...&email=...)
+    # FORGOT — Step 2: verify security answer
     # ══════════════════════════════════════════════════════
-    elif st.session_state.auth_mode == "forgot2":
-        token = st.session_state.get("reset_token", "")
+    elif st.session_state.auth_mode == "forgot_security":
         email = st.session_state.get("reset_email", "")
+        question = st.session_state.get("reset_question", "")
+
+        st.markdown("""
+        <div class="auth-card">
+            <span class="auth-icon">🛡️</span>
+            <div class="auth-title">Security Check</div>
+            <div class="auth-sub">Answer your security question to continue</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown(f"**Question:** {question}")
+        answer = st.text_input("Your Answer", type="password", key="fp_answer")
+
+        if st.button("Verify Answer →", use_container_width=True, type="primary", key="fp_verify"):
+            if not answer:
+                st.error("Please enter your answer.")
+            else:
+                ok, msg = verify_security_answer(email, answer)
+                if ok:
+                    st.session_state.reset_answer = answer
+                    st.session_state.auth_mode = "forgot2"
+                    st.rerun()
+                else:
+                    st.error(f"❌ {msg}")
+
+        if st.button("← Back", key="fp_back_security"):
+            st.session_state.auth_mode = "forgot1"
+            st.rerun()
+
+    # FORGOT — Step 3: set new password
+    elif st.session_state.auth_mode == "forgot2":
+        email = st.session_state.get("reset_email", "")
+        answer = st.session_state.get("reset_answer", "")
 
         st.markdown("""
         <div class="auth-card">
@@ -234,10 +258,10 @@ with center:
             elif new_pw != cnf_pw:
                 st.error("Passwords do not match.")
             else:
-                ok, msg = reset_password_with_token(email, token, new_pw)
+                ok, msg = reset_password(email, answer, new_pw)
                 if ok:
                     st.success("✅ Password reset! You can now login.")
-                    for k in ["reset_token", "reset_email"]:
+                    for k in ["reset_email", "reset_question", "reset_answer"]:
                         st.session_state.pop(k, None)
                     st.session_state.auth_mode = "login"
                     st.rerun()
