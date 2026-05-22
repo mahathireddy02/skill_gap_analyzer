@@ -75,6 +75,69 @@ def show_navbar(active="Dashboard"):
         div[data-testid="stExpander"] summary span{color:#1a1a2e!important;}
         div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p{color:#374151!important;}
 
+        /* Roadmap Page Specific Overrides */
+        /* SVG Journey Map */
+        #journey-svg .track-bg{stroke:#e5e7eb!important;}
+        #journey-svg .track-rail{stroke:#cbd5e1!important;}
+        #journey-svg .station-done .s-circle{fill:#d1fae5!important;stroke:#6ee7b7!important;}
+        #journey-svg .station-active .s-circle{fill:#ede9fe!important;stroke:#a78bfa!important;}
+        #journey-svg .station-upcoming .s-circle{fill:#f1f5f9!important;stroke:#cbd5e1!important;}
+        #journey-svg .s-icon{fill:#1a1a2e!important;}
+        #journey-svg .station-upcoming .s-icon{fill:#4b5563!important;}
+        #journey-svg .s-label{fill:#1a1a2e!important;}
+        #journey-svg .s-weeks{fill:#4b5563!important;}
+        #journey-svg #train-glow{filter:drop-shadow(0 0 8px rgba(167,139,250,0.2))!important;}
+        #journey-svg #train-body{fill:#7c3aed!important;}
+        #journey-svg #train-dot{fill:#fff!important;}
+        #journey-svg .flag-pole{stroke:#f59e0b!important;} /* Goal flag pole */
+        #journey-svg .flag-rect{fill:#10b981!important;} /* Goal flag rect */
+        #journey-svg .goal-lbl{fill:#10b981!important;} /* Goal label */
+
+        /* Detail Panel */
+        #detail{background:#fff!important;border:1px solid #e5e7eb!important;box-shadow:0 12px 30px rgba(0,0,0,0.1)!important;}
+        #detail .d-title{color:#1a1a2e!important;}
+        #detail .d-close{background:#f1f5f9!important;color:#4b5563!important;}
+        #detail .badge-done{background:#d1fae5!important;color:#065f46!important;border:1px solid #6ee7b7!important;}
+        #detail .badge-active{background:#ede9fe!important;color:#5b21b6!important;border:1px solid #a78bfa!important;}
+        #detail .badge-upcoming{background:#f1f5f9!important;color:#4b5563!important;border:1px solid #cbd5e1!important;}
+        #detail .d-meta{color:#4b5563!important;}
+        #detail .ph-row{color:#374151!important;}
+        #detail .ph-badge.ph-beginner{background:#d1fae5!important;color:#065f46!important;}
+        #detail .ph-badge.ph-intermediate{background:#fef3c7!important;color:#92400e!important;}
+        #detail .ph-badge.ph-advanced{background:#fee2e2!important;color:#991b1b!important;}
+        #detail .d-section{color:#7c3aed!important;}
+        #detail .d-resources li{color:#4b5563!important;}
+        #detail .d-project{background:#ede9fe!important;border:1px solid #a78bfa!important;color:#5b21b6!important;}
+        #overlay{background:rgba(0,0,0,0.3)!important;backdrop-filter:blur(2px)!important;}
+
+        /* Progress Bar */
+        #prog-wrap .prog-label{color:#4b5563!important;}
+        #prog-wrap .prog-bar{background:#e5e7eb!important;}
+        #prog-wrap .prog-fill{background:linear-gradient(90deg,#7c3aed,#34d399)!important;}
+
+        /* Achievements */
+        .ba-grid h2{color:#1a1a2e!important;}
+        .ba-card{background:#fff!important;border:1.5px solid #e5e7eb!important;}
+        .ba-on{background:linear-gradient(145deg,rgba(124,58,237,0.1),rgba(79,70,229,0.08))!important;
+            border:1.5px solid rgba(167,139,250,0.3)!important;
+            box-shadow:0 4px 12px rgba(124,58,237,0.1)!important;}
+        .ba-off{background:#f1f5f9!important;border:1.5px solid #e2e8f0!important;opacity:0.7!important;filter:none!important;}
+        .ba-icon{color:#1a1a2e!important;}
+        .ba-title{color:#1a1a2e!important;}
+        .ba-on .ba-title{color:#7c3aed!important;}
+        .ba-desc{color:#4b5563!important;}
+        .ba-status{color:#4b5563!important;}
+        .ba-on .ba-status{color:#065f46!important;}
+        /* Ensure the HTML component's body background is light */
+        .stHtml body{background:""" + COLOR_BG_LIGHT + """!important;}
+
+
+        /* File Uploader and Buttons */
+        div[data-testid="stFileUploader"] section {background-color:#f8fafc!important; border:1px dashed #cbd5e1!important;}
+        div[data-testid="stFileUploader"] label, div[data-testid="stFileUploader"] p, div[data-testid="stFileUploader"] small {color:#1a1a2e!important;}
+        div[data-testid="stFileUploader"] button {background-color:#fff!important; color:#1a1a2e!important; border:1px solid #d1d5db!important;}
+        div[data-testid="stButton"] button:not([kind="primary"]), div[data-testid="stDownloadButton"] button {background:#fff!important; border:1px solid #d1d5db!important; color:#1a1a2e!important;}
+
         /* Tabs */
         .stTabs [data-baseweb="tab-list"]{background:#ede9fe!important;border-radius:12px;}
         .stTabs [data-baseweb="tab"]{color:#4b5563!important;}
@@ -85,7 +148,8 @@ def show_navbar(active="Dashboard"):
         .stat-card{background:#fff!important;border-color:#e5e7eb!important;}
         .sc-val{color:#1a1a2e!important;}
         .sc-lbl{color:#6b7280!important;}
-        .feat-card,.fc-wrap{background:#fff!important;border-color:#e5e7eb!important;}
+        .feat-card,.fc-wrap,.score-card,.ats-card,.suggestion-card,
+        .roadmap-card,.customize-card,.customize-box{background:#fff!important;border-color:#e5e7eb!important;}
         .fct{color:#1a1a2e!important;}
         .fcd{color:#4b5563!important;}
         .fcb{background:rgba(124,58,237,0.1)!important;color:#7c3aed!important;}
@@ -93,7 +157,12 @@ def show_navbar(active="Dashboard"):
         /* Force all inline white text inside cards to dark */
         .fc-wrap div, .fc-wrap p, .fc-wrap span,
         .feat-card div, .feat-card p, .feat-card span,
-        .stat-card div, .stat-card p, .stat-card span
+        .stat-card div, .stat-card p, .stat-card span,
+        .score-card div, .score-card p, .score-card span,
+        .ats-card div, .ats-card p, .ats-card span
+        .roadmap-card div, .roadmap-card p, .roadmap-card span,
+        .customize-card div, .customize-card p, .customize-card span,
+        .customize-box div, .customize-box p, .customize-box span
         {color:#1a1a2e!important;}
         .fc-wrap div[style*="rgba(255,255,255,0.55)"],
         .fc-wrap div[style*="color:#fff"],
