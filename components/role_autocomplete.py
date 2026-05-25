@@ -24,13 +24,13 @@ def role_autocomplete(roles: list[str], default: str = "", key: str = "role_ac",
     roles_json = json.dumps(roles)
     current    = st.session_state[val_key]
 
-    bg_input  = "rgba(255,255,255,0.07)" if dark else "#fff"
-    border    = "rgba(255,255,255,0.12)" if dark else "#d1d5db"
-    text_col  = "#fff"                   if dark else "#1a1a2e"
-    dd_bg     = "#1a1a2e"                if dark else "#fff"
-    dd_border = "rgba(255,255,255,0.12)" if dark else "#e5e7eb"
-    dd_hover  = "rgba(124,58,237,0.2)"   if dark else "#f3f0ff"
-    dd_text   = "rgba(255,255,255,0.9)"  if dark else "#1a1a2e"
+    bg_input  = "rgba(0,0,0,0.24)"
+    border    = "rgba(255,255,240,0.16)"
+    text_col  = "#FFFFF0"
+    dd_bg     = "#333F63"
+    dd_border = "rgba(255,255,240,0.16)"
+    dd_hover  = "rgba(0,0,0,0.28)"
+    dd_text   = "rgba(255,255,240,0.9)"
 
     html = f"""
 <!DOCTYPE html>
@@ -58,10 +58,10 @@ def role_autocomplete(roles: list[str], default: str = "", key: str = "role_ac",
     transition: border-color 0.15s, box-shadow 0.15s;
   }}
   #ac-input:focus {{
-    border-color: rgba(167,139,250,0.6);
-    box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
+    border-color: rgba(255,255,240,0.36);
+    box-shadow: 0 0 0 3px rgba(255,255,240,0.08);
   }}
-  #ac-input::placeholder {{ color: rgba(255,255,255,0.3); }}
+  #ac-input::placeholder {{ color: rgba(255,255,240,0.38); }}
 
   #ac-dropdown {{
     display: none;
@@ -74,7 +74,7 @@ def role_autocomplete(roles: list[str], default: str = "", key: str = "role_ac",
     max-height: 220px;
     overflow-y: auto;
     z-index: 9999;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.32);
   }}
   #ac-dropdown.open {{ display: block; }}
 
@@ -83,16 +83,16 @@ def role_autocomplete(roles: list[str], default: str = "", key: str = "role_ac",
     font-size: 0.88rem;
     color: {dd_text};
     cursor: pointer;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,240,0.08);
     transition: background 0.12s;
   }}
   .ac-item:last-child {{ border-bottom: none; }}
-  .ac-item:hover, .ac-item.active {{ background: {dd_hover}; color: #a78bfa; }}
+  .ac-item:hover, .ac-item.active {{ background: {dd_hover}; color: #FFFFF0; }}
 
   .ac-empty {{
     padding: 0.6rem 0.9rem;
     font-size: 0.82rem;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,240,0.46);
     font-style: italic;
   }}
 </style>

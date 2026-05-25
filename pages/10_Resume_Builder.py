@@ -18,13 +18,21 @@ st.markdown("""
 html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
-div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;}
 .template-preview-card{height:340px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;margin-bottom:6px;background:#fff;}
 .template-preview-frame{width:100%;height:286px;border:0;background:#fff;display:block;}
 .template-preview-footer{min-height:54px;padding:0.5rem 0.75rem;display:flex;justify-content:space-between;align-items:center;gap:0.6rem;
     background:#f8fafc;border-top:1px solid #e5e7eb;}
 .template-preview-tags{font-size:0.66rem;font-weight:800;color:#111827;line-height:1.25;}
 .template-preview-name{font-size:0.72rem;font-weight:900;white-space:nowrap;}
+html,body,.stApp{color:#FFFFF0!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
+.template-preview-card{background:rgba(0,0,0,0.24)!important;border:1px solid rgba(255,255,240,0.14)!important;box-shadow:none!important;}
+.template-preview-frame{background:#333F63!important;}
+.template-preview-footer{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.14)!important;color:#FFFFF0!important;}
+.template-preview-tags,.template-preview-name{color:#FFFFF0!important;}
+[style*="#7c3aed"],[style*="#4f46e5"],[style*="#059669"],[style*="#ffffff"],[style*="#fff"]{color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
+[style*="rgba(124,58,237"],[style*="linear-gradient"]{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.18)!important;color:#FFFFF0!important;}
 </style>
 """, unsafe_allow_html=True)
 

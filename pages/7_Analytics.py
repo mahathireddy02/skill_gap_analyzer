@@ -12,15 +12,15 @@ st.set_page_config(page_title="Analytics · SkillGap", page_icon="📊", layout=
 require_login()
 
 db_user = get_user(st.session_state.email)
-theme = db_user.get("theme", "dark")
-is_light = theme == "light"
+theme = "dark"
+is_light = False
 
-page_bg = "#f8fafc" if is_light else "#0a0e17"
-chart_bg = "#ffffff" if is_light else "rgba(255,255,255,0.04)"
-chart_text = "#172033" if is_light else "#ffffff"
-chart_muted = "#64748b" if is_light else "rgba(255,255,255,0.58)"
-chart_grid = "#e2e8f0" if is_light else "rgba(255,255,255,0.10)"
-chart_axis = "#94a3b8" if is_light else "rgba(255,255,255,0.25)"
+page_bg = "#333F63"
+chart_bg = "rgba(0,0,0,0.24)"
+chart_text = "#FFFFF0"
+chart_muted = "rgba(255,255,240,0.62)"
+chart_grid = "rgba(255,255,240,0.14)"
+chart_axis = "rgba(255,255,240,0.26)"
 chart_height = 320
 
 st.markdown(f"""
@@ -65,7 +65,7 @@ div[data-testid="stMetricValue"] {{
 .vg-tooltip {{
     border:1px solid {chart_grid}!important;
     border-radius:8px!important;
-    box-shadow:0 12px 28px rgba(15,23,42,0.14)!important;
+    box-shadow:none!important;
 }}
 #vg-tooltip-element td.key,
 .vg-tooltip td.key {{
@@ -97,7 +97,7 @@ div[data-testid="stVegaLiteChart"] .vega-actions,
 details[open] .vega-actions {{
     border:1px solid {chart_grid}!important;
     border-radius:8px!important;
-    box-shadow:0 12px 28px rgba(15,23,42,0.14)!important;
+    box-shadow:none!important;
     overflow:hidden!important;
 }}
 .vega-embed .vega-actions a,
@@ -115,8 +115,8 @@ details[open] .vega-actions a:hover,
 .vega-embed summary:hover,
 div[data-testid="stVegaLiteChart"] summary:hover,
 details[open] summary:hover {{
-    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
-    background-color:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    background:#333F63!important;
+    background-color:#333F63!important;
     color:{chart_text}!important;
 }}
 .vega-embed summary svg,
@@ -154,7 +154,7 @@ div[data-testid="stElementToolbar"] button,
 div[data-testid="stElementToolbar"] [role="button"] {{
     border:1px solid {chart_grid}!important;
     border-radius:8px!important;
-    box-shadow:0 8px 20px rgba(15,23,42,0.12)!important;
+    box-shadow:none!important;
 }}
 div[data-testid="stElementToolbar"] button:hover,
 div[data-testid="stElementToolbar"] [role="button"]:hover,
@@ -163,8 +163,8 @@ button[title*="download" i]:hover,
 button[aria-label*="fullscreen" i]:hover,
 button[aria-label*="download" i]:hover,
 button[aria-label*="more" i]:hover {{
-    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
-    background-color:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    background:#333F63!important;
+    background-color:#333F63!important;
     color:{chart_text}!important;
 }}
 div[data-baseweb="popover"],
@@ -184,8 +184,8 @@ li[role="menuitem"] * {{
 }}
 div[role="menuitem"]:hover,
 li[role="menuitem"]:hover {{
-    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
-    background-color:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    background:#333F63!important;
+    background-color:#333F63!important;
     color:{chart_text}!important;
 }}
 div[data-testid="stElementToolbar"] button,
@@ -202,12 +202,12 @@ button[aria-label*="more" i],
     display:inline-flex!important;
     align-items:center!important;
     justify-content:center!important;
-    background:{"#ffffff" if is_light else chart_bg}!important;
-    background-color:{"#ffffff" if is_light else chart_bg}!important;
-    color:{"#000000" if is_light else chart_text}!important;
-    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    color:{chart_text}!important;
+    border:1.5px solid {chart_grid}!important;
     border-radius:8px!important;
-    box-shadow:0 8px 20px rgba(15,23,42,0.16)!important;
+    box-shadow:none!important;
 }}
 div[data-testid="stElementToolbar"] svg,
 div[data-testid="stElementToolbar"] path,
@@ -226,18 +226,18 @@ button[aria-label*="more" i] path,
 .vega-embed summary svg,
 .vega-embed summary path {{
     opacity:1!important;
-    color:{"#000000" if is_light else chart_text}!important;
-    fill:{"#000000" if is_light else chart_text}!important;
-    stroke:{"#000000" if is_light else chart_text}!important;
+    color:{chart_text}!important;
+    fill:{chart_text}!important;
+    stroke:{chart_text}!important;
 }}
 .vega-embed .vega-actions,
 div[data-testid="stVegaLiteChart"] .vega-actions,
 details[open] .vega-actions,
 div[role="menu"],
 ul[role="menu"] {{
-    background:{"#ffffff" if is_light else chart_bg}!important;
-    background-color:{"#ffffff" if is_light else chart_bg}!important;
-    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    border:1.5px solid {chart_grid}!important;
     border-radius:8px!important;
 }}
 .vega-embed .vega-actions a,
@@ -245,9 +245,9 @@ div[data-testid="stVegaLiteChart"] .vega-actions a,
 details[open] .vega-actions a,
 div[role="menuitem"],
 li[role="menuitem"] {{
-    background:{"#ffffff" if is_light else chart_bg}!important;
-    background-color:{"#ffffff" if is_light else chart_bg}!important;
-    color:{"#000000" if is_light else chart_text}!important;
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    color:{chart_text}!important;
 }}
 div[data-testid="stElementToolbar"],
 div[data-testid="stElementToolbarButton"],
@@ -272,12 +272,12 @@ button[aria-label*="data" i] * {{
     opacity:1!important;
     visibility:visible!important;
     display:inline-flex!important;
-    background:{"#ffffff" if is_light else chart_bg}!important;
-    background-color:{"#ffffff" if is_light else chart_bg}!important;
-    color:{"#000000" if is_light else chart_text}!important;
-    border-color:{"#000000" if is_light else chart_grid}!important;
-    fill:{"#000000" if is_light else chart_text}!important;
-    stroke:{"#000000" if is_light else chart_text}!important;
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    color:{chart_text}!important;
+    border-color:{chart_grid}!important;
+    fill:{chart_text}!important;
+    stroke:{chart_text}!important;
 }}
 button[title*="full" i],
 button[title*="view" i],
@@ -287,7 +287,7 @@ button[aria-label*="view" i],
 button[aria-label*="data" i] {{
     min-width:32px!important;
     min-height:32px!important;
-    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    border:1.5px solid {chart_grid}!important;
     border-radius:8px!important;
 }}
 div[data-testid="stElementToolbar"] button,
@@ -301,12 +301,12 @@ button[title*="data" i],
 button[aria-label*="full" i],
 button[aria-label*="view" i],
 button[aria-label*="data" i] {{
-    background:{"#ffffff" if is_light else chart_bg}!important;
-    background-color:{"#ffffff" if is_light else chart_bg}!important;
-    border:1.5px solid {"#000000" if is_light else chart_grid}!important;
+    background:{chart_bg}!important;
+    background-color:{chart_bg}!important;
+    border:1.5px solid {chart_grid}!important;
     border-radius:8px!important;
     box-shadow:none!important;
-    color:{"#000000" if is_light else chart_text}!important;
+    color:{chart_text}!important;
 }}
 div[data-testid="stElementToolbar"] button *,
 div[data-testid="stElementToolbarButton"] *,
@@ -321,7 +321,7 @@ button[aria-label*="view" i] *,
 button[aria-label*="data" i] * {{
     background:transparent!important;
     background-color:transparent!important;
-    color:{"#000000" if is_light else chart_text}!important;
+    color:{chart_text}!important;
     box-shadow:none!important;
 }}
 div[data-testid="stElementToolbar"] button svg,
@@ -346,9 +346,9 @@ button[aria-label*="view" i] svg,
 button[aria-label*="view" i] path,
 button[aria-label*="data" i] svg,
 button[aria-label*="data" i] path {{
-    color:{"#000000" if is_light else chart_text}!important;
-    fill:{"#000000" if is_light else chart_text}!important;
-    stroke:{"#000000" if is_light else chart_text}!important;
+    color:{chart_text}!important;
+    fill:{chart_text}!important;
+    stroke:{chart_text}!important;
 }}
 div[data-testid="stElementToolbar"] button[title*="full" i],
 div[data-testid="stElementToolbar"] button[title*="fullscreen" i],
@@ -450,7 +450,7 @@ with cl:
             y=alt.Y("Count:Q", title="Count"),
             color=alt.Color(
                 "Category:N",
-                scale=alt.Scale(range=["#10b981", "#ef4444"]),
+                scale=alt.Scale(range=["#FFFFF0", "#333F63"]),
                 legend=None,
             ),
             tooltip=["Category", "Count"],
@@ -469,7 +469,7 @@ with cr:
     chart = alt.Chart(chart_df2).mark_bar(cornerRadiusTopLeft=5, cornerRadiusTopRight=5).encode(
         x=alt.X("Component:N", title=None, axis=alt.Axis(labelAngle=0, labelLimit=110)),
         y=alt.Y("Max Points:Q", title="Max Points"),
-        color=alt.value("#7c3aed"),
+        color=alt.value("#FFFFF0"),
         tooltip=["Component", "Max Points"],
     ).properties(height=chart_height)
     st.altair_chart(themed_chart(chart), use_container_width=True)
@@ -479,7 +479,7 @@ st.markdown("### 📅 Weekly Progress")
 weeks  = ["Week 1","Week 2","Week 3","Week 4","Week 5","Week 6"]
 scores = [20, 35, 45, 55, 68, resume_score if resume_score else 72]
 progress_df = pd.DataFrame({"Week": weeks, "Resume Score": scores})
-line = alt.Chart(progress_df).mark_line(point=True, strokeWidth=3, color="#7c3aed").encode(
+line = alt.Chart(progress_df).mark_line(point=True, strokeWidth=3, color="#FFFFF0").encode(
     x=alt.X("Week:N", title=None, axis=alt.Axis(labelAngle=0)),
     y=alt.Y("Resume Score:Q", title="Resume Score", scale=alt.Scale(domain=[0, 100])),
     tooltip=["Week", "Resume Score"],

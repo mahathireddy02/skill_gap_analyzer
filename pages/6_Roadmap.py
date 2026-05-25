@@ -10,20 +10,20 @@ st.set_page_config(page_title="Roadmap · SkillGap", page_icon="🛤️", layout
 require_login()
 
 db_user = get_user(st.session_state.email)
-theme = db_user.get("theme", "dark")
-is_light = theme == "light"
+theme = "dark"
+is_light = False
 
-page_bg = "#f8fafc" if is_light else "#0a0e17"
-page_text = "#172033" if is_light else "#ffffff"
-page_muted = "#5b6472" if is_light else "rgba(255,255,255,0.58)"
-card_bg = "#ffffff" if is_light else "rgba(255,255,255,0.05)"
-card_border = "#dbe3ef" if is_light else "rgba(255,255,255,0.08)"
-input_bg = "#ffffff" if is_light else "rgba(255,255,255,0.07)"
-input_border = "#cbd5e1" if is_light else "rgba(255,255,255,0.15)"
-prefill_bg = "#eef2ff" if is_light else "rgba(124,58,237,0.1)"
-prefill_border = "#c7d2fe" if is_light else "rgba(124,58,237,0.2)"
-prefill_text = "#4338ca" if is_light else "#a78bfa"
-prefill_strong = "#312e81" if is_light else "#ddd6fe"
+page_bg = "#f8fafc" if is_light else "#333F63"
+page_text = "#172033" if is_light else "#FFFFF0"
+page_muted = "#5b6472" if is_light else "rgba(255,255,240,0.62)"
+card_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
+card_border = "#dbe3ef" if is_light else "rgba(255,255,240,0.14)"
+input_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
+input_border = "#cbd5e1" if is_light else "rgba(255,255,240,0.16)"
+prefill_bg = "#eef2ff" if is_light else "rgba(0,0,0,0.24)"
+prefill_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
+prefill_text = "#FFFFF0" if is_light else "#FFFFF0"
+prefill_strong = "#FFFFF0" if is_light else "#FFFFF0"
 
 st.markdown(f"""
 <style>
@@ -34,7 +34,7 @@ st.markdown(f"""
 html,body,.stApp{{margin:0!important;padding:0!important;background:{page_bg}!important;color:{page_text}!important;}}
 .block-container{{padding:1rem 2rem!important;max-width:100%!important;}}
 div[data-testid="stButton"] button{{font-weight:700!important;border-radius:10px!important;}}
-div[data-testid="stButton"] button[kind="primary"]{{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}}
+div[data-testid="stButton"] button[kind="primary"]{{background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}}
 div[data-testid="stMetric"]{{background:{card_bg}!important;border-radius:12px;padding:0.8rem 1rem;border:1px solid {card_border}!important;}}
 div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricLabel"] p{{color:{page_muted}!important;}}
 div[data-testid="stMetric"] div, div[data-testid="stMetric"] [data-testid="stMetricValue"]{{color:{page_text}!important;}}
@@ -88,7 +88,7 @@ div[role="option"]:hover,
 li[role="option"]:hover,
 div[aria-selected="true"],
 li[aria-selected="true"] {{
-    background:{"#eef2ff" if is_light else "rgba(124,58,237,0.22)"}!important;
+    background:{"#eef2ff" if is_light else "#333F63"}!important;
     color:{page_text}!important;
 }}
 .roadmap-prefill{{
@@ -122,7 +122,7 @@ div[data-testid="stCheckbox"] p,
 div[data-testid="stCheckbox"] span,
 div[data-testid="stCaptionContainer"],
 div[data-testid="stCaptionContainer"] * {{
-    color:{page_text if is_light else "#ffffff"}!important;
+    color:{page_text if is_light else "#FFFFF0"}!important;
 }}
 div[data-testid="stExpander"] {{
     background:{card_bg}!important;
@@ -152,10 +152,10 @@ div[data-testid="stCheckbox"] input:checked + div,
 div[data-testid="stCheckbox"] input:checked + div *,
 div[data-testid="stCheckbox"] input:checked ~ div,
 div[data-testid="stCheckbox"] input:checked ~ div * {{
-    background:#7c3aed!important;
-    border-color:#7c3aed!important;
-    color:#ffffff!important;
-    fill:#ffffff!important;
+    background:#FFFFF0!important;
+    border-color:#FFFFF0!important;
+    color:#FFFFF0!important;
+    fill:#FFFFF0!important;
 }}
 div[data-testid="stCheckbox"] svg {{
     color:{page_text}!important;
@@ -163,15 +163,15 @@ div[data-testid="stCheckbox"] svg {{
 }}
 div[data-testid="stCheckbox"] input:checked ~ div svg,
 div[data-testid="stCheckbox"] input:checked + div svg {{
-    color:#ffffff!important;
-    fill:#ffffff!important;
+    color:#FFFFF0!important;
+    fill:#FFFFF0!important;
 }}
 div[data-testid="stExpander"] summary svg {{
-    fill:{page_text if is_light else "#ffffff"}!important;
-    color:{page_text if is_light else "#ffffff"}!important;
+    fill:{page_text if is_light else "#FFFFF0"}!important;
+    color:{page_text if is_light else "#FFFFF0"}!important;
 }}
 div[data-testid="stExpander"] summary:hover {{
-    background:{"#eef2ff" if is_light else "rgba(255,255,255,0.04)"}!important;
+    background:{"#eef2ff" if is_light else "rgba(0,0,0,0.22)"}!important;
 }}
 div[data-testid="stCaptionContainer"],
 div[data-testid="stCaptionContainer"] * {{
@@ -379,27 +379,27 @@ n_stations    = len(stations)
 # Each weekly checkpoint needs enough room for a compact Week label.
 svg_width     = max(900, n_stations * 120)
 
-map_body_bg = "#f8fafc" if is_light else "#0a0e17"
-map_text = "#172033" if is_light else "#ffffff"
-map_label = "#172033" if is_light else "#e2e8f0"
+map_body_bg = "#f8fafc" if is_light else "#333F63"
+map_text = "#172033" if is_light else "#FFFFF0"
+map_label = "#172033" if is_light else "rgba(255,255,240,0.14)"
 map_muted = "#5b6472" if is_light else "#94a3b8"
-map_track = "#cbd5e1" if is_light else "#1e1b4b"
-map_rail = "rgba(23,32,51,0.18)" if is_light else "rgba(255,255,255,0.06)"
-map_upcoming_fill = "#ffffff" if is_light else "#1e1b4b"
-map_upcoming_stroke = "#94a3b8" if is_light else "#4338ca"
+map_track = "#cbd5e1" if is_light else "#333F63"
+map_rail = "rgba(23,32,51,0.18)" if is_light else "rgba(0,0,0,0.30)"
+map_upcoming_fill = "#FFFFF0" if is_light else "#333F63"
+map_upcoming_stroke = "#94a3b8" if is_light else "#FFFFF0"
 map_upcoming_icon = "#64748b" if is_light else "#6366f1"
-detail_bg = "#ffffff" if is_light else "linear-gradient(135deg,#152238,#0a0e17)"
-detail_border = "#dbe3ef" if is_light else "rgba(167,139,250,0.3)"
-detail_shadow = "0 20px 48px rgba(15,23,42,0.16)" if is_light else "0 24px 80px rgba(0,0,0,0.7)"
+detail_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
+detail_border = "#dbe3ef" if is_light else "rgba(255,255,240,0.18)"
+detail_shadow = "0 20px 48px rgba(15,23,42,0.16)" if is_light else "none"
 overlay_bg = "rgba(248,250,252,0.72)" if is_light else "rgba(0,0,0,0.6)"
-close_bg = "#f8fafc" if is_light else "rgba(255,255,255,0.08)"
-close_hover = "#eef2ff" if is_light else "rgba(255,255,255,0.15)"
-project_bg = "#eef2ff" if is_light else "rgba(124,58,237,0.12)"
-project_border = "#c7d2fe" if is_light else "rgba(124,58,237,0.25)"
-project_text = "#4338ca" if is_light else "#c4b5fd"
-progress_bar_bg = "#e2e8f0" if is_light else "rgba(255,255,255,0.08)"
-scrollbar_track = "#e2e8f0" if is_light else "rgba(255,255,255,0.04)"
-scrollbar_thumb = "#94a3b8" if is_light else "#4338ca"
+close_bg = "#f8fafc" if is_light else "rgba(255,255,240,0.14)"
+close_hover = "#eef2ff" if is_light else "rgba(255,255,240,0.16)"
+project_bg = "#eef2ff" if is_light else "rgba(0,0,0,0.24)"
+project_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
+project_text = "#FFFFF0" if is_light else "#FFFFF0"
+progress_bar_bg = "rgba(255,255,240,0.14)" if is_light else "rgba(255,255,240,0.14)"
+scrollbar_track = "rgba(255,255,240,0.14)" if is_light else "rgba(0,0,0,0.22)"
+scrollbar_thumb = "#94a3b8" if is_light else "#FFFFF0"
 
 # ── HTML/SVG Journey Map ──────────────────────────────────────────────────────
 html = f"""
@@ -418,13 +418,13 @@ html = f"""
   #journey-svg{{display:block;min-width:{svg_width}px;}}
 
   /* Station circles */
-  .station-done   .s-circle{{fill:#10b981;stroke:#34d399;filter:drop-shadow(0 0 8px #10b98188);}}
-  .station-active .s-circle{{fill:#7c3aed;stroke:#a78bfa;filter:drop-shadow(0 0 14px #7c3aedaa);animation:pulse 1.6s ease-in-out infinite;}}
+  .station-done   .s-circle{{fill:#FFFFF0;stroke:#FFFFF0;filter:drop-shadow(0 0 8px #FFFFF088);}}
+  .station-active .s-circle{{fill:#FFFFF0;stroke:#FFFFF0;filter:drop-shadow(0 0 14px #FFFFF0aa);animation:pulse 1.6s ease-in-out infinite;}}
   .station-upcoming .s-circle{{fill:{map_upcoming_fill};stroke:{map_upcoming_stroke};}}
   @keyframes pulse{{0%,100%{{r:18;}}50%{{r:22;}}}}
 
-  .station-done   .s-icon{{fill:#fff;font-size:14px;}}
-  .station-active .s-icon{{fill:#fff;font-size:14px;}}
+  .station-done   .s-icon{{fill:#FFFFF0;font-size:14px;}}
+  .station-active .s-icon{{fill:#FFFFF0;font-size:14px;}}
   .station-upcoming .s-icon{{fill:{map_upcoming_icon};font-size:14px;}}
 
   .s-label{{font-size:12px;font-weight:700;fill:{map_label};text-anchor:middle;}}
@@ -440,7 +440,7 @@ html = f"""
 
   /* Train */
   #train{{transition:all 1.2s cubic-bezier(.4,0,.2,1);}}
-  #train-glow{{filter:drop-shadow(0 0 12px #a78bfa);}}
+  #train-glow{{filter:drop-shadow(0 0 12px #FFFFF0);}}
 
   /* Detail panel */
   #detail{{
@@ -465,15 +465,15 @@ html = f"""
     border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}}
   .d-close:hover{{background:{close_hover};}}
   .d-badge{{display:inline-block;padding:3px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;margin-bottom:14px;}}
-  .badge-done{{background:#10b98122;color:#34d399;border:1px solid #10b98144;}}
-  .badge-active{{background:#7c3aed22;color:#a78bfa;border:1px solid #7c3aed44;}}
-  .badge-upcoming{{background:#1e1b4b;color:#6366f1;border:1px solid #4338ca44;}}
+  .badge-done{{background:#FFFFF022;color:#FFFFF0;border:1px solid #FFFFF044;}}
+  .badge-active{{background:#FFFFF022;color:#FFFFF0;border:1px solid #FFFFF044;}}
+  .badge-upcoming{{background:#333F63;color:#6366f1;border:1px solid #FFFFF044;}}
   .d-meta{{color:{map_muted};font-size:0.85rem;margin-bottom:16px;}}
   .ph-row{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.83rem;line-height:1.5;color:{map_text};}}
   .ph-badge{{flex-shrink:0;padding:2px 8px;border-radius:6px;font-size:0.72rem;font-weight:700;margin-top:1px;}}
-  .ph-beginner{{background:#10b98122;color:#34d399;}}
+  .ph-beginner{{background:#FFFFF022;color:#FFFFF0;}}
   .ph-intermediate{{background:#f59e0b22;color:#fbbf24;}}
-  .ph-advanced{{background:#ef444422;color:#f87171;}}
+  .ph-advanced{{background:#333F6322;color:#FFFFF0;}}
   .d-section{{font-size:0.78rem;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;}}
   .d-resources ul{{padding-left:16px;}}
   .d-resources li{{font-size:0.83rem;color:{map_muted};margin-bottom:4px;}}
@@ -483,9 +483,9 @@ html = f"""
   /* Progress bar */
   #prog-wrap{{padding:0 24px 16px;}}
   .prog-label{{display:flex;justify-content:space-between;font-size:1.05rem;font-weight:800;color:{map_text};margin-bottom:10px;}}
-  .prog-label span:last-child{{color:#7c3aed;font-weight:900;}}
+  .prog-label span:last-child{{color:#FFFFF0;font-weight:900;}}
   .prog-bar{{height:6px;background:{progress_bar_bg};border-radius:999px;overflow:hidden;}}
-  .prog-fill{{height:100%;background:linear-gradient(90deg,#7c3aed,#34d399);border-radius:999px;
+  .prog-fill{{height:100%;background:#FFFFF0;border-radius:999px;
     transition:width 1s ease;}}
 </style>
 </head>
@@ -561,12 +561,12 @@ svg.setAttribute('viewBox', `0 0 ${{W}} ${{H}}`);
 svg.innerHTML = `
 <defs>
   <linearGradient id="trackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-    <stop offset="0%" stop-color="#7c3aed"/>
-    <stop offset="100%" stop-color="#10b981"/>
+    <stop offset="0%" stop-color="#FFFFF0"/>
+    <stop offset="100%" stop-color="#FFFFF0"/>
   </linearGradient>
   <radialGradient id="trainGrad" cx="50%" cy="50%" r="50%">
     <stop offset="0%" stop-color="#e0d7ff"/>
-    <stop offset="100%" stop-color="#7c3aed"/>
+    <stop offset="100%" stop-color="#FFFFF0"/>
   </radialGradient>
   <filter id="glow">
     <feGaussianBlur stdDeviation="3" result="blur"/>
@@ -617,7 +617,7 @@ STATIONS.forEach((s, i) => {{
     const ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
     ring.setAttribute('r','28');
     ring.setAttribute('fill','none');
-    ring.setAttribute('stroke','#7c3aed');
+    ring.setAttribute('stroke','#FFFFF0');
     ring.setAttribute('stroke-width','2');
     ring.setAttribute('opacity','0.4');
     ring.style.animation = 'pulse-ring 1.6s ease-in-out infinite';
@@ -672,12 +672,12 @@ flagG.appendChild(flagPole);
 const flagRect = document.createElementNS('http://www.w3.org/2000/svg','rect');
 flagRect.setAttribute('x','0'); flagRect.setAttribute('y','-30');
 flagRect.setAttribute('width','22'); flagRect.setAttribute('height','14');
-flagRect.setAttribute('fill','#10b981'); flagRect.setAttribute('rx','2');
+flagRect.setAttribute('fill','#FFFFF0'); flagRect.setAttribute('rx','2');
 flagG.appendChild(flagRect);
 
 const goalLbl = document.createElementNS('http://www.w3.org/2000/svg','text');
 goalLbl.setAttribute('y','34'); goalLbl.setAttribute('text-anchor','middle');
-goalLbl.setAttribute('font-size','10'); goalLbl.setAttribute('fill','#10b981');
+goalLbl.setAttribute('font-size','10'); goalLbl.setAttribute('fill','#FFFFF0');
 goalLbl.setAttribute('font-weight','700');
 goalLbl.textContent = '{"🎉 Reached!" if pct == 100 else "Goal Reached"}';
 flagG.appendChild(goalLbl);
@@ -690,7 +690,7 @@ trainGroup.setAttribute('id','train');
 
 const trainGlow = document.createElementNS('http://www.w3.org/2000/svg','circle');
 trainGlow.setAttribute('r','14');
-trainGlow.setAttribute('fill','rgba(167,139,250,0.2)');
+trainGlow.setAttribute('fill','rgba(255,255,240,0.12)');
 trainGroup.appendChild(trainGlow);
 
 const trainBody = document.createElementNS('http://www.w3.org/2000/svg','circle');
@@ -701,7 +701,7 @@ trainGroup.appendChild(trainBody);
 
 const trainDot = document.createElementNS('http://www.w3.org/2000/svg','circle');
 trainDot.setAttribute('r','4');
-trainDot.setAttribute('fill','#fff');
+trainDot.setAttribute('fill','#FFFFF0');
 trainGroup.appendChild(trainDot);
 
 svg.appendChild(trainGroup);
@@ -796,18 +796,18 @@ for icon, title, desc, unlocked in [
         f'</div>'
     )
 
-ach_bg = "#f8fafc" if is_light else "#0a0e17"
-ach_text = "#172033" if is_light else "#ffffff"
-ach_card_on_bg = "#ffffff" if is_light else "linear-gradient(145deg,rgba(124,58,237,0.25),rgba(79,70,229,0.15))"
-ach_card_off_bg = "#ffffff" if is_light else "rgba(255,255,255,0.02)"
-ach_card_on_border = "#c7d2fe" if is_light else "rgba(167,139,250,0.5)"
-ach_card_off_border = "#e2e8f0" if is_light else "rgba(255,255,255,0.05)"
-ach_title = "#172033" if is_light else "#e2e8f0"
-ach_title_on = "#4338ca" if is_light else "#a78bfa"
-ach_desc = "#5b6472" if is_light else "rgba(255,255,255,0.35)"
+ach_bg = "#f8fafc" if is_light else "#333F63"
+ach_text = "#172033" if is_light else "#FFFFF0"
+ach_card_on_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
+ach_card_off_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.18)"
+ach_card_on_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.28)"
+ach_card_off_border = "rgba(255,255,240,0.14)" if is_light else "rgba(0,0,0,0.26)"
+ach_title = "#172033" if is_light else "rgba(255,255,240,0.14)"
+ach_title_on = "#FFFFF0" if is_light else "#FFFFF0"
+ach_desc = "#5b6472" if is_light else "rgba(255,255,240,0.46)"
 ach_status = "#64748b" if is_light else "#4b5563"
-ach_status_on = "#047857" if is_light else "#34d399"
-ach_shadow = "0 8px 22px rgba(15,23,42,0.08)" if is_light else "0 4px 18px rgba(124,58,237,0.2)"
+ach_status_on = "#047857" if is_light else "#FFFFF0"
+ach_shadow = "0 8px 22px rgba(15,23,42,0.08)" if is_light else "none"
 
 components.html(f"""
 <!DOCTYPE html><html><head><meta charset="utf-8">
@@ -862,3 +862,4 @@ with a2:
         from utils.auth import update_user
         update_user(st.session_state.email, {"checked_weeks": []})
         st.rerun()
+

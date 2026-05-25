@@ -17,7 +17,7 @@ st.markdown("""
 html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
-div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;}
 .chip-g{display:inline-block;background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);border-radius:999px;
     padding:0.2rem 0.65rem;font-size:0.8rem;font-weight:600;margin:0.15rem;}
 .chip-r{display:inline-block;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);border-radius:999px;
@@ -28,7 +28,7 @@ div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(13
     border-left:4px solid #7c3aed;color:#fff;}
 .tier-box div{color:#fff!important;}
 .gap-result{display:flex;flex-direction:column;gap:1rem;width:100%;}
-.gap-hero{background:linear-gradient(135deg,#6d28d9 0%,#4f46e5 52%,#0f766e 100%);
+.gap-hero{background:rgba(0,0,0,0.24);
     border:1px solid rgba(255,255,255,0.14);border-radius:18px;padding:1.25rem 1.35rem;color:#fff;
     box-shadow:0 18px 45px rgba(15,23,42,0.25);}
 .gap-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
@@ -79,6 +79,16 @@ div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(13
     border:1px solid var(--gap-row-border,rgba(148,163,184,0.18));border-radius:12px;padding:0.62rem 0.72rem;}
 .suggestion-role{font-weight:800;font-size:0.84rem;color:var(--gap-text,#fff)!important;}
 .suggestion-score{font-weight:900;font-size:0.84rem;white-space:nowrap;}
+
+/* Strict premium dark palette */
+html,body,.stApp{color:#FFFFF0!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
+.gap-hero,.tier-box,.coverage-card,.result-panel,.top-action-panel,.suggestion-card,.priority-row{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.14)!important;color:#FFFFF0!important;box-shadow:none!important;backdrop-filter:none!important;}
+.gap-grade,.panel-count,.priority-num,.gap-chip.good,.gap-chip.bad,.gap-chip.warn,.chip-g,.chip-r,.chip-y{background:rgba(51,63,99,0.42)!important;color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
+.gap-role,.gap-score-num,.coverage-value,.panel-title,.priority-skill,.suggestion-role,.result-section-title,.skill-count-line{color:#FFFFF0!important;}
+.gap-desc,.gap-eyebrow,.coverage-meta,.priority-caption{color:rgba(255,255,240,0.62)!important;}
+.coverage-track{background:rgba(0,0,0,0.30)!important;}
+.coverage-fill{background:#FFFFF0!important;}
 @media(max-width:900px){.gap-hero-top,.skill-grid{grid-template-columns:1fr;display:grid}.gap-score{text-align:left}
     .coverage-grid,.priority-list,.top-action-band,.suggestion-grid{grid-template-columns:1fr}}
 </style>
@@ -91,7 +101,7 @@ st.markdown("## 🧠 Skill Gap Analyzer")
 db_user     = get_user(st.session_state.email)
 user_skills = db_user.get("skills", [])
 target_role = db_user.get("target_role", "").strip()
-theme       = db_user.get("theme", "dark")
+theme       = "dark"
 
 if theme == "light":
     st.markdown("""
@@ -115,13 +125,11 @@ if theme == "light":
 else:
     st.markdown("""
     <style>
-    :root,.page-body{--gap-card-bg:#111827;--gap-card-border:rgba(148,163,184,0.22);--gap-text:#ffffff;
-        --gap-muted:rgba(255,255,255,0.66);--gap-track:rgba(255,255,255,0.1);--gap-pill-bg:rgba(255,255,255,0.08);
-        --gap-empty-bg:rgba(255,255,255,0.06);--gap-empty-border:rgba(255,255,255,0.16);
-        --gap-row-bg:#0f172a;--gap-row-border:rgba(148,163,184,0.18);}
-    .gap-chip.good{background:rgba(16,185,129,0.14)!important;color:#5eead4!important;border-color:rgba(16,185,129,0.28)!important;}
-    .gap-chip.bad{background:rgba(239,68,68,0.13)!important;color:#fca5a5!important;border-color:rgba(239,68,68,0.28)!important;}
-    .gap-chip.warn{background:rgba(245,158,11,0.13)!important;color:#fcd34d!important;border-color:rgba(245,158,11,0.30)!important;}
+    :root,.page-body{--gap-card-bg:rgba(0,0,0,0.26);--gap-card-border:rgba(255,255,240,0.14);--gap-text:#FFFFF0;
+        --gap-muted:rgba(255,255,240,0.66);--gap-track:rgba(0,0,0,0.30);--gap-pill-bg:rgba(51,63,99,0.42);
+        --gap-empty-bg:rgba(0,0,0,0.22);--gap-empty-border:rgba(255,255,240,0.16);
+        --gap-row-bg:rgba(0,0,0,0.24);--gap-row-border:rgba(255,255,240,0.14);}
+    .gap-chip.good,.gap-chip.bad,.gap-chip.warn{background:rgba(51,63,99,0.42)!important;color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
     </style>
     """, unsafe_allow_html=True)
 
@@ -191,7 +199,7 @@ if user_skills:
     suggestions = suggest_roles(user_skills, top_n=3)
     cards = []
     for s in suggestions:
-        grade_color = "#059669" if s["score"] >= 65 else "#d97706" if s["score"] >= 40 else "#dc2626"
+        grade_color = "#FFFFF0"
         cards.append(
             f'<div class="suggestion-card"><span class="suggestion-role">{s["role"]}</span>'
             f'<span class="suggestion-score" style="color:{grade_color}!important;">'
@@ -238,9 +246,9 @@ with st.container():
         tier_data = r.get("tier_breakdown", {})
         tier_cards = []
         for tier, label, color_t in [
-            ("core", "Core Skills", "#ef4444"),
-            ("important", "Important", "#f59e0b"),
-            ("nice_to_have", "Nice to Have", "#10b981"),
+            ("core", "Core Skills", "#FFFFF0"),
+            ("important", "Important", "#FFFFF0"),
+            ("nice_to_have", "Nice to Have", "#FFFFF0"),
         ]:
             td = tier_data.get(tier, {})
             cov = td.get("coverage", 0)

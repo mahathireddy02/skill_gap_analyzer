@@ -26,9 +26,36 @@ st.markdown("""
 html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;transition:all 0.2s!important;}
-div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;}
 .stTabs [data-baseweb="tab-list"]{gap:4px;padding:4px;}
 .stTabs [data-baseweb="tab"]{border-radius:10px!important;padding:0.4rem 1.2rem!important;font-weight:600!important;}
+html,body,.stApp{color:#FFFFF0!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
+.stTabs [data-baseweb="tab-list"]{background:rgba(0,0,0,0.24)!important;border:1px solid rgba(255,255,240,0.12)!important;border-radius:12px!important;}
+.stTabs [data-baseweb="tab"]{color:rgba(255,255,240,0.70)!important;}
+.stTabs [aria-selected="true"]{background:#333F63!important;color:#FFFFF0!important;}
+[style*="#7c3aed"],[style*="#4f46e5"],[style*="#a78bfa"],[style*="#c4b5fd"]{color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
+[style*="rgba(124,58,237"],[style*="rgba(167,139,250"],[style*="linear-gradient"]{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.18)!important;color:#FFFFF0!important;}
+@media (max-width: 760px){
+    [style*="display:flex;align-items:center;gap:1.5rem"]{
+        flex-direction:column!important;
+        align-items:flex-start!important;
+        gap:1rem!important;
+        padding:1.25rem!important;
+    }
+    [style*="margin-left:auto"]{
+        margin-left:0!important;
+        text-align:left!important;
+    }
+    .stTabs [data-baseweb="tab-list"]{
+        overflow-x:auto!important;
+        flex-wrap:nowrap!important;
+    }
+    .stTabs [data-baseweb="tab"]{
+        flex:0 0 auto!important;
+        white-space:nowrap!important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -38,7 +65,7 @@ name    = db_user.get("name", "")
 initial = name[0].upper() if name else "U"
 
 st.markdown(f"""
-<div style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:20px;
+<div style="background:rgba(0,0,0,0.24);border-radius:20px;
             padding:1.8rem 2rem;color:white;display:flex;align-items:center;gap:1.5rem;
             margin-bottom:1.5rem;">
     <div style="width:72px;height:72px;background:rgba(255,255,255,0.2);border-radius:50%;

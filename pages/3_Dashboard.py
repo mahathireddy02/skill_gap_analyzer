@@ -54,7 +54,25 @@ html,body{margin:0!important;padding:0!important;}
 div[data-testid="stButton"] button{font-weight:600!important;border-radius:10px!important;
     font-size:0.88rem!important;transition:all 0.2s!important;}
 div[data-testid="stButton"] button[kind="primary"]{
-    background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+    background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;}
+
+/* Strict premium dark palette */
+html,body,.stApp{color:#FFFFF0!important;}
+.stat-card,.feat-card,.fc-wrap,.progress-box,.ats-box{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.14)!important;box-shadow:none!important;backdrop-filter:none!important;}
+.stat-card:hover,.feat-card:hover,.fc-wrap:hover{border-color:rgba(255,255,240,0.28)!important;box-shadow:none!important;}
+.sc-val,.fct,.box-title,.ats-label{color:#FFFFF0!important;}
+.sc-lbl,.fcd,.empty-msg{color:rgba(255,255,240,0.62)!important;}
+.fcb,.fc-badge,.chip-g,.chip-r{background:rgba(51,63,99,0.42)!important;color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
+.prog-bg{background:rgba(0,0,0,0.30)!important;}
+.prog-fill{background:#FFFFF0!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
+@media (max-width: 760px){
+    .block-container{padding:0!important;}
+    .stat-card,.fc-wrap,.progress-box,.ats-box{margin-bottom:0.85rem!important;}
+    [style*="display:grid;grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important;}
+    [style*="width:260px"]{width:100%!important;max-width:260px!important;}
+    [style*="font-size:3.2rem"]{display:none!important;}
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -91,7 +109,7 @@ readiness_note = "" if has_gap_analysis(db_user) else "Run Skill Gap Analyzer to
 
 # ── Welcome banner ────────────────────────────────────────────────────────────
 st.markdown(f"""
-<div style="background:linear-gradient(135deg,#7c3aed,#4f46e5 55%,#0ea5e9);
+<div style="background:rgba(0,0,0,0.24);
             border-radius:20px;padding:1.8rem 2.2rem;color:#fff;
             position:relative;overflow:hidden;margin-bottom:3rem;">
   <div style="position:absolute;top:-40%;right:-5%;width:260px;height:260px;
@@ -114,10 +132,10 @@ st.markdown(f"""
 # ── Stat cards ────────────────────────────────────────────────────────────────
 s1, s2, s3, s4 = st.columns(4, gap="large")
 for col, icon, val, lbl, color in [
-    (s1, "📄", f"{resume_score}%", "Resume Score",   "#7c3aed"),
-    (s2, "✅", str(len(skills)),   "Skills Found",   "#059669"),
-    (s3, "❌", str(len(missing)),  "Skills Missing", "#dc2626"),
-    (s4, "📈", f"{readiness}%",   "Readiness",      "#0ea5e9"),
+    (s1, "📄", f"{resume_score}%", "Resume Score",   "#FFFFF0"),
+    (s2, "✅", str(len(skills)),   "Skills Found",   "#FFFFF0"),
+    (s3, "❌", str(len(missing)),  "Skills Missing", "#FFFFF0"),
+    (s4, "📈", f"{readiness}%",   "Readiness",      "#FFFFF0"),
 ]:
     with col:
         st.markdown(
@@ -209,7 +227,7 @@ elif not skills:
 
 # ── ATS Score ─────────────────────────────────────────────────────────────────
 if resume_score > 0:
-    c   = "#059669" if resume_score >= 70 else "#d97706" if resume_score >= 40 else "#dc2626"
+    c   = "#FFFFF0"
     lbl = "Excellent 🌟" if resume_score >= 70 else "Good 👍" if resume_score >= 40 else "Needs Work ⚠️"
     st.markdown(f"""
     <div class="ats-box">

@@ -23,7 +23,7 @@ html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{
-    background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+    background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;}
 .skill-chip{display:inline-block;background:rgba(124,58,237,0.1);color:#7c3aed;
     border-radius:999px;padding:0.18rem 0.6rem;font-size:0.78rem;font-weight:600;margin:0.12rem;}
 .tip-row{padding:0.45rem 0.8rem;border-left:3px solid #7c3aed;
@@ -66,6 +66,15 @@ div[data-testid="stButton"] button[kind="primary"]{
     overflow-wrap:anywhere;}
 .contact-label{font-size:0.74rem;color:#6b7280;font-weight:900;text-transform:uppercase;}
 .contact-value{font-size:0.84rem;font-weight:700;margin-top:0.25rem;}
+
+/* Strict premium dark palette */
+html,body,.stApp{color:#FFFFF0!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
+.skill-chip,.tip-row,.info-pill,.cta-box,.history-card,.resume-result-card,.metric-wrap div[data-testid="stMetric"],.detail-panel,.contact-card{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.14)!important;color:#FFFFF0!important;box-shadow:none!important;backdrop-filter:none!important;}
+.tip-row{border-left-color:#FFFFF0!important;}
+.bd-score,.history-score,.history-delta,.section-title,.data-grid-title,.contact-value{color:#FFFFF0!important;}
+.history-head,.contact-label,.score-sub,.cta-box div,.info-pill span{color:rgba(255,255,240,0.62)!important;}
+.score-hero{background:rgba(0,0,0,0.24)!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;}
 @media (max-width: 760px){
     .history-row{grid-template-columns:1fr 0.6fr;gap:0.35rem;}
     .history-head{display:none;}
@@ -120,7 +129,7 @@ def render_score_history(score_history):
     for idx, item in recent_history:
         delta = item.get("delta", 0)
         delta_text = f"+{delta}%" if delta > 0 else f"{delta}%" if delta < 0 else "-"
-        delta_color = "#059669" if delta > 0 else "#dc2626" if delta < 0 else "#6b7280"
+        delta_color = "#FFFFF0"
         filename = item.get("filename", "Resume")
         if len(filename) > 28:
             filename = filename[:25] + "..."
@@ -320,7 +329,7 @@ if "resume_result" in st.session_state:
     breakdown   = parsed_data.get("score_breakdown", {})
     categorized = parsed_data.get("categorized_skills", {})
 
-    color = "#059669" if score >= 70 else "#d97706" if score >= 40 else "#dc2626"
+    color = "rgba(0,0,0,0.24)"
     label = "Excellent 🌟" if score >= 70 else "Good 👍" if score >= 40 else "Needs Work ⚠️"
 
     st.markdown("---")
@@ -351,7 +360,7 @@ if "resume_result" in st.session_state:
         if score_history:
             latest = score_history[-1]
             delta = latest.get("delta", 0)
-            delta_color = "#059669" if delta > 0 else "#dc2626" if delta < 0 else "#6b7280"
+            delta_color = "#FFFFF0"
             delta_label = f"+{delta}%" if delta > 0 else f"{delta}%" if delta < 0 else "No change"
             st.markdown(
                 f'<div class="history-card">'
@@ -477,7 +486,7 @@ if "resume_result" in st.session_state:
             for proj in projects[:3]:
                 tech = proj.get("tech", [])
                 title = html.escape(proj.get("title", ""))
-                tech_line = f'<span style="color:#7c3aed;font-size:0.78rem;">{html.escape(", ".join(tech[:4]))}</span>' if tech else ""
+                tech_line = f'<span style="color:#FFFFF0;font-size:0.78rem;">{html.escape(", ".join(tech[:4]))}</span>' if tech else ""
                 st.markdown(f"""
                 <div class="info-pill">
                     <strong>{title}</strong><br>

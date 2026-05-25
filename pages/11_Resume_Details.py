@@ -23,12 +23,12 @@ st.markdown("""
 html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
-div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:none!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;}
 /* progress */
 .prog-wrap {display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;padding: 0 1rem;}
 .prog-step {flex:1;height:4px;border-radius:999px;background:rgba(255,255,255,0.1);}
-.prog-done {background:linear-gradient(90deg,#7c3aed,#4f46e5);}
-.prog-active{background:linear-gradient(90deg,#a78bfa,#818cf8);}
+.prog-done {background:#FFFFF0;}
+.prog-active{background:#FFFFF0;}
 .prog-lbl  {color:rgba(255,255,255,0.4);font-size:0.75rem;white-space:nowrap;}
 .auth-card{
     background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
@@ -37,6 +37,15 @@ div[data-testid="stButton"] button[kind="primary"]{background:linear-gradient(13
 .auth-icon {font-size:2rem;display:block;margin-bottom:0.3rem;}
 .auth-title{color:#fff;font-size:1.35rem;font-weight:800;margin-bottom:0.1rem;}
 .auth-sub  {color:rgba(255,255,255,0.4);font-size:0.84rem;margin-bottom:0.5rem;}
+html,body,.stApp{color:#FFFFF0!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
+.prog-step{background:rgba(0,0,0,0.30)!important;}
+.prog-done,.prog-active{background:#FFFFF0!important;}
+.prog-lbl,.auth-sub{color:rgba(255,255,240,0.62)!important;}
+.auth-card{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.14)!important;color:#FFFFF0!important;box-shadow:none!important;backdrop-filter:none!important;}
+.auth-title{color:#FFFFF0!important;}
+[style*="#7c3aed"],[style*="#4f46e5"],[style*="#a78bfa"],[style*="#c4b5fd"]{color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
+[style*="rgba(124,58,237"],[style*="rgba(167,139,250"],[style*="linear-gradient"]{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.18)!important;color:#FFFFF0!important;}
 </style>
 """, unsafe_allow_html=True)
 

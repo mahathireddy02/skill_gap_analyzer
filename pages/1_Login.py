@@ -81,7 +81,7 @@ div[data-testid="stButton"] button {
     transition: all 0.2s ease !important;
 }
 div[data-testid="stButton"] button[kind="primary"] {
-    background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+    background: #333F63 !important;
     box-shadow: 0 4px 16px rgba(124,58,237,0.3) !important;
     border: none !important;
 }
@@ -106,6 +106,44 @@ div[data-testid="stButton"] button[kind="secondary"] {
 div[data-testid="stAlert"] {
     border-radius: 10px !important;
     font-size: 0.88rem !important;
+}
+
+/* Strict premium dark palette */
+html,body,.stApp{color:#FFFFF0!important;}
+.auth-card{background:rgba(0,0,0,0.26)!important;border-color:rgba(255,255,240,0.14)!important;box-shadow:0 22px 52px rgba(0,0,0,0.32)!important;}
+.auth-title{color:#FFFFF0!important;}
+.auth-sub,.or-div,p{color:rgba(255,255,240,0.62)!important;}
+div[data-testid="stTextInput"] label{color:rgba(255,255,240,0.72)!important;}
+div[data-testid="stTextInput"] input{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.16)!important;color:#FFFFF0!important;}
+div[data-testid="stTextInput"] input:focus{border-color:rgba(255,255,240,0.36)!important;box-shadow:0 0 0 3px rgba(255,255,240,0.08)!important;}
+div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
+div[data-testid="stButton"] button[kind="secondary"]{background:rgba(0,0,0,0.24)!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.16)!important;}
+.or-div::before,.or-div::after{background:rgba(255,255,240,0.10)!important;}
+[style*="#7c3aed"],[style*="#4f46e5"],[style*="#a78bfa"],[style*="#c4b5fd"]{color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
+[style*="rgba(124,58,237"],[style*="rgba(167,139,250"],[style*="linear-gradient"]{background:rgba(0,0,0,0.24)!important;border-color:rgba(255,255,240,0.18)!important;color:#FFFFF0!important;}
+@media (max-width: 760px) {
+    .block-container { padding:1rem 0.75rem 1.5rem!important; }
+    div[data-testid="stHorizontalBlock"] {
+        flex-wrap:wrap!important;
+        gap:0.75rem!important;
+    }
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+        width:100%!important;
+        min-width:100%!important;
+        flex:1 1 100%!important;
+    }
+    .auth-wrap,.auth-card { max-width:100%!important; }
+    .auth-card {
+        padding:1.5rem 1.1rem 1.25rem!important;
+        border-radius:18px!important;
+    }
+    .auth-icon { font-size:2.15rem!important; }
+    .auth-title { font-size:1.35rem!important; }
+    div[data-testid="stButton"] button {
+        width:100%!important;
+        min-height:2.55rem!important;
+        white-space:normal!important;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
