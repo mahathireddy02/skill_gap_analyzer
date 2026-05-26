@@ -101,22 +101,24 @@ st.markdown("## 🧠 Skill Gap Analyzer")
 db_user     = get_user(st.session_state.email)
 user_skills = db_user.get("skills", [])
 target_role = db_user.get("target_role", "").strip()
-theme       = "dark"
+theme       = db_user.get("theme", "dark")
 
 if theme == "light":
     st.markdown("""
     <style>
-    :root,.page-body{--gap-card-bg:#ffffff;--gap-card-border:#dbe3ef;--gap-text:#172033;
-        --gap-muted:#5b6472;--gap-track:#e7edf5;--gap-pill-bg:#eef2ff;--gap-empty-bg:#f8fafc;
-        --gap-empty-border:#cbd5e1;--gap-row-bg:#f8fafc;--gap-row-border:#e2e8f0;}
-    .gap-hero div,.gap-hero span{color:#ffffff!important;}
-    .coverage-card,.result-panel,.top-action-panel{background:#ffffff!important;border-color:#dbe3ef!important;}
-    .priority-row,.suggestion-card{background:#f8fafc!important;border-color:#e2e8f0!important;}
-    .coverage-track{background:#e7edf5!important;}
-    .coverage-value,.panel-title,.priority-skill,.suggestion-role,.result-section-title,.skill-count-line{color:#172033!important;}
-    .coverage-meta,.panel-count,.priority-caption,.empty-note{color:#5b6472!important;}
-    .panel-count{background:#eef2ff!important;}
-    .empty-note{background:#f8fafc!important;border-color:#cbd5e1!important;}
+    :root,.page-body{--gap-card-bg:#fffef5;--gap-card-border:#c8cdd2;--gap-text:#1f2933;
+        --gap-muted:#52606d;--gap-track:#e1e4e8;--gap-pill-bg:rgba(75,85,99,0.10);--gap-empty-bg:#fffef5;
+        --gap-empty-border:#c8cdd2;--gap-row-bg:#fffef5;--gap-row-border:#c8cdd2;}
+    .gap-hero,.tier-box{background:#fffef5!important;border-color:#c8cdd2!important;color:#1f2933!important;}
+    .gap-hero div,.gap-hero span,.gap-role,.gap-score-num,.gap-desc,.gap-eyebrow,.gap-grade{color:#FFFFF0!important;}
+    .gap-hero div,.gap-hero span,.gap-role,.gap-score-num,.gap-desc,.gap-eyebrow,.gap-grade{color:#1f2933!important;}
+    .coverage-card,.result-panel,.top-action-panel{background:#fffef5!important;border-color:#c8cdd2!important;}
+    .priority-row,.suggestion-card{background:#fffef5!important;border-color:#c8cdd2!important;}
+    .coverage-track{background:#e1e4e8!important;}
+    .coverage-value,.panel-title,.priority-skill,.suggestion-role,.result-section-title,.skill-count-line{color:#1f2933!important;}
+    .coverage-meta,.panel-count,.priority-caption,.empty-note{color:#52606d!important;}
+    .panel-count,.priority-num{background:rgba(75,85,99,0.10)!important;color:#4b5563!important;border-color:rgba(75,85,99,0.22)!important;}
+    .empty-note{background:#fffef5!important;border-color:#c8cdd2!important;}
     .gap-chip.good{background:#d1fae5!important;color:#065f46!important;border-color:#6ee7b7!important;}
     .gap-chip.bad{background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;}
     .gap-chip.warn{background:#fef3c7!important;color:#92400e!important;border-color:#fcd34d!important;}
@@ -132,6 +134,8 @@ else:
     .gap-chip.good,.gap-chip.bad,.gap-chip.warn{background:rgba(51,63,99,0.42)!important;color:#FFFFF0!important;border-color:rgba(255,255,240,0.18)!important;}
     </style>
     """, unsafe_allow_html=True)
+
+result_accent = "#4b5563" if theme == "light" else "#FFFFF0"
 
 if not target_role:
     st.warning("⚠️ No target role set. Please update it in your Profile.")
@@ -199,7 +203,7 @@ if user_skills:
     suggestions = suggest_roles(user_skills, top_n=3)
     cards = []
     for s in suggestions:
-        grade_color = "#FFFFF0"
+        grade_color = result_accent
         cards.append(
             f'<div class="suggestion-card"><span class="suggestion-role">{s["role"]}</span>'
             f'<span class="suggestion-score" style="color:{grade_color}!important;">'
@@ -246,9 +250,9 @@ with st.container():
         tier_data = r.get("tier_breakdown", {})
         tier_cards = []
         for tier, label, color_t in [
-            ("core", "Core Skills", "#FFFFF0"),
-            ("important", "Important", "#FFFFF0"),
-            ("nice_to_have", "Nice to Have", "#FFFFF0"),
+            ("core", "Core Skills", result_accent),
+            ("important", "Important", result_accent),
+            ("nice_to_have", "Nice to Have", result_accent),
         ]:
             td = tier_data.get(tier, {})
             cov = td.get("coverage", 0)

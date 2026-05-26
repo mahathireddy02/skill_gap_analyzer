@@ -12,15 +12,18 @@ st.set_page_config(page_title="Analytics · SkillGap", page_icon="📊", layout=
 require_login()
 
 db_user = get_user(st.session_state.email)
-theme = "dark"
-is_light = False
+theme = db_user.get("theme", "dark")
+is_light = theme == "light"
 
-page_bg = "#333F63"
-chart_bg = "rgba(0,0,0,0.24)"
-chart_text = "#FFFFF0"
-chart_muted = "rgba(255,255,240,0.62)"
-chart_grid = "rgba(255,255,240,0.14)"
-chart_axis = "rgba(255,255,240,0.26)"
+page_bg = "#fffff0" if is_light else "#333F63"
+chart_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
+chart_text = "#1f2933" if is_light else "#FFFFF0"
+chart_muted = "#52606d" if is_light else "rgba(255,255,240,0.62)"
+chart_grid = "#c8cdd2" if is_light else "rgba(255,255,240,0.14)"
+chart_axis = "#c8cdd2" if is_light else "rgba(255,255,240,0.26)"
+chart_hover = "rgba(75,85,99,0.10)" if is_light else "#333F63"
+chart_primary = "#4b5563" if is_light else "#FFFFF0"
+chart_secondary = "#9b1c31" if is_light else "#333F63"
 chart_height = 320
 
 st.markdown(f"""
@@ -115,8 +118,8 @@ details[open] .vega-actions a:hover,
 .vega-embed summary:hover,
 div[data-testid="stVegaLiteChart"] summary:hover,
 details[open] summary:hover {{
-    background:#333F63!important;
-    background-color:#333F63!important;
+    background:{chart_hover}!important;
+    background-color:{chart_hover}!important;
     color:{chart_text}!important;
 }}
 .vega-embed summary svg,
@@ -163,8 +166,8 @@ button[title*="download" i]:hover,
 button[aria-label*="fullscreen" i]:hover,
 button[aria-label*="download" i]:hover,
 button[aria-label*="more" i]:hover {{
-    background:#333F63!important;
-    background-color:#333F63!important;
+    background:{chart_hover}!important;
+    background-color:{chart_hover}!important;
     color:{chart_text}!important;
 }}
 div[data-baseweb="popover"],
@@ -184,8 +187,8 @@ li[role="menuitem"] * {{
 }}
 div[role="menuitem"]:hover,
 li[role="menuitem"]:hover {{
-    background:#333F63!important;
-    background-color:#333F63!important;
+    background:{chart_hover}!important;
+    background-color:{chart_hover}!important;
     color:{chart_text}!important;
 }}
 div[data-testid="stElementToolbar"] button,
@@ -464,7 +467,7 @@ with cl:
             y=alt.Y("Count:Q", title="Count"),
             color=alt.Color(
                 "Category:N",
-                scale=alt.Scale(range=["#FFFFF0", "#333F63"]),
+                scale=alt.Scale(range=[chart_primary, chart_secondary]),
                 legend=None,
             ),
             tooltip=["Category", "Count"],
@@ -483,7 +486,7 @@ with cr:
     chart = alt.Chart(chart_df2).mark_bar(cornerRadiusTopLeft=5, cornerRadiusTopRight=5).encode(
         x=alt.X("Component:N", title=None, axis=alt.Axis(labelAngle=0, labelLimit=110)),
         y=alt.Y("Max Points:Q", title="Max Points"),
-        color=alt.value("#FFFFF0"),
+        color=alt.value(chart_primary),
         tooltip=["Component", "Max Points"],
     ).properties(height=chart_height)
     st.altair_chart(themed_chart(chart), use_container_width=True)
@@ -493,7 +496,7 @@ st.markdown("### 📅 Weekly Progress")
 weeks  = ["Week 1","Week 2","Week 3","Week 4","Week 5","Week 6"]
 scores = [20, 35, 45, 55, 68, resume_score if resume_score else 72]
 progress_df = pd.DataFrame({"Week": weeks, "Resume Score": scores})
-line = alt.Chart(progress_df).mark_line(point=True, strokeWidth=3, color="#FFFFF0").encode(
+line = alt.Chart(progress_df).mark_line(point=True, strokeWidth=3, color=chart_primary).encode(
     x=alt.X("Week:N", title=None, axis=alt.Axis(labelAngle=0)),
     y=alt.Y("Resume Score:Q", title="Resume Score", scale=alt.Scale(domain=[0, 100])),
     tooltip=["Week", "Resume Score"],

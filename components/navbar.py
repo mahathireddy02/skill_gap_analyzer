@@ -11,7 +11,7 @@ def show_navbar(active="Dashboard"):
         sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
         from utils.auth import get_user as _gu, update_user as _upd
         _u     = _gu(st.session_state.email) or {}
-        _theme = "dark"
+        _theme = _u.get("theme", "dark")
     else:
         _theme = "dark"
 
@@ -23,14 +23,21 @@ def show_navbar(active="Dashboard"):
     if _theme == "light":
         _bg          = COLOR_BG_LIGHT
         _nav_bg      = COLOR_SURFACE_LIGHT
-        _nav_border  = "#cbd5e1"
-        _btn_color   = "rgba(30,27,75,0.85)"
-        _btn_hover   = "rgba(124,58,237,0.12)"
-        _text_color  = "#1a1a2e"
+        _nav_border  = "#c8cdd2"
+        _btn_color   = "#374151"
+        _btn_hover   = "rgba(75,85,99,0.10)"
+        _text_color  = "#1f2933"
+        _active_bg   = "#4b5563"
+        _active_text = "#FFFFF0"
+        _active_border = "rgba(75,85,99,0.32)"
+        _page_gradient_bg = "rgba(255,255,255,0.62)"
+        _page_card_bg = "rgba(255,255,255,0.78)"
+        _page_chip_bg = "rgba(75,85,99,0.10)"
+        _brand_gap_color = "#4b5563"
         _theme_css   = (
         """
         html,body,.stApp,[data-testid="stAppViewContainer"],[data-testid="stHeader"],
-        .main,.block-container{background:""" + BG_LIGHT + """!important;color:#1a1a2e!important;}
+        .main,.block-container{background:""" + BG_LIGHT + """!important;color:#1f2933!important;}
 
         /* All text elements */
         div[data-testid="stMarkdownContainer"] p,
@@ -48,11 +55,11 @@ def show_navbar(active="Dashboard"):
         .stSlider label, .stNumberInput label,
         .stTextArea label, .stDateInput label,
         p, h1, h2, h3, h4, h5, span, li, a, strong
-        {color:#1a1a2e!important;}
+        {color:#1f2933!important;}
 
         /* Caption and helper text */
         div[data-testid="stCaptionContainer"] p,
-        small, .caption {color:#4b5563!important;}
+        small, .caption {color:#52606d!important;}
 
         /* Inputs */
         div[data-testid="stTextInput"] input,
@@ -60,98 +67,98 @@ def show_navbar(active="Dashboard"):
         div[data-testid="stNumberInput"] input,
         div[data-testid="stSelectbox"] > div > div,
         div[data-testid="stMultiSelect"] > div > div
-        {background:#fff!important;color:#1a1a2e!important;border-color:#d1d5db!important;}
+        {background:#fffef5!important;color:#1f2933!important;border-color:#c8cdd2!important;}
 
         /* Chat elements */
-        div[data-testid="stChatMessage"] {background:#fff!important;border:1px solid #e2e8f0!important;}
-        div[data-testid="stChatInput"] textarea {background:#fff!important;color:#1a1a2e!important;}
+        div[data-testid="stChatMessage"] {background:#fffef5!important;border:1px solid #c8cdd2!important;}
+        div[data-testid="stChatInput"] textarea {background:#fffef5!important;color:#1f2933!important;}
 
         /* Metrics */
-        div[data-testid="stMetric"]{background:#fff!important;border:1px solid #e5e7eb!important;border-radius:12px;}
-        div[data-testid="stMetricLabel"] p{color:#6b7280!important;}
-        div[data-testid="stMetricValue"]{color:#1a1a2e!important;}
-        div[data-testid="stMetricDelta"]{color:#059669!important;}
+        div[data-testid="stMetric"]{background:#fffef5!important;border:1px solid #c8cdd2!important;border-radius:12px;}
+        div[data-testid="stMetricLabel"] p{color:#52606d!important;}
+        div[data-testid="stMetricValue"]{color:#1f2933!important;}
+        div[data-testid="stMetricDelta"]{color:#047857!important;}
 
         /* Expanders */
-        div[data-testid="stExpander"]{background:#fff!important;border-color:#e5e7eb!important;}
+        div[data-testid="stExpander"]{background:#fffef5!important;border-color:#c8cdd2!important;}
         div[data-testid="stExpander"] summary p,
-        div[data-testid="stExpander"] summary span{color:#1a1a2e!important;}
-        div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p{color:#374151!important;}
+        div[data-testid="stExpander"] summary span{color:#1f2933!important;}
+        div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p{color:#3f4a56!important;}
 
         /* Roadmap Page Specific Overrides */
         /* SVG Journey Map */
-        #journey-svg .track-bg{stroke:#1a1a2e!important;}
-        #journey-svg .track-rail{stroke:#1a1a2e!important;}
-        #journey-svg .station-done .s-circle{fill:#fff!important;stroke:#1a1a2e!important;}
-        #journey-svg .station-active .s-circle{fill:#fff!important;stroke:#1a1a2e!important;}
-        #journey-svg .station-upcoming .s-circle{fill:#fff!important;stroke:#1a1a2e!important;}
-        #journey-svg .s-icon{fill:#1a1a2e!important;}
-        #journey-svg .station-upcoming .s-icon{fill:#1a1a2e!important;}
-        #journey-svg .s-label{fill:#1a1a2e!important;}
-        #journey-svg .s-weeks{fill:#1a1a2e!important;}
+        #journey-svg .track-bg{stroke:#4b5563!important;}
+        #journey-svg .track-rail{stroke:#4b5563!important;}
+        #journey-svg .station-done .s-circle{fill:#fffef5!important;stroke:#4b5563!important;}
+        #journey-svg .station-active .s-circle{fill:#fffef5!important;stroke:#4b5563!important;}
+        #journey-svg .station-upcoming .s-circle{fill:#fffef5!important;stroke:#4b5563!important;}
+        #journey-svg .s-icon{fill:#1f2933!important;}
+        #journey-svg .station-upcoming .s-icon{fill:#1f2933!important;}
+        #journey-svg .s-label{fill:#1f2933!important;}
+        #journey-svg .s-weeks{fill:#52606d!important;}
         #journey-svg #train-glow{filter:none!important;}
-        #journey-svg #train-body{fill:#1a1a2e!important;}
-        #journey-svg #train-dot{fill:#fff!important;}
-        #journey-svg .flag-pole{stroke:#1a1a2e!important;}
-        #journey-svg .flag-rect{fill:#1a1a2e!important;}
-        #journey-svg .goal-lbl{fill:#1a1a2e!important;}
+        #journey-svg #train-body{fill:#4b5563!important;}
+        #journey-svg #train-dot{fill:#fffef5!important;}
+        #journey-svg .flag-pole{stroke:#4b5563!important;}
+        #journey-svg .flag-rect{fill:#4b5563!important;}
+        #journey-svg .goal-lbl{fill:#1f2933!important;}
 
         /* Detail Panel */
-        #detail{background:#fff!important;border:2px solid #1a1a2e!important;box-shadow:none!important;}
-        #detail .d-title{color:#1a1a2e!important;}
-        #detail .d-close{background:#fff!important;color:#1a1a2e!important;border:1px solid #1a1a2e!important;}
-        #detail .badge-done, #detail .badge-active, #detail .badge-upcoming{background:#fff!important;color:#1a1a2e!important;border:1.5px solid #1a1a2e!important;}
-        #detail .d-meta{color:#1a1a2e!important;}
-        #detail .ph-row{color:#1a1a2e!important;}
-        #detail .ph-badge{background:#fff!important;color:#1a1a2e!important;border:1px solid #1a1a2e!important;}
-        #detail .d-section{color:#1a1a2e!important;text-decoration:underline;}
-        #detail .d-resources li{color:#1a1a2e!important;}
-        #detail .d-project{background:#fff!important;border:2px solid #1a1a2e!important;color:#1a1a2e!important;}
-        #overlay{background:rgba(255,255,255,0.7)!important;backdrop-filter:blur(2px)!important;}
+        #detail{background:#fffef5!important;border:2px solid #4b5563!important;box-shadow:none!important;}
+        #detail .d-title{color:#1f2933!important;}
+        #detail .d-close{background:#fffef5!important;color:#1f2933!important;border:1px solid #4b5563!important;}
+        #detail .badge-done, #detail .badge-active, #detail .badge-upcoming{background:#fffef5!important;color:#1f2933!important;border:1.5px solid #4b5563!important;}
+        #detail .d-meta{color:#52606d!important;}
+        #detail .ph-row{color:#1f2933!important;}
+        #detail .ph-badge{background:#fffef5!important;color:#1f2933!important;border:1px solid #4b5563!important;}
+        #detail .d-section{color:#4b5563!important;text-decoration:underline;}
+        #detail .d-resources li{color:#1f2933!important;}
+        #detail .d-project{background:#fffef5!important;border:2px solid #4b5563!important;color:#1f2933!important;}
+        #overlay{background:rgba(255,255,240,0.72)!important;backdrop-filter:blur(2px)!important;}
 
         /* Progress Bar */
-        #prog-wrap .prog-label{color:#1a1a2e!important;}
-        #prog-wrap .prog-bar{background:#fff!important;border:1px solid #1a1a2e!important;}
-        #prog-wrap .prog-fill{background:#1a1a2e!important;}
+        #prog-wrap .prog-label{color:#1f2933!important;}
+        #prog-wrap .prog-bar{background:#fffef5!important;border:1px solid #4b5563!important;}
+        #prog-wrap .prog-fill{background:#4b5563!important;}
 
         /* Achievements */
-        .ba-grid h2{color:#1a1a2e!important;}
-        .ba-card{background:#fff!important;border:2px solid #1a1a2e!important;}
-        .ba-on{background:#fff!important;border:2px solid #1a1a2e!important;box-shadow:none!important;}
-        .ba-off{background:#fff!important;border:1px solid #e5e7eb!important;opacity:0.4!important;}
-        .ba-icon{color:#1a1a2e!important;}
-        .ba-title{color:#1a1a2e!important;}
-        .ba-on .ba-title{color:#1a1a2e!important;font-weight:800!important;}
-        .ba-desc{color:#1a1a2e!important;}
-        .ba-status{color:#1a1a2e!important;}
-        .ba-on .ba-status{color:#1a1a2e!important;font-weight:700!important;}
+        .ba-grid h2{color:#1f2933!important;}
+        .ba-card{background:#fffef5!important;border:2px solid #4b5563!important;}
+        .ba-on{background:#fffef5!important;border:2px solid #4b5563!important;box-shadow:none!important;}
+        .ba-off{background:#fffef5!important;border:1px solid #c8cdd2!important;opacity:0.4!important;}
+        .ba-icon{color:#1f2933!important;}
+        .ba-title{color:#1f2933!important;}
+        .ba-on .ba-title{color:#1f2933!important;font-weight:800!important;}
+        .ba-desc{color:#52606d!important;}
+        .ba-status{color:#1f2933!important;}
+        .ba-on .ba-status{color:#1f2933!important;font-weight:700!important;}
         /* Ensure the HTML component's body background is light */
         .stHtml body{background:""" + COLOR_BG_LIGHT + """!important;}
 
 
         /* File Uploader and Buttons */
-        div[data-testid="stFileUploader"] section {background-color:#f8fafc!important; border:1px dashed #cbd5e1!important;}
-        div[data-testid="stFileUploader"] label, div[data-testid="stFileUploader"] p, div[data-testid="stFileUploader"] small {color:#1a1a2e!important;}
-        div[data-testid="stFileUploader"] button {background-color:#fff!important; color:#1a1a2e!important; border:1px solid #d1d5db!important;}
-        div[data-testid="stButton"] button:not([kind="primary"]), div[data-testid="stDownloadButton"] button {background:#fff!important; border:1px solid #d1d5db!important; color:#1a1a2e!important;}
+        div[data-testid="stFileUploader"] section {background-color:#fffef5!important; border:1px dashed #c8cdd2!important;}
+        div[data-testid="stFileUploader"] label, div[data-testid="stFileUploader"] p, div[data-testid="stFileUploader"] small {color:#1f2933!important;}
+        div[data-testid="stFileUploader"] button {background-color:#fffef5!important; color:#1f2933!important; border:1px solid #c8cdd2!important;}
+        div[data-testid="stButton"] button:not([kind="primary"]), div[data-testid="stDownloadButton"] button {background:#fffef5!important; border:1px solid #c8cdd2!important; color:#1f2933!important;}
 
         /* Tabs */
-        .stTabs [data-baseweb="tab-list"]{background:#ede9fe!important;border-radius:12px;}
-        .stTabs [data-baseweb="tab"]{color:#4b5563!important;}
-        .stTabs [aria-selected="true"]{background:#7c3aed!important;color:#fff!important;border-radius:10px;}
+        .stTabs [data-baseweb="tab-list"]{background:#f3edcf!important;border-radius:12px;}
+        .stTabs [data-baseweb="tab"]{color:#52606d!important;}
+        .stTabs [aria-selected="true"]{background:#4b5563!important;color:#FFFFF0!important;border-radius:10px;}
         .stTabs [data-baseweb="tab-panel"]{background:transparent!important;}
 
         /* Cards */
-        .stat-card{background:#fff!important;border-color:#e5e7eb!important;}
-        .sc-val{color:#1a1a2e!important;}
-        .sc-lbl{color:#6b7280!important;}
+        .stat-card{background:#fffef5!important;border-color:#c8cdd2!important;}
+        .sc-val{color:#1f2933!important;}
+        .sc-lbl{color:#52606d!important;}
         .feat-card,.fc-wrap,.score-card,.ats-card,.suggestion-card,
         .roadmap-card,.customize-card,.customize-box,
-        .auth-card{background:#ffffff!important;border-color:#e5e7eb!important;
+        .auth-card{background:#fffef5!important;border-color:#c8cdd2!important;
                    backdrop-filter:none!important;box-shadow:0 10px 25px -5px rgba(0,0,0,0.05)!important;}
-        .fct{color:#1a1a2e!important;}
-        .fcd{color:#4b5563!important;}
-        .fcb{background:rgba(124,58,237,0.1)!important;color:#7c3aed!important;}
+        .fct{color:#1f2933!important;}
+        .fcd{color:#52606d!important;}
+        .fcb{background:rgba(75,85,99,0.10)!important;color:#4b5563!important;}
 
         /* Force all inline white text inside cards to dark */
         .fc-wrap div, .fc-wrap p, .fc-wrap span,
@@ -164,60 +171,104 @@ def show_navbar(active="Dashboard"):
         .customize-box div, .customize-box p, .customize-box span,
         .auth-card div, .auth-card p, .auth-card span,
         .auth-title, .prog-lbl, .auth-card h1, .auth-card h2, .auth-card h3, .auth-card h4
-        {color:#1a1a2e!important;}
-        .auth-sub, .prog-lbl{color:#1a1a2e!important;}
-        .auth-card div[style*="color:#c4b5fd"] {color:#7c3aed!important;}
-        .prog-step{background:#94a3b8!important;}
+        {color:#1f2933!important;}
+        .auth-sub, .prog-lbl{color:#3f4a56!important;}
+        .auth-card div[style*="color:#c4b5fd"] {color:#4b5563!important;}
+        .prog-step{background:#9aa3ad!important;}
         .prog-done{background:#000000!important;}
-        .prog-active{background:#7c3aed!important;}
+        .prog-active{background:#4b5563!important;}
         .fc-wrap div[style*="rgba(255,255,255,0.55)"],
         .fc-wrap div[style*="color:#fff"],
         .feat-card div[style*="color:#fff"]
-        {color:#4b5563!important;}
+        {color:#52606d!important;}
 
         /* Section titles and headings in page body */
         .page-body h1,.page-body h2,.page-body h3,
         .page-body p,.page-body span,.page-body div
-        {color:#1a1a2e!important;}
-        .sec-title{color:#1a1a2e!important;}
+        {color:#1f2933!important;}
+        .sec-title{color:#1f2933!important;}
 
         /* Skill chips */
         .chip-g{background:#d1fae5!important;color:#065f46!important;border-color:#6ee7b7!important;}
         .chip-r{background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;}
 
         /* Progress / Skills boxes */
-        .progress-box{background:#fff!important;border-color:#e5e7eb!important;}
-        .box-title{color:#1a1a2e!important;}
-        .empty-msg{color:#6b7280!important;}
-        .ats-box{background:#fff!important;border-color:#e5e7eb!important;}
-        .ats-label{color:#1a1a2e!important;}
-        .prog-bg{background:#e5e7eb!important;}
+        .progress-box{background:#fffef5!important;border-color:#c8cdd2!important;}
+        .box-title{color:#1f2933!important;}
+        .empty-msg{color:#52606d!important;}
+        .ats-box{background:#fffef5!important;border-color:#c8cdd2!important;}
+        .ats-label{color:#1f2933!important;}
+        .prog-bg{background:#e1e4e8!important;}
 
         /* Alerts / info boxes */
-        div[data-testid="stAlert"]{background:#fff!important;color:#1a1a2e!important;}
-        div[data-testid="stAlert"] p{color:#1a1a2e!important;}
+        div[data-testid="stAlert"]{background:#fffef5!important;color:#1f2933!important;}
+        div[data-testid="stAlert"] p{color:#1f2933!important;}
 
         /* Checkboxes and toggles */
-        div[data-testid="stCheckbox"] span{color:#1a1a2e!important;}
-        div[data-testid="stToggle"] span{color:#1a1a2e!important;}
+        div[data-testid="stCheckbox"] span{color:#1f2933!important;}
+        div[data-testid="stToggle"] span{color:#1f2933!important;}
 
         /* Sidebar / page body */
         .page-body{background:""" + COLOR_BG_LIGHT + """!important;}
 
         /* Progress bars */
-        .prog-bg{background:#e5e7eb!important;}
+        .prog-bg{background:#e1e4e8!important;}
 
         /* Roadmap SVG background */
         body{background:""" + COLOR_BG_LIGHT + """!important;}
+
+        /* Remove cool-toned inline accents in light mode */
+        [style*="#333F63"],
+        [style*="#4f46e5"],
+        [style*="#7c3aed"],
+        [style*="#6366f1"],
+        [style*="#60a5fa"],
+        [style*="#0ea5e9"],
+        [style*="rgba(51,63,99"],
+        [style*="rgba(124,58,237"],
+        [style*="rgba(167,139,250"]{
+            color:#4b5563!important;
+            border-color:#c8cdd2!important;
+        }
+        [style*="background:#333F63"],
+        [style*="background: #333F63"],
+        [style*="background-color:#333F63"],
+        [style*="background-color: #333F63"],
+        [style*="background:rgba(0,0,0,0.24)"],
+        [style*="background: rgba(0,0,0,0.24)"],
+        [style*="background:rgba(124,58,237"],
+        [style*="background:rgba(167,139,250"],
+        [style*="background:linear-gradient"],
+        [style*="background: linear-gradient"]{
+            background:#fffef5!important;
+            background-color:#fffef5!important;
+            color:#1f2933!important;
+            border-color:#c8cdd2!important;
+        }
+        [style*="color:#fff"],
+        [style*="color: #fff"],
+        [style*="color:white"],
+        [style*="color: white"],
+        [style*="color:#ffffff"],
+        [style*="color: #ffffff"]{
+            color:#1f2933!important;
+        }
         """
         )
     else:
         _bg          = COLOR_BG_DARK
-        _nav_bg      = COLOR_NAV_DARK
+        _nav_bg      = "rgba(0,0,0,0.42)"
         _nav_border  = "rgba(255,255,240,0.12)"
         _btn_color   = "rgba(255,255,240,0.70)"
         _btn_hover   = "rgba(255,255,240,0.10)"
         _text_color  = "#FFFFF0"
+        _active_bg   = "#333F63"
+        _active_text = "#FFFFF0"
+        _active_border = "rgba(255,255,240,0.28)"
+        _page_gradient_bg = "rgba(0,0,0,0.24)"
+        _page_card_bg = "rgba(0,0,0,0.24)"
+        _page_chip_bg = "rgba(51,63,99,0.42)"
+        _brand_gap_color = "rgba(255,255,240,0.72)"
         _theme_css   = (
         """
         html,body,.stApp,[data-testid="stAppViewContainer"],[data-testid="stHeader"],
@@ -312,7 +363,7 @@ div[data-testid="stAppViewContainer"]>section{{padding-top:0!important;}}
 
 /* ── Navbar row ── */
 div[data-testid="stHorizontalBlock"]:first-of-type{{
-    background:rgba(0,0,0,0.42);
+    background:{_nav_bg};
     border-bottom:1px solid {_nav_border};
     padding:0.3rem 1.2rem!important;
     margin:0!important;
@@ -338,9 +389,9 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>b
     color:{_text_color}!important;
 }}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button[kind="primary"]{{
-    background:#333F63!important;
-    color:#FFFFF0!important;
-    border-color:rgba(255,255,240,0.28)!important;
+    background:{_active_bg}!important;
+    color:{_active_text}!important;
+    border-color:{_active_border}!important;
     font-weight:700!important;
 }}
 
@@ -365,11 +416,11 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>b
 .page-body [style*="linear-gradient"],
 .page-body div[style*="linear-gradient"],
 .page-body section[style*="linear-gradient"]{{
-    background:rgba(0,0,0,0.24)!important;
+    background:{_page_gradient_bg}!important;
 }}
 .page-body div[data-testid="stButton"] button[kind="primary"],
 .page-body div[data-testid="stDownloadButton"] button[kind="primary"]{{
-    background:#333F63!important;
+    background:{_active_bg}!important;
     box-shadow:none!important;
 }}
 .page-body .stat-card,.page-body .feat-card,.page-body .fc-wrap,.page-body .progress-box,
@@ -377,14 +428,14 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>b
 .page-body .resume-result-card,.page-body .detail-panel,.page-body .contact-card,.page-body .info-pill,
 .page-body .history-card,.page-body .cta-box,.page-body .auth-card,.page-body .template-preview-card,
 .page-body .user-msg,.page-body .bot-msg{{
-    background:rgba(0,0,0,0.24)!important;
+    background:{_page_card_bg}!important;
     box-shadow:none!important;
     backdrop-filter:none!important;
 }}
 .page-body .chip-g,.page-body .chip-r,.page-body .chip-y,.page-body .gap-chip,
 .page-body .skill-chip,.page-body .fc-badge,.page-body .fcb,.page-body .panel-count,
 .page-body .priority-num{{
-    background:rgba(51,63,99,0.42)!important;
+    background:{_page_chip_bg}!important;
 }}
 
 /* Responsive app shell */
@@ -495,7 +546,7 @@ div[data-testid="stDownloadButton"] button{{min-height:2.35rem!important;white-s
         st.markdown(
             f'<p style="color:{_text_color};font-size:1.05rem;font-weight:800;margin:0;'
             f'padding:0.3rem 0.4rem;white-space:nowrap;">🎓 Skill'
-            f'<span style="color:rgba(255,255,240,0.72);">Gap</span></p>',
+            f'<span style="color:{_brand_gap_color};">Gap</span></p>',
             unsafe_allow_html=True
         )
 
@@ -509,7 +560,7 @@ div[data-testid="stDownloadButton"] button{{min-height:2.35rem!important;white-s
     with cols[9]:
         _icon = "☀️" if _theme == "dark" else "🌙"
         if st.button(_icon, key="nb_theme", use_container_width=True):
-            _new = "dark"
+            _new = "light" if _theme == "dark" else "dark"
             _upd(st.session_state.email, {"theme": _new})
             st.session_state["_theme_just_changed"] = True
             st.rerun()

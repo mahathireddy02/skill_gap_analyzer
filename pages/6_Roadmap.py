@@ -10,20 +10,22 @@ st.set_page_config(page_title="Roadmap · SkillGap", page_icon="🛤️", layout
 require_login()
 
 db_user = get_user(st.session_state.email)
-theme = "dark"
-is_light = False
+theme = db_user.get("theme", "dark")
+is_light = theme == "light"
 
-page_bg = "#f8fafc" if is_light else "#333F63"
-page_text = "#172033" if is_light else "#FFFFF0"
-page_muted = "#5b6472" if is_light else "rgba(255,255,240,0.62)"
-card_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
-card_border = "#dbe3ef" if is_light else "rgba(255,255,240,0.14)"
-input_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
-input_border = "#cbd5e1" if is_light else "rgba(255,255,240,0.16)"
-prefill_bg = "#eef2ff" if is_light else "rgba(0,0,0,0.24)"
+page_bg = "#fffff0" if is_light else "#333F63"
+page_text = "#1f2933" if is_light else "#FFFFF0"
+page_muted = "#52606d" if is_light else "rgba(255,255,240,0.62)"
+card_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
+card_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.14)"
+input_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
+input_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.16)"
+prefill_bg = "rgba(75,85,99,0.10)" if is_light else "rgba(0,0,0,0.24)"
 prefill_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
-prefill_text = "#FFFFF0" if is_light else "#FFFFF0"
-prefill_strong = "#FFFFF0" if is_light else "#FFFFF0"
+prefill_text = "#1f2933" if is_light else "#FFFFF0"
+prefill_strong = "#1f2933" if is_light else "#FFFFF0"
+primary_bg = "#4b5563" if is_light else "#333F63"
+primary_text = "#FFFFF0"
 
 st.markdown(f"""
 <style>
@@ -34,7 +36,7 @@ st.markdown(f"""
 html,body,.stApp{{margin:0!important;padding:0!important;background:{page_bg}!important;color:{page_text}!important;}}
 .block-container{{padding:1rem 2rem!important;max-width:100%!important;}}
 div[data-testid="stButton"] button{{font-weight:700!important;border-radius:10px!important;}}
-div[data-testid="stButton"] button[kind="primary"]{{background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}}
+div[data-testid="stButton"] button[kind="primary"]{{background:{primary_bg}!important;color:{primary_text}!important;border:1px solid rgba(75,85,99,0.28)!important;box-shadow:none!important;}}
 div[data-testid="stMetric"]{{background:{card_bg}!important;border-radius:12px;padding:0.8rem 1rem;border:1px solid {card_border}!important;}}
 div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricLabel"] p{{color:{page_muted}!important;}}
 div[data-testid="stMetric"] div, div[data-testid="stMetric"] [data-testid="stMetricValue"]{{color:{page_text}!important;}}
@@ -88,7 +90,7 @@ div[role="option"]:hover,
 li[role="option"]:hover,
 div[aria-selected="true"],
 li[aria-selected="true"] {{
-    background:{"#eef2ff" if is_light else "#333F63"}!important;
+    background:{"rgba(75,85,99,0.10)" if is_light else "#333F63"}!important;
     color:{page_text}!important;
 }}
 .roadmap-prefill{{
@@ -152,7 +154,7 @@ div[data-testid="stCheckbox"] [data-baseweb="checkbox"] > div {{
 div[data-testid="stCheckbox"] [aria-checked="true"] > div,
 div[data-testid="stCheckbox"] input:checked + div,
 div[data-testid="stCheckbox"] input:checked + div > div {{
-    background:#333F63!important;
+    background:{primary_bg}!important;
     border-color:{input_border}!important;
 }}
 div[data-testid="stCheckbox"] label:has(input:checked) > div:first-child::after,
@@ -190,7 +192,7 @@ div[data-testid="stExpander"] summary svg {{
     color:{page_text if is_light else "#FFFFF0"}!important;
 }}
 div[data-testid="stExpander"] summary:hover {{
-    background:{"#eef2ff" if is_light else "rgba(0,0,0,0.22)"}!important;
+    background:{"rgba(75,85,99,0.10)" if is_light else "rgba(0,0,0,0.22)"}!important;
 }}
 div[data-testid="stCaptionContainer"],
 div[data-testid="stCaptionContainer"] * {{
@@ -400,27 +402,32 @@ n_stations    = len(stations)
 # Each weekly checkpoint needs enough room for a compact Week label.
 svg_width     = max(900, n_stations * 120)
 
-map_body_bg = "#f8fafc" if is_light else "#333F63"
-map_text = "#172033" if is_light else "#FFFFF0"
-map_label = "#172033" if is_light else "rgba(255,255,240,0.14)"
-map_muted = "#5b6472" if is_light else "#94a3b8"
-map_track = "#cbd5e1" if is_light else "#333F63"
-map_rail = "rgba(23,32,51,0.18)" if is_light else "rgba(0,0,0,0.30)"
-map_upcoming_fill = "#FFFFF0" if is_light else "#333F63"
-map_upcoming_stroke = "#94a3b8" if is_light else "#FFFFF0"
-map_upcoming_icon = "#64748b" if is_light else "#6366f1"
-detail_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
-detail_border = "#dbe3ef" if is_light else "rgba(255,255,240,0.18)"
+map_body_bg = "#fffff0" if is_light else "#333F63"
+map_text = "#1f2933" if is_light else "#FFFFF0"
+map_label = "#1f2933" if is_light else "rgba(255,255,240,0.14)"
+map_muted = "#52606d" if is_light else "#94a3b8"
+map_track = "#c8cdd2" if is_light else "#333F63"
+map_rail = "rgba(75,85,99,0.18)" if is_light else "rgba(0,0,0,0.30)"
+map_upcoming_fill = "#fffef5" if is_light else "#333F63"
+map_upcoming_stroke = "#4b5563" if is_light else "#FFFFF0"
+map_upcoming_icon = "#4b5563" if is_light else "#6366f1"
+detail_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
+detail_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.18)"
 detail_shadow = "0 20px 48px rgba(15,23,42,0.16)" if is_light else "none"
-overlay_bg = "rgba(248,250,252,0.72)" if is_light else "rgba(0,0,0,0.6)"
-close_bg = "#f8fafc" if is_light else "rgba(255,255,240,0.14)"
-close_hover = "#eef2ff" if is_light else "rgba(255,255,240,0.16)"
-project_bg = "#eef2ff" if is_light else "rgba(0,0,0,0.24)"
+overlay_bg = "rgba(255,255,240,0.72)" if is_light else "rgba(0,0,0,0.6)"
+close_bg = "#fffef5" if is_light else "rgba(255,255,240,0.14)"
+close_hover = "rgba(75,85,99,0.10)" if is_light else "rgba(255,255,240,0.16)"
+project_bg = "rgba(75,85,99,0.10)" if is_light else "rgba(0,0,0,0.24)"
 project_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
-project_text = "#FFFFF0" if is_light else "#FFFFF0"
-progress_bar_bg = "rgba(255,255,240,0.14)" if is_light else "rgba(255,255,240,0.14)"
-scrollbar_track = "rgba(255,255,240,0.14)" if is_light else "rgba(0,0,0,0.22)"
-scrollbar_thumb = "#94a3b8" if is_light else "#FFFFF0"
+project_text = "#1f2933" if is_light else "#FFFFF0"
+progress_bar_bg = "#e1e4e8" if is_light else "rgba(255,255,240,0.14)"
+scrollbar_track = "#e1e4e8" if is_light else "rgba(0,0,0,0.22)"
+scrollbar_thumb = "#4b5563" if is_light else "#FFFFF0"
+badge_upcoming_bg = "#fffef5" if is_light else "#333F63"
+badge_upcoming_text = "#4b5563" if is_light else "#6366f1"
+phase_advanced_bg = "rgba(75,85,99,0.10)" if is_light else "#333F6322"
+phase_advanced_text = "#4b5563" if is_light else "#FFFFF0"
+detail_section_text = "#4b5563" if is_light else "#6366f1"
 
 # ── HTML/SVG Journey Map ──────────────────────────────────────────────────────
 html = f"""
@@ -488,14 +495,14 @@ html = f"""
   .d-badge{{display:inline-block;padding:3px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;margin-bottom:14px;}}
   .badge-done{{background:#FFFFF022;color:#FFFFF0;border:1px solid #FFFFF044;}}
   .badge-active{{background:#FFFFF022;color:#FFFFF0;border:1px solid #FFFFF044;}}
-  .badge-upcoming{{background:#333F63;color:#6366f1;border:1px solid #FFFFF044;}}
+  .badge-upcoming{{background:{badge_upcoming_bg};color:{badge_upcoming_text};border:1px solid #FFFFF044;}}
   .d-meta{{color:{map_muted};font-size:0.85rem;margin-bottom:16px;}}
   .ph-row{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.83rem;line-height:1.5;color:{map_text};}}
   .ph-badge{{flex-shrink:0;padding:2px 8px;border-radius:6px;font-size:0.72rem;font-weight:700;margin-top:1px;}}
   .ph-beginner{{background:#FFFFF022;color:#FFFFF0;}}
   .ph-intermediate{{background:#f59e0b22;color:#fbbf24;}}
-  .ph-advanced{{background:#333F6322;color:#FFFFF0;}}
-  .d-section{{font-size:0.78rem;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;}}
+  .ph-advanced{{background:{phase_advanced_bg};color:{phase_advanced_text};}}
+  .d-section{{font-size:0.78rem;font-weight:700;color:{detail_section_text};text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;}}
   .d-resources ul{{padding-left:16px;}}
   .d-resources li{{font-size:0.83rem;color:{map_muted};margin-bottom:4px;}}
   .d-project{{background:{project_bg};border:1px solid {project_border};
@@ -818,16 +825,16 @@ for icon, title, desc, unlocked in [
         f'</div>'
     )
 
-ach_bg = "#f8fafc" if is_light else "#333F63"
-ach_text = "#172033" if is_light else "#FFFFF0"
-ach_card_on_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.24)"
-ach_card_off_bg = "#FFFFF0" if is_light else "rgba(0,0,0,0.18)"
-ach_card_on_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.28)"
-ach_card_off_border = "rgba(255,255,240,0.14)" if is_light else "rgba(0,0,0,0.26)"
-ach_title = "#172033" if is_light else "rgba(255,255,240,0.14)"
-ach_title_on = "#FFFFF0" if is_light else "#FFFFF0"
-ach_desc = "#5b6472" if is_light else "rgba(255,255,240,0.46)"
-ach_status = "#64748b" if is_light else "#4b5563"
+ach_bg = "#fffff0" if is_light else "#333F63"
+ach_text = "#1f2933" if is_light else "#FFFFF0"
+ach_card_on_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
+ach_card_off_bg = "#fffef5" if is_light else "rgba(0,0,0,0.18)"
+ach_card_on_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.28)"
+ach_card_off_border = "#c8cdd2" if is_light else "rgba(0,0,0,0.26)"
+ach_title = "#1f2933" if is_light else "rgba(255,255,240,0.14)"
+ach_title_on = "#1f2933" if is_light else "#FFFFF0"
+ach_desc = "#52606d" if is_light else "rgba(255,255,240,0.46)"
+ach_status = "#52606d" if is_light else "#4b5563"
 ach_status_on = "#047857" if is_light else "#FFFFF0"
 ach_shadow = "0 8px 22px rgba(15,23,42,0.08)" if is_light else "none"
 

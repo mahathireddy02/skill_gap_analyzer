@@ -223,18 +223,6 @@ with tab2:
                 update_user(email, {"password": _h(new_pw)})
                 st.success("✅ Password updated!")
 
-    st.markdown("---")
-
-    st.markdown("### 🔔 Notifications")
-    notif = db_user.get("notifications", {"weekly_reminder": True, "tips": True})
-    n1 = st.toggle("📅 Weekly progress reminder", value=notif.get("weekly_reminder", True), key="n_weekly")
-    st.caption("Shows a reminder banner when you log in after 7+ days.")
-    n2 = st.toggle("💡 Learning tips on dashboard", value=notif.get("tips", True), key="n_tips")
-    st.caption("Shows a daily tip card on your dashboard.")
-    if st.button("💾 Save Notification Settings", key="save_notif"):
-        update_user(email, {"notifications": {"weekly_reminder": n1, "tips": n2}})
-        st.success("✅ Saved!")
-
 # TAB 3: Danger Zone
 with tab3:
     st.markdown("### ⚠️ Danger Zone")
