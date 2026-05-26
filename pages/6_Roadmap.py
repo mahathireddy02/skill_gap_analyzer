@@ -129,42 +129,61 @@ div[data-testid="stExpander"] {{
     border:1px solid {card_border}!important;
 }}
 div[data-testid="stExpander"] details,
-div[data-testid="stExpander"] summary,
-div[data-testid="stCheckbox"] label {{
+div[data-testid="stExpander"] summary {{
     background:{card_bg}!important;
 }}
-div[data-testid="stCheckbox"] [data-baseweb="checkbox"],
-div[data-testid="stCheckbox"] [data-baseweb="checkbox"] *,
-div[data-testid="stCheckbox"] span[data-baseweb="checkbox"] {{
-    background:{input_bg}!important;
-    border-color:{input_border}!important;
+div[data-testid="stCheckbox"] label {{
+    background:transparent!important;
+    border:none!important;
+    box-shadow:none!important;
+    padding:0.15rem 0!important;
     color:{page_text}!important;
 }}
-div[data-testid="stCheckbox"] input + div,
-div[data-testid="stCheckbox"] input + div *,
-div[data-testid="stCheckbox"] input ~ div,
-div[data-testid="stCheckbox"] input ~ div * {{
+div[data-testid="stCheckbox"] label > div:first-child,
+div[data-testid="stCheckbox"] [data-baseweb="checkbox"] {{
+    background:transparent!important;
+    border-color:{input_border}!important;
+    position:relative!important;
+}}
+div[data-testid="stCheckbox"] [data-baseweb="checkbox"] > div {{
     background:{input_bg}!important;
     border-color:{input_border}!important;
-    color:{page_text}!important;
 }}
+div[data-testid="stCheckbox"] [aria-checked="true"] > div,
 div[data-testid="stCheckbox"] input:checked + div,
-div[data-testid="stCheckbox"] input:checked + div *,
-div[data-testid="stCheckbox"] input:checked ~ div,
-div[data-testid="stCheckbox"] input:checked ~ div * {{
-    background:#FFFFF0!important;
-    border-color:#FFFFF0!important;
+div[data-testid="stCheckbox"] input:checked + div > div {{
+    background:#333F63!important;
+    border-color:{input_border}!important;
+}}
+div[data-testid="stCheckbox"] label:has(input:checked) > div:first-child::after,
+div[data-testid="stCheckbox"] [aria-checked="true"] > div::after,
+div[data-testid="stCheckbox"] input:checked + div::after {{
+    content:"✓"!important;
+    position:absolute!important;
+    inset:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
     color:#FFFFF0!important;
-    fill:#FFFFF0!important;
+    font-size:0.82rem!important;
+    font-weight:900!important;
+    line-height:1!important;
+    pointer-events:none!important;
+}}
+div[data-testid="stCheckbox"] [data-baseweb="checkbox"] svg,
+div[data-testid="stCheckbox"] [data-baseweb="checkbox"] path {{
+    color:{page_text}!important;
+    fill:{page_text}!important;
+    stroke:{page_text}!important;
+}}
+div[data-testid="stCheckbox"] p,
+div[data-testid="stCheckbox"] span:not([data-baseweb="checkbox"]) {{
+    background:transparent!important;
+    color:{page_text}!important;
 }}
 div[data-testid="stCheckbox"] svg {{
     color:{page_text}!important;
     fill:{page_text}!important;
-}}
-div[data-testid="stCheckbox"] input:checked ~ div svg,
-div[data-testid="stCheckbox"] input:checked + div svg {{
-    color:#FFFFF0!important;
-    fill:#FFFFF0!important;
 }}
 div[data-testid="stExpander"] summary svg {{
     fill:{page_text if is_light else "#FFFFF0"}!important;
@@ -312,6 +331,8 @@ def render_checklist():
                 label = (f"✅ Week {w} — {entry['focus']}" if is_done
                          else f"📍 Week {w} — {entry['focus']} ← Today" if is_today
                          else f"Week {w} — {entry['focus']}")
+                if is_done:
+                    label = f"Week {w} \u2014 {entry['focus']}"
                 val = st.checkbox(label, value=is_done, key=f"week_{w}")
                 if is_today or is_done:
                     st.caption(entry["tasks"])
@@ -418,12 +439,12 @@ html = f"""
   #journey-svg{{display:block;min-width:{svg_width}px;}}
 
   /* Station circles */
-  .station-done   .s-circle{{fill:#FFFFF0;stroke:#FFFFF0;filter:drop-shadow(0 0 8px #FFFFF088);}}
+  .station-done   .s-circle{{fill:{map_upcoming_fill};stroke:{map_upcoming_stroke};}}
   .station-active .s-circle{{fill:#FFFFF0;stroke:#FFFFF0;filter:drop-shadow(0 0 14px #FFFFF0aa);animation:pulse 1.6s ease-in-out infinite;}}
   .station-upcoming .s-circle{{fill:{map_upcoming_fill};stroke:{map_upcoming_stroke};}}
   @keyframes pulse{{0%,100%{{r:18;}}50%{{r:22;}}}}
 
-  .station-done   .s-icon{{fill:#FFFFF0;font-size:14px;}}
+  .station-done   .s-icon{{fill:{map_upcoming_icon};font-size:14px;}}
   .station-active .s-icon{{fill:#FFFFF0;font-size:14px;}}
   .station-upcoming .s-icon{{fill:{map_upcoming_icon};font-size:14px;}}
 
@@ -637,6 +658,7 @@ STATIONS.forEach((s, i) => {{
   icon.setAttribute('font-size','13');
   icon.setAttribute('class','s-icon');
   icon.textContent = s.status==='done' ? '✓' : s.status==='active' ? '▶' : String(s.id);
+  if (s.status === 'done') icon.textContent = String(s.id);
   g.appendChild(icon);
 
   // Label below

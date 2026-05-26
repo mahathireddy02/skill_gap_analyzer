@@ -376,10 +376,24 @@ div[data-testid="stElementToolbar"] button[title*="more" i],
 button[aria-label*="more" i],
 button[title*="more" i],
 .vega-embed summary {{
-    display:inline-flex!important;
-    visibility:visible!important;
-    opacity:1!important;
-    pointer-events:auto!important;
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+}}
+.vega-embed details,
+.vega-embed .vega-actions,
+div[data-testid="stVegaLiteChart"] details,
+div[data-testid="stVegaLiteChart"] .vega-actions,
+div[data-testid="stElementToolbar"],
+div[data-testid="stElementToolbarButton"],
+[data-testid*="ElementToolbar"],
+[class*="elementToolbar"],
+[class*="stElementToolbar"] {{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
 }}
 </style>
 """, unsafe_allow_html=True)

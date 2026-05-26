@@ -74,8 +74,9 @@
             "advanced": "Contribute to open source, build portfolio projects, get certified"
           },
           "resources": [
-            "Udemy courses (search skill name)",
-            "Coursera specializations"
+            "Official documentation",
+            "YouTube tutorials",
+            "freeCodeCamp"
           ],
           "project": "Build a small project applying this skill end-to-end"
         },
@@ -91,7 +92,9 @@
             "advanced": "Well-Architected Framework, cost optimization, security, certifications"
           },
           "resources": [
-            "AWS Certified Solutions Architect (Udemy \u2013 Stephane Maarek)"
+            "AWS Free Tier",
+            "freeCodeCamp AWS (YouTube)",
+            "AWS Skill Builder"
           ],
           "project": "Deploy a serverless REST API with Lambda + API Gateway + DynamoDB"
         },
@@ -107,7 +110,8 @@
             "advanced": "GitOps, ArgoCD, advanced workflows, secrets management"
           },
           "resources": [
-            "GitHub Actions \u2013 The Complete Guide (Udemy)"
+            "GitHub Actions docs",
+            "TechWorld with Nana CI/CD (YouTube)"
           ],
           "project": "Set up a full CI/CD pipeline for a web app on GitHub Actions"
         }
@@ -236,11 +240,26 @@
         "Starting from Beginner level \u2014 covering beginner, intermediate, advanced phase(s).",
         "Complete the mini-project at the end of each skill to solidify learning.",
         "Each skill gets proportional time based on its complexity \u2014 heavier skills get more weeks.",
-        "Your 13-week window covers ~83% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice."
+        "Your 13-week window covers ~83% of ideal depth. Focus on core concepts and use the project at the end of each skill to practice.",
+        "Free resources selected \u2014 Kaggle, freeCodeCamp, and YouTube are your best friends."
       ],
       "tight_deadline": true
     },
-    "checked_weeks": [],
+    "checked_weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
     "theme": "light",
     "bio": "",
     "reset_token": "Sc1YfBg36i2cZ1Q4VmUGLp9cQpjJ3QKqXu_CFwERT0Q",
