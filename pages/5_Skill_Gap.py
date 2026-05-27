@@ -106,22 +106,20 @@ theme       = db_user.get("theme", "dark")
 if theme == "light":
     st.markdown("""
     <style>
-    :root,.page-body{--gap-card-bg:#fffef5;--gap-card-border:#9F8C76;--gap-text:#1f2933;
-        --gap-muted:#1f2933;--gap-track:rgba(159,140,118,0.22);--gap-pill-bg:rgba(159,140,118,0.18);--gap-empty-bg:#fffef5;
-        --gap-empty-border:#9F8C76;--gap-row-bg:#fffef5;--gap-row-border:#9F8C76;}
-    .gap-hero,.tier-box{background:#fffef5!important;border-color:#9F8C76!important;color:#1f2933!important;}
+    :root,.page-body{--gap-card-bg:#fdf7e4;--gap-card-border:#bbab8c;--gap-text:#000000;
+        --gap-muted:#000000;--gap-track:#fdf7e4;--gap-pill-bg:#bbab8c;--gap-empty-bg:#fdf7e4;
+        --gap-empty-border:#bbab8c;--gap-row-bg:#fdf7e4;--gap-row-border:#bbab8c;}
+    .gap-hero,.tier-box{background:#fdf7e4!important;border-color:#bbab8c!important;color:#000000!important;}
     .gap-hero div,.gap-hero span,.gap-role,.gap-score-num,.gap-desc,.gap-eyebrow,.gap-grade{color:#FFFFF0!important;}
-    .gap-hero div,.gap-hero span,.gap-role,.gap-score-num,.gap-desc,.gap-eyebrow,.gap-grade{color:#1f2933!important;}
-    .coverage-card,.result-panel,.top-action-panel{background:#fffef5!important;border-color:#9F8C76!important;}
-    .priority-row,.suggestion-card{background:#fffef5!important;border-color:#9F8C76!important;}
-    .coverage-track{background:rgba(159,140,118,0.22)!important;}
-    .coverage-value,.panel-title,.priority-skill,.suggestion-role,.result-section-title,.skill-count-line{color:#1f2933!important;}
-    .coverage-meta,.panel-count,.priority-caption,.empty-note{color:#1f2933!important;}
-    .panel-count,.priority-num{background:rgba(159,140,118,0.18)!important;color:#1f2933!important;border-color:#9F8C76!important;}
-    .empty-note{background:#fffef5!important;border-color:#9F8C76!important;}
-    .gap-chip.good{background:#d1fae5!important;color:#065f46!important;border-color:#6ee7b7!important;}
-    .gap-chip.bad{background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;}
-    .gap-chip.warn{background:#fef3c7!important;color:#92400e!important;border-color:#fcd34d!important;}
+    .gap-hero div,.gap-hero span,.gap-role,.gap-score-num,.gap-desc,.gap-eyebrow,.gap-grade{color:#000000!important;}
+    .coverage-card,.result-panel,.top-action-panel{background:#fdf7e4!important;border-color:#bbab8c!important;}
+    .priority-row,.suggestion-card{background:#fdf7e4!important;border-color:#bbab8c!important;}
+    .coverage-track{background:#fdf7e4!important;border:1px solid #bbab8c!important;}
+    .coverage-value,.panel-title,.priority-skill,.suggestion-role,.result-section-title,.skill-count-line{color:#000000!important;}
+    .coverage-meta,.panel-count,.priority-caption,.empty-note{color:#000000!important;}
+    .panel-count,.priority-num{background:#bbab8c!important;color:#000000!important;border-color:#bbab8c!important;}
+    .empty-note{background:#fdf7e4!important;border-color:#bbab8c!important;}
+    .gap-chip.good,.gap-chip.bad,.gap-chip.warn{background:#bbab8c!important;color:#000000!important;border-color:#bbab8c!important;}
     </style>
     """, unsafe_allow_html=True)
 else:
@@ -135,7 +133,7 @@ else:
     </style>
     """, unsafe_allow_html=True)
 
-result_accent = "#1f2933" if theme == "light" else "#FFFFF0"
+result_accent = "#bbab8c" if theme == "light" else "#FFFFF0"
 
 if not target_role:
     st.warning("⚠️ No target role set. Please update it in your Profile.")

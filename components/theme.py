@@ -16,9 +16,9 @@ BG_STATIC = """
     linear-gradient(180deg, #000000D6 0%, #333F63 56%, #333F63 100%)
 """.strip().replace("\n", " ")
 
-BG_LIGHT = "#fffff0"
+BG_LIGHT = "#fdf7e4"
 
 COLOR_BG_DARK = BG_NAVY
 COLOR_NAV_DARK = BG_BLACK_OVERLAY
-COLOR_BG_LIGHT = "#fffff0"
-COLOR_SURFACE_LIGHT = "rgba(255, 255, 255, 0.78)"
+COLOR_BG_LIGHT = "#fdf7e4"
+COLOR_SURFACE_LIGHT = "#fdf7e4"

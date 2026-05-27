@@ -19,11 +19,11 @@ html,body{margin:0!important;padding:0!important;}
 .block-container{padding:0!important;max-width:100%!important;}
 div[data-testid="stButton"] button{font-weight:700!important;border-radius:10px!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;border:1px solid rgba(255,255,240,0.18)!important;}
-.template-preview-card{height:340px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;margin-bottom:6px;background:#fff;}
-.template-preview-frame{width:100%;height:286px;border:0;background:#fff;display:block;}
+.template-preview-card{height:340px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;margin-bottom:6px;background:#fdf7e4;}
+.template-preview-frame{width:100%;height:286px;border:0;background:#fdf7e4;display:block;}
 .template-preview-footer{min-height:54px;padding:0.5rem 0.75rem;display:flex;justify-content:space-between;align-items:center;gap:0.6rem;
-    background:#f8fafc;border-top:1px solid #e5e7eb;}
-.template-preview-tags{font-size:0.66rem;font-weight:800;color:#111827;line-height:1.25;}
+    background:#fdf7e4;border-top:1px solid #bbab8c;}
+.template-preview-tags{font-size:0.66rem;font-weight:800;color:#000000;line-height:1.25;}
 .template-preview-name{font-size:0.72rem;font-weight:900;white-space:nowrap;}
 html,body,.stApp{color:#FFFFF0!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
@@ -43,6 +43,103 @@ st.caption("Pick a template, fill in your details, and download a professional P
 st.markdown("")
 
 db_user = get_user(st.session_state.email)
+theme = db_user.get("theme", "dark")
+is_light = theme == "light"
+
+if is_light:
+    st.markdown("""
+    <style>
+    html,body,.stApp,.page-body,.block-container{
+        background:#fdf7e4!important;
+        color:#000000!important;
+    }
+    .template-preview-card,
+    .template-preview-frame,
+    .template-preview-footer{
+        background:#fdf7e4!important;
+        background-color:#fdf7e4!important;
+        border-color:#bbab8c!important;
+        box-shadow:none!important;
+        color:#000000!important;
+    }
+    .template-preview-card{
+        border:2px solid #bbab8c!important;
+    }
+    .template-preview-tags,
+    .template-preview-name,
+    div[data-testid="stMarkdownContainer"],
+    div[data-testid="stMarkdownContainer"] *,
+    label,p,h1,h2,h3,h4,h5,h6,span,strong{
+        color:#000000!important;
+    }
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stTextArea"] textarea,
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stSelectbox"] > div > div,
+    div[data-testid="stMultiSelect"] > div > div{
+        background:#fdf7e4!important;
+        background-color:#fdf7e4!important;
+        border-color:#bbab8c!important;
+        color:#000000!important;
+        box-shadow:none!important;
+    }
+    div[data-testid="stButton"] button,
+    div[data-testid="stDownloadButton"] button{
+        background:#bbab8c!important;
+        background-color:#bbab8c!important;
+        border:1px solid #bbab8c!important;
+        color:#000000!important;
+        box-shadow:none!important;
+    }
+    div[data-testid="stAlert"]{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+        color:#000000!important;
+    }
+    .stTabs [data-baseweb="tab-list"]{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+    }
+    .stTabs [aria-selected="true"]{
+        background:#bbab8c!important;
+        color:#000000!important;
+    }
+    iframe{
+        background:#fdf7e4!important;
+        border-color:#bbab8c!important;
+        box-shadow:none!important;
+    }
+    [style*="background:#fff"],
+    [style*="background: #fff"],
+    [style*="background:#ffffff"],
+    [style*="background: #ffffff"],
+    [style*="background:#f8fafc"],
+    [style*="background:rgba(124,58,237"],
+    [style*="background:rgba(255,255,255"],
+    [style*="background: rgba(255,255,255"]{
+        background:#fdf7e4!important;
+        background-color:#fdf7e4!important;
+    }
+    [style*="border:1px solid rgba(124,58,237"],
+    [style*="border: 1px solid rgba(124,58,237"],
+    [style*="border:2px solid #e5e7eb"],
+    [style*="border: 2px solid #e5e7eb"]{
+        border-color:#bbab8c!important;
+    }
+    [style*="color:#4f46e5"],
+    [style*="color:#059669"],
+    [style*="color:#7c3aed"],
+    [style*="color:#ffffff"],
+    [style*="color:#fff"],
+    [style*="color:#111827"],
+    [style*="color:#6b7280"]{
+        color:#000000!important;
+    }
+    [style*="box-shadow"]{
+        box-shadow:none!important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # ── Session state ─────────────────────────────────────────────────────────────
 if "selected_template" not in st.session_state:
@@ -55,26 +152,26 @@ if "num_skills" not in st.session_state:
 # ── Template metadata for preview cards ──────────────────────────────────────
 TEMPLATE_META = {
     "Classic": {
-        "icon": "📄", "accent": "#000000", "header_bg": "#ffffff",
+        "icon": "📄", "accent": "#000000", "header_bg": "#fdf7e4" if is_light else "#ffffff",
         "header_text": "#000000", "sec_color": "#000000", "hr": "#000000",
         "desc": "Black & white, centered name. Traditional and ATS-safe.",
         "tags": ["Traditional", "ATS-Safe", "B&W"],
     },
     "Modern": {
-        "icon": "✨", "accent": "#4f46e5", "header_bg": "#4f46e5",
-        "header_text": "#ffffff", "sec_color": "#4f46e5", "hr": "#4f46e5",
+        "icon": "✨", "accent": "#bbab8c" if is_light else "#4f46e5", "header_bg": "#bbab8c" if is_light else "#4f46e5",
+        "header_text": "#000000" if is_light else "#ffffff", "sec_color": "#bbab8c" if is_light else "#4f46e5", "hr": "#bbab8c" if is_light else "#4f46e5",
         "desc": "Indigo header band, colored section titles. Clean and professional.",
         "tags": ["Popular", "Colorful", "Tech"],
     },
     "Minimal": {
-        "icon": "🎯", "accent": "#059669", "header_bg": "#ffffff",
-        "header_text": "#111827", "sec_color": "#059669", "hr": "#059669",
+        "icon": "🎯", "accent": "#bbab8c" if is_light else "#059669", "header_bg": "#fdf7e4" if is_light else "#ffffff",
+        "header_text": "#000000" if is_light else "#111827", "sec_color": "#bbab8c" if is_light else "#059669", "hr": "#bbab8c" if is_light else "#059669",
         "desc": "Green accents, lots of whitespace. Simple and elegant.",
         "tags": ["Clean", "Minimal", "Green"],
     },
     "Creative": {
-        "icon": "🎨", "accent": "#7c3aed", "header_bg": "#7c3aed",
-        "header_text": "#ffffff", "sec_color": "#7c3aed", "hr": "#7c3aed",
+        "icon": "🎨", "accent": "#bbab8c" if is_light else "#7c3aed", "header_bg": "#bbab8c" if is_light else "#7c3aed",
+        "header_text": "#000000" if is_light else "#ffffff", "sec_color": "#bbab8c" if is_light else "#7c3aed", "hr": "#bbab8c" if is_light else "#7c3aed",
         "desc": "Purple header, bold section labels. Stands out from the crowd.",
         "tags": ["Bold", "Creative", "Purple"],
     },
@@ -147,8 +244,8 @@ cols = st.columns(4, gap="small")
 for col, (tmpl, meta) in zip(cols, TEMPLATE_META.items()):
     with col:
         is_sel = st.session_state.selected_template == tmpl
-        border = f"3px solid {meta['accent']}" if is_sel else "2px solid #e5e7eb"
-        shadow = f"0 6px 24px {meta['accent']}44" if is_sel else "0 2px 8px rgba(0,0,0,0.06)"
+        border = f"3px solid {meta['accent']}" if is_sel else ("2px solid #bbab8c" if is_light else "2px solid #e5e7eb")
+        shadow = "none" if is_light else (f"0 6px 24px {meta['accent']}44" if is_sel else "0 2px 8px rgba(0,0,0,0.06)")
         st.markdown(
             _preview_pdf_card(tmpl, meta, border, shadow),
             unsafe_allow_html=True

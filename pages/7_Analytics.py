@@ -15,15 +15,15 @@ db_user = get_user(st.session_state.email)
 theme = db_user.get("theme", "dark")
 is_light = theme == "light"
 
-page_bg = "#fffff0" if is_light else "#333F63"
-chart_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-chart_text = "#1f2933" if is_light else "#FFFFF0"
-chart_muted = "#1f2933" if is_light else "rgba(255,255,240,0.62)"
-chart_grid = "#9F8C76" if is_light else "rgba(255,255,240,0.14)"
-chart_axis = "#9F8C76" if is_light else "rgba(255,255,240,0.26)"
-chart_hover = "rgba(159,140,118,0.18)" if is_light else "#333F63"
-chart_primary = "#9F8C76" if is_light else "#FFFFF0"
-chart_secondary = "#9b1c31" if is_light else "#333F63"
+page_bg = "#fdf7e4" if is_light else "#333F63"
+chart_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.24)"
+chart_text = "#000000" if is_light else "#FFFFF0"
+chart_muted = "#000000" if is_light else "rgba(255,255,240,0.62)"
+chart_grid = "#bbab8c" if is_light else "rgba(255,255,240,0.14)"
+chart_axis = "#bbab8c" if is_light else "rgba(255,255,240,0.26)"
+chart_hover = "#bbab8c" if is_light else "#333F63"
+chart_primary = "#bbab8c" if is_light else "#FFFFF0"
+chart_secondary = "#bbab8c" if is_light else "#333F63"
 chart_height = 320
 
 st.markdown(f"""

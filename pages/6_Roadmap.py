@@ -13,20 +13,20 @@ db_user = get_user(st.session_state.email)
 theme = db_user.get("theme", "dark")
 is_light = theme == "light"
 
-page_bg = "#fffff0" if is_light else "#333F63"
-page_text = "#1f2933" if is_light else "#FFFFF0"
-page_muted = "#1f2933" if is_light else "rgba(255,255,240,0.62)"
-card_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-card_border = "#9F8C76" if is_light else "rgba(255,255,240,0.14)"
-input_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-input_border = "#9F8C76" if is_light else "rgba(255,255,240,0.16)"
-prefill_bg = "rgba(159,140,118,0.18)" if is_light else "rgba(0,0,0,0.24)"
-prefill_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
-prefill_text = "#1f2933" if is_light else "#FFFFF0"
-prefill_strong = "#1f2933" if is_light else "#FFFFF0"
-primary_bg = "#9F8C76" if is_light else "#333F63"
-primary_text = "#1f2933" if is_light else "#FFFFF0"
-primary_border = "#9F8C76" if is_light else "rgba(255,255,240,0.18)"
+page_bg = "#fdf7e4" if is_light else "#333F63"
+page_text = "#000000" if is_light else "#FFFFF0"
+page_muted = "#000000" if is_light else "rgba(255,255,240,0.62)"
+card_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.24)"
+card_border = "#bbab8c" if is_light else "rgba(255,255,240,0.14)"
+input_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.24)"
+input_border = "#bbab8c" if is_light else "rgba(255,255,240,0.16)"
+prefill_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.24)"
+prefill_border = "#bbab8c" if is_light else "rgba(255,255,240,0.18)"
+prefill_text = "#000000" if is_light else "#FFFFF0"
+prefill_strong = "#000000" if is_light else "#FFFFF0"
+primary_bg = "#bbab8c" if is_light else "#333F63"
+primary_text = "#000000" if is_light else "#FFFFF0"
+primary_border = "#bbab8c" if is_light else "rgba(255,255,240,0.18)"
 
 st.markdown(f"""
 <style>
@@ -91,7 +91,7 @@ div[role="option"]:hover,
 li[role="option"]:hover,
 div[aria-selected="true"],
 li[aria-selected="true"] {{
-    background:{"rgba(159,140,118,0.18)" if is_light else "#333F63"}!important;
+    background:{"#bbab8c" if is_light else "#333F63"}!important;
     color:{page_text}!important;
 }}
 .roadmap-prefill{{
@@ -167,7 +167,7 @@ div[data-testid="stCheckbox"] input:checked + div::after {{
     display:flex!important;
     align-items:center!important;
     justify-content:center!important;
-    color:#FFFFF0!important;
+    color:{page_text if is_light else "#FFFFF0"}!important;
     font-size:0.82rem!important;
     font-weight:900!important;
     line-height:1!important;
@@ -193,7 +193,7 @@ div[data-testid="stExpander"] summary svg {{
     color:{page_text if is_light else "#FFFFF0"}!important;
 }}
 div[data-testid="stExpander"] summary:hover {{
-    background:{"rgba(159,140,118,0.18)" if is_light else "rgba(0,0,0,0.22)"}!important;
+    background:{"#bbab8c" if is_light else "rgba(0,0,0,0.22)"}!important;
 }}
 div[data-testid="stCaptionContainer"],
 div[data-testid="stCaptionContainer"] * {{
@@ -403,32 +403,40 @@ n_stations    = len(stations)
 # Each weekly checkpoint needs enough room for a compact Week label.
 svg_width     = max(900, n_stations * 120)
 
-map_body_bg = "#fffff0" if is_light else "#333F63"
-map_text = "#1f2933" if is_light else "#FFFFF0"
-map_label = "#1f2933" if is_light else "rgba(255,255,240,0.14)"
-map_muted = "#1f2933" if is_light else "#94a3b8"
-map_track = "#9F8C76" if is_light else "#333F63"
-map_rail = "rgba(159,140,118,0.22)" if is_light else "rgba(0,0,0,0.30)"
-map_upcoming_fill = "#fffef5" if is_light else "#333F63"
-map_upcoming_stroke = "#9F8C76" if is_light else "#FFFFF0"
-map_upcoming_icon = "#1f2933" if is_light else "#6366f1"
-detail_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-detail_border = "#9F8C76" if is_light else "rgba(255,255,240,0.18)"
-detail_shadow = "0 20px 48px rgba(15,23,42,0.16)" if is_light else "none"
-overlay_bg = "rgba(255,255,240,0.72)" if is_light else "rgba(0,0,0,0.6)"
-close_bg = "#fffef5" if is_light else "rgba(255,255,240,0.14)"
-close_hover = "rgba(159,140,118,0.18)" if is_light else "rgba(255,255,240,0.16)"
-project_bg = "rgba(159,140,118,0.18)" if is_light else "rgba(0,0,0,0.24)"
-project_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
-project_text = "#1f2933" if is_light else "#FFFFF0"
-progress_bar_bg = "rgba(159,140,118,0.22)" if is_light else "rgba(255,255,240,0.14)"
-scrollbar_track = "rgba(159,140,118,0.22)" if is_light else "rgba(0,0,0,0.22)"
-scrollbar_thumb = "#9F8C76" if is_light else "#FFFFF0"
-badge_upcoming_bg = "#fffef5" if is_light else "#333F63"
-badge_upcoming_text = "#1f2933" if is_light else "#6366f1"
-phase_advanced_bg = "rgba(159,140,118,0.18)" if is_light else "#333F6322"
-phase_advanced_text = "#1f2933" if is_light else "#FFFFF0"
-detail_section_text = "#1f2933" if is_light else "#6366f1"
+map_body_bg = "#fdf7e4" if is_light else "#333F63"
+map_text = "#000000" if is_light else "#FFFFF0"
+map_label = "#000000" if is_light else "rgba(255,255,240,0.14)"
+map_muted = "#000000" if is_light else "#94a3b8"
+map_track = "#bbab8c" if is_light else "#333F63"
+map_rail = "#fdf7e4" if is_light else "rgba(0,0,0,0.30)"
+map_upcoming_fill = "#fdf7e4" if is_light else "#333F63"
+map_upcoming_stroke = "#bbab8c" if is_light else "#FFFFF0"
+map_upcoming_icon = "#000000" if is_light else "#6366f1"
+detail_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.24)"
+detail_border = "#bbab8c" if is_light else "rgba(255,255,240,0.18)"
+detail_shadow = "none" if is_light else "none"
+overlay_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.6)"
+close_bg = "#fdf7e4" if is_light else "rgba(255,255,240,0.14)"
+close_hover = "#bbab8c" if is_light else "rgba(255,255,240,0.16)"
+project_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.24)"
+project_border = "#bbab8c" if is_light else "rgba(255,255,240,0.18)"
+project_text = "#000000" if is_light else "#FFFFF0"
+progress_bar_bg = "#fdf7e4" if is_light else "rgba(255,255,240,0.14)"
+scrollbar_track = "#fdf7e4" if is_light else "rgba(0,0,0,0.22)"
+scrollbar_thumb = "#bbab8c" if is_light else "#FFFFF0"
+badge_upcoming_bg = "#fdf7e4" if is_light else "#333F63"
+badge_upcoming_text = "#000000" if is_light else "#6366f1"
+phase_advanced_bg = "#bbab8c" if is_light else "#333F6322"
+phase_advanced_text = "#000000" if is_light else "#FFFFF0"
+detail_section_text = "#000000" if is_light else "#6366f1"
+map_accent = "#bbab8c" if is_light else "#FFFFF0"
+map_accent_soft = "#bbab8c" if is_light else "#FFFFF022"
+map_accent_border = "#bbab8c" if is_light else "#FFFFF044"
+map_glow_filter = "none" if is_light else "drop-shadow(0 0 14px #FFFFF0aa)"
+train_glow_filter = "none" if is_light else "drop-shadow(0 0 12px #FFFFF0)"
+intermediate_bg = "#bbab8c" if is_light else "#f59e0b22"
+intermediate_text = "#000000" if is_light else "#fbbf24"
+train_glow_fill = "#bbab8c" if is_light else "rgba(255,255,240,0.12)"
 
 # ── HTML/SVG Journey Map ──────────────────────────────────────────────────────
 html = f"""
@@ -448,12 +456,12 @@ html = f"""
 
   /* Station circles */
   .station-done   .s-circle{{fill:{map_upcoming_fill};stroke:{map_upcoming_stroke};}}
-  .station-active .s-circle{{fill:#FFFFF0;stroke:#FFFFF0;filter:drop-shadow(0 0 14px #FFFFF0aa);animation:pulse 1.6s ease-in-out infinite;}}
+  .station-active .s-circle{{fill:{map_accent};stroke:{map_accent};filter:{map_glow_filter};animation:pulse 1.6s ease-in-out infinite;}}
   .station-upcoming .s-circle{{fill:{map_upcoming_fill};stroke:{map_upcoming_stroke};}}
   @keyframes pulse{{0%,100%{{r:18;}}50%{{r:22;}}}}
 
   .station-done   .s-icon{{fill:{map_upcoming_icon};font-size:14px;}}
-  .station-active .s-icon{{fill:#FFFFF0;font-size:14px;}}
+  .station-active .s-icon{{fill:{map_text};font-size:14px;}}
   .station-upcoming .s-icon{{fill:{map_upcoming_icon};font-size:14px;}}
 
   .s-label{{font-size:12px;font-weight:700;fill:{map_label};text-anchor:middle;}}
@@ -469,7 +477,7 @@ html = f"""
 
   /* Train */
   #train{{transition:all 1.2s cubic-bezier(.4,0,.2,1);}}
-  #train-glow{{filter:drop-shadow(0 0 12px #FFFFF0);}}
+  #train-glow{{filter:{train_glow_filter};}}
 
   /* Detail panel */
   #detail{{
@@ -494,14 +502,14 @@ html = f"""
     border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}}
   .d-close:hover{{background:{close_hover};}}
   .d-badge{{display:inline-block;padding:3px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;margin-bottom:14px;}}
-  .badge-done{{background:#FFFFF022;color:#FFFFF0;border:1px solid #FFFFF044;}}
-  .badge-active{{background:#FFFFF022;color:#FFFFF0;border:1px solid #FFFFF044;}}
-  .badge-upcoming{{background:{badge_upcoming_bg};color:{badge_upcoming_text};border:1px solid #FFFFF044;}}
+  .badge-done{{background:{map_accent_soft};color:{map_text};border:1px solid {map_accent_border};}}
+  .badge-active{{background:{map_accent_soft};color:{map_text};border:1px solid {map_accent_border};}}
+  .badge-upcoming{{background:{badge_upcoming_bg};color:{badge_upcoming_text};border:1px solid {map_accent_border};}}
   .d-meta{{color:{map_muted};font-size:0.85rem;margin-bottom:16px;}}
   .ph-row{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.83rem;line-height:1.5;color:{map_text};}}
   .ph-badge{{flex-shrink:0;padding:2px 8px;border-radius:6px;font-size:0.72rem;font-weight:700;margin-top:1px;}}
-  .ph-beginner{{background:#FFFFF022;color:#FFFFF0;}}
-  .ph-intermediate{{background:#f59e0b22;color:#fbbf24;}}
+  .ph-beginner{{background:{map_accent_soft};color:{map_text};}}
+  .ph-intermediate{{background:{intermediate_bg};color:{intermediate_text};}}
   .ph-advanced{{background:{phase_advanced_bg};color:{phase_advanced_text};}}
   .d-section{{font-size:0.78rem;font-weight:700;color:{detail_section_text};text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;}}
   .d-resources ul{{padding-left:16px;}}
@@ -512,9 +520,9 @@ html = f"""
   /* Progress bar */
   #prog-wrap{{padding:0 24px 16px;}}
   .prog-label{{display:flex;justify-content:space-between;font-size:1.05rem;font-weight:800;color:{map_text};margin-bottom:10px;}}
-  .prog-label span:last-child{{color:#FFFFF0;font-weight:900;}}
+  .prog-label span:last-child{{color:{map_text};font-weight:900;}}
   .prog-bar{{height:6px;background:{progress_bar_bg};border-radius:999px;overflow:hidden;}}
-  .prog-fill{{height:100%;background:#FFFFF0;border-radius:999px;
+  .prog-fill{{height:100%;background:{map_accent};border-radius:999px;
     transition:width 1s ease;}}
 </style>
 </head>
@@ -590,12 +598,12 @@ svg.setAttribute('viewBox', `0 0 ${{W}} ${{H}}`);
 svg.innerHTML = `
 <defs>
   <linearGradient id="trackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-    <stop offset="0%" stop-color="#FFFFF0"/>
-    <stop offset="100%" stop-color="#FFFFF0"/>
+    <stop offset="0%" stop-color="{map_accent}"/>
+    <stop offset="100%" stop-color="{map_accent}"/>
   </linearGradient>
   <radialGradient id="trainGrad" cx="50%" cy="50%" r="50%">
-    <stop offset="0%" stop-color="#e0d7ff"/>
-    <stop offset="100%" stop-color="#FFFFF0"/>
+    <stop offset="0%" stop-color="{map_accent}"/>
+    <stop offset="100%" stop-color="{map_accent}"/>
   </radialGradient>
   <filter id="glow">
     <feGaussianBlur stdDeviation="3" result="blur"/>
@@ -646,7 +654,7 @@ STATIONS.forEach((s, i) => {{
     const ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
     ring.setAttribute('r','28');
     ring.setAttribute('fill','none');
-    ring.setAttribute('stroke','#FFFFF0');
+    ring.setAttribute('stroke','{map_accent}');
     ring.setAttribute('stroke-width','2');
     ring.setAttribute('opacity','0.4');
     ring.style.animation = 'pulse-ring 1.6s ease-in-out infinite';
@@ -696,18 +704,18 @@ flagG.setAttribute('transform', `translate(${{lastX}},${{lastY}})`);
 const flagPole = document.createElementNS('http://www.w3.org/2000/svg','line');
 flagPole.setAttribute('x1','0'); flagPole.setAttribute('y1','-30');
 flagPole.setAttribute('x2','0'); flagPole.setAttribute('y2','20');
-flagPole.setAttribute('stroke','#fbbf24'); flagPole.setAttribute('stroke-width','2.5');
+flagPole.setAttribute('stroke','{map_accent}'); flagPole.setAttribute('stroke-width','2.5');
 flagG.appendChild(flagPole);
 
 const flagRect = document.createElementNS('http://www.w3.org/2000/svg','rect');
 flagRect.setAttribute('x','0'); flagRect.setAttribute('y','-30');
 flagRect.setAttribute('width','22'); flagRect.setAttribute('height','14');
-flagRect.setAttribute('fill','#FFFFF0'); flagRect.setAttribute('rx','2');
+flagRect.setAttribute('fill','{map_accent}'); flagRect.setAttribute('rx','2');
 flagG.appendChild(flagRect);
 
 const goalLbl = document.createElementNS('http://www.w3.org/2000/svg','text');
 goalLbl.setAttribute('y','34'); goalLbl.setAttribute('text-anchor','middle');
-goalLbl.setAttribute('font-size','10'); goalLbl.setAttribute('fill','#FFFFF0');
+goalLbl.setAttribute('font-size','10'); goalLbl.setAttribute('fill','{map_text}');
 goalLbl.setAttribute('font-weight','700');
 goalLbl.textContent = '{"🎉 Reached!" if pct == 100 else "Goal Reached"}';
 flagG.appendChild(goalLbl);
@@ -720,7 +728,7 @@ trainGroup.setAttribute('id','train');
 
 const trainGlow = document.createElementNS('http://www.w3.org/2000/svg','circle');
 trainGlow.setAttribute('r','14');
-trainGlow.setAttribute('fill','rgba(255,255,240,0.12)');
+trainGlow.setAttribute('fill','{train_glow_fill}');
 trainGroup.appendChild(trainGlow);
 
 const trainBody = document.createElementNS('http://www.w3.org/2000/svg','circle');
@@ -731,7 +739,7 @@ trainGroup.appendChild(trainBody);
 
 const trainDot = document.createElementNS('http://www.w3.org/2000/svg','circle');
 trainDot.setAttribute('r','4');
-trainDot.setAttribute('fill','#FFFFF0');
+trainDot.setAttribute('fill','{map_text}');
 trainGroup.appendChild(trainDot);
 
 svg.appendChild(trainGroup);
@@ -826,18 +834,18 @@ for icon, title, desc, unlocked in [
         f'</div>'
     )
 
-ach_bg = "#fffff0" if is_light else "#333F63"
-ach_text = "#1f2933" if is_light else "#FFFFF0"
-ach_card_on_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-ach_card_off_bg = "#fffef5" if is_light else "rgba(0,0,0,0.18)"
-ach_card_on_border = "#9F8C76" if is_light else "rgba(255,255,240,0.28)"
-ach_card_off_border = "#9F8C76" if is_light else "rgba(0,0,0,0.26)"
-ach_title = "#1f2933" if is_light else "rgba(255,255,240,0.14)"
-ach_title_on = "#1f2933" if is_light else "#FFFFF0"
-ach_desc = "#1f2933" if is_light else "rgba(255,255,240,0.46)"
-ach_status = "#1f2933" if is_light else "#4b5563"
-ach_status_on = "#047857" if is_light else "#FFFFF0"
-ach_shadow = "0 8px 22px rgba(15,23,42,0.08)" if is_light else "none"
+ach_bg = "#fdf7e4" if is_light else "#333F63"
+ach_text = "#000000" if is_light else "#FFFFF0"
+ach_card_on_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.24)"
+ach_card_off_bg = "#fdf7e4" if is_light else "rgba(0,0,0,0.18)"
+ach_card_on_border = "#bbab8c" if is_light else "rgba(255,255,240,0.28)"
+ach_card_off_border = "#bbab8c" if is_light else "rgba(0,0,0,0.26)"
+ach_title = "#000000" if is_light else "rgba(255,255,240,0.14)"
+ach_title_on = "#000000" if is_light else "#FFFFF0"
+ach_desc = "#000000" if is_light else "rgba(255,255,240,0.46)"
+ach_status = "#000000" if is_light else "#4b5563"
+ach_status_on = "#000000" if is_light else "#FFFFF0"
+ach_shadow = "none" if is_light else "none"
 
 components.html(f"""
 <!DOCTYPE html><html><head><meta charset="utf-8">

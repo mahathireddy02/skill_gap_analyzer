@@ -86,6 +86,7 @@ resume_score = db_user.get("resume_score", 0)
 skills       = db_user.get("skills", [])
 missing      = db_user.get("missing_skills", [])
 target_role  = db_user.get("target_role", "Not set")
+theme        = db_user.get("theme", "dark")
 
 if skills and target_role != "Not set" and not has_gap_analysis(db_user):
     try:
@@ -106,6 +107,81 @@ if skills and target_role != "Not set" and not has_gap_analysis(db_user):
 
 readiness    = calculate_readiness(skills, missing, has_gap_analysis(db_user), db_user.get("gap_result", {}))
 readiness_note = "" if has_gap_analysis(db_user) else "Run Skill Gap Analyzer to calculate readiness"
+
+if theme == "light":
+    st.markdown("""
+    <style>
+    html,body,.stApp,.page-body,.block-container{
+        background:#fdf7e4!important;
+        color:#000000!important;
+    }
+    .stat-card,.feat-card,.fc-wrap,.progress-box,.ats-box{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+        box-shadow:none!important;
+        backdrop-filter:none!important;
+        color:#000000!important;
+    }
+    .stat-card:hover,.feat-card:hover,.fc-wrap:hover{
+        border-color:#bbab8c!important;
+        box-shadow:none!important;
+    }
+    .sc-val,.sc-lbl,.fct,.fcd,.box-title,.empty-msg,.ats-label,
+    .stat-card div,.fc-wrap div,.progress-box div,.ats-box span{
+        color:#000000!important;
+    }
+    .fcb,.fc-badge,.chip-g,.chip-r{
+        background:#bbab8c!important;
+        border:1px solid #bbab8c!important;
+        color:#000000!important;
+    }
+    .prog-bg{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+        box-shadow:none!important;
+    }
+    .prog-fill{
+        background:#bbab8c!important;
+    }
+    div[data-testid="stButton"] button{
+        background:#bbab8c!important;
+        border:1px solid #bbab8c!important;
+        color:#000000!important;
+        box-shadow:none!important;
+    }
+    [style*="background:rgba(0,0,0"],
+    [style*="background: rgba(0,0,0"],
+    [style*="background:rgba(255,255,255"],
+    [style*="background: rgba(255,255,255"],
+    [style*="background:rgba(124,58,237"],
+    [style*="background:rgba(167,139,250"]{
+        background:#fdf7e4!important;
+        background-color:#fdf7e4!important;
+        border-color:#bbab8c!important;
+        box-shadow:none!important;
+    }
+    [style*="height:6px;width:260px"],
+    [style*="height:6px; width:260px"]{
+        background:#fdf7e4!important;
+        background-color:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+    }
+    [style*="height:100%;background:rgba(255,255,255,0.9)"],
+    [style*="height:100%; background:rgba(255,255,255,0.9)"]{
+        background:#bbab8c!important;
+        background-color:#bbab8c!important;
+    }
+    [style*="color:#fff"],
+    [style*="color: #fff"],
+    [style*="color:#FFFFF0"],
+    [style*="color: #FFFFF0"],
+    [style*="color:#a78bfa"],
+    [style*="color:#34d399"],
+    [style*="color:#f87171"]{
+        color:#000000!important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # ── Welcome banner ────────────────────────────────────────────────────────────
 st.markdown(f"""
@@ -227,7 +303,7 @@ elif not skills:
 
 # ── ATS Score ─────────────────────────────────────────────────────────────────
 if resume_score > 0:
-    c   = "#FFFFF0"
+    c   = "#bbab8c" if theme == "light" else "#FFFFF0"
     lbl = "Excellent 🌟" if resume_score >= 70 else "Good 👍" if resume_score >= 40 else "Needs Work ⚠️"
     st.markdown(f"""
     <div class="ats-box">

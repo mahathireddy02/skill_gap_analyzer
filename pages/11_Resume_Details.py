@@ -69,7 +69,106 @@ if not selected_template:
     st.stop()
 
 db_user = get_user(st.session_state.email)
+theme = db_user.get("theme", "dark")
+is_light = theme == "light"
 step = st.session_state.rd_step
+
+if is_light:
+    st.markdown("""
+    <style>
+    html,body,.stApp,.page-body,.block-container{
+        background:#fdf7e4!important;
+        color:#000000!important;
+    }
+    .auth-card{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+        color:#000000!important;
+        box-shadow:none!important;
+        backdrop-filter:none!important;
+    }
+    .auth-title,.auth-sub,.auth-card div,.auth-card span,
+    div[data-testid="stMarkdownContainer"],
+    div[data-testid="stMarkdownContainer"] *,
+    label,p,h1,h2,h3,h4,h5,h6,span,strong{
+        color:#000000!important;
+    }
+    .prog-step{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+    }
+    .prog-done,.prog-active{
+        background:#bbab8c!important;
+        border-color:#bbab8c!important;
+    }
+    .prog-lbl{
+        color:#000000!important;
+    }
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stTextArea"] textarea,
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stSelectbox"] > div > div,
+    div[data-testid="stMultiSelect"] > div > div{
+        background:#fdf7e4!important;
+        background-color:#fdf7e4!important;
+        border-color:#bbab8c!important;
+        color:#000000!important;
+        box-shadow:none!important;
+    }
+    div[data-testid="stButton"] button,
+    div[data-testid="stDownloadButton"] button{
+        background:#bbab8c!important;
+        background-color:#bbab8c!important;
+        border:1px solid #bbab8c!important;
+        color:#000000!important;
+        box-shadow:none!important;
+    }
+    div[data-testid="stAlert"]{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+        color:#000000!important;
+    }
+    .stTabs [data-baseweb="tab-list"]{
+        background:#fdf7e4!important;
+        border:1px solid #bbab8c!important;
+    }
+    .stTabs [aria-selected="true"]{
+        background:#bbab8c!important;
+        color:#000000!important;
+    }
+    iframe{
+        background:#fdf7e4!important;
+        border-color:#bbab8c!important;
+        box-shadow:none!important;
+    }
+    [style*="background:rgba(124,58,237"],
+    [style*="background:rgba(167,139,250"],
+    [style*="background:rgba(255,255,255"],
+    [style*="background: rgba(255,255,255"],
+    [style*="background:#fff"],
+    [style*="background: #fff"],
+    [style*="background:#ffffff"],
+    [style*="background: #ffffff"]{
+        background:#fdf7e4!important;
+        background-color:#fdf7e4!important;
+        border-color:#bbab8c!important;
+    }
+    [style*="border:1px solid rgba(124,58,237"],
+    [style*="border: 1px solid rgba(124,58,237"]{
+        border-color:#bbab8c!important;
+    }
+    [style*="color:#c4b5fd"],
+    [style*="color:#7c3aed"],
+    [style*="color:#4f46e5"],
+    [style*="color:#ffffff"],
+    [style*="color:#fff"]{
+        color:#000000!important;
+    }
+    [style*="box-shadow"]{
+        box-shadow:none!important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 if "num_skills" not in st.session_state:
     st.session_state.num_skills = 3
