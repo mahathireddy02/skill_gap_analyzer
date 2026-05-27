@@ -23,17 +23,17 @@ def show_navbar(active="Dashboard"):
     if _theme == "light":
         _bg          = COLOR_BG_LIGHT
         _nav_bg      = COLOR_SURFACE_LIGHT
-        _nav_border  = "#c8cdd2"
-        _btn_color   = "#374151"
-        _btn_hover   = "rgba(75,85,99,0.10)"
+        _nav_border  = "#9F8C76"
+        _btn_color   = "#1f2933"
+        _btn_hover   = "rgba(159,140,118,0.18)"
         _text_color  = "#1f2933"
-        _active_bg   = "#4b5563"
-        _active_text = "#FFFFF0"
-        _active_border = "rgba(75,85,99,0.32)"
+        _active_bg   = "#9F8C76"
+        _active_text = "#1f2933"
+        _active_border = "rgba(159,140,118,0.46)"
         _page_gradient_bg = "rgba(255,255,255,0.62)"
         _page_card_bg = "rgba(255,255,255,0.78)"
-        _page_chip_bg = "rgba(75,85,99,0.10)"
-        _brand_gap_color = "#4b5563"
+        _page_chip_bg = "rgba(159,140,118,0.18)"
+        _brand_gap_color = "#9F8C76"
         _theme_css   = (
         """
         html,body,.stApp,[data-testid="stAppViewContainer"],[data-testid="stHeader"],
@@ -59,7 +59,7 @@ def show_navbar(active="Dashboard"):
 
         /* Caption and helper text */
         div[data-testid="stCaptionContainer"] p,
-        small, .caption {color:#52606d!important;}
+        small, .caption {color:#1f2933!important;}
 
         /* Inputs */
         div[data-testid="stTextInput"] input,
@@ -67,69 +67,69 @@ def show_navbar(active="Dashboard"):
         div[data-testid="stNumberInput"] input,
         div[data-testid="stSelectbox"] > div > div,
         div[data-testid="stMultiSelect"] > div > div
-        {background:#fffef5!important;color:#1f2933!important;border-color:#c8cdd2!important;}
+        {background:#fffef5!important;color:#1f2933!important;border-color:#9F8C76!important;}
 
         /* Chat elements */
-        div[data-testid="stChatMessage"] {background:#fffef5!important;border:1px solid #c8cdd2!important;}
+        div[data-testid="stChatMessage"] {background:#fffef5!important;border:1px solid #9F8C76!important;}
         div[data-testid="stChatInput"] textarea {background:#fffef5!important;color:#1f2933!important;}
 
         /* Metrics */
-        div[data-testid="stMetric"]{background:#fffef5!important;border:1px solid #c8cdd2!important;border-radius:12px;}
-        div[data-testid="stMetricLabel"] p{color:#52606d!important;}
+        div[data-testid="stMetric"]{background:#fffef5!important;border:1px solid #9F8C76!important;border-radius:12px;}
+        div[data-testid="stMetricLabel"] p{color:#1f2933!important;}
         div[data-testid="stMetricValue"]{color:#1f2933!important;}
         div[data-testid="stMetricDelta"]{color:#047857!important;}
 
         /* Expanders */
-        div[data-testid="stExpander"]{background:#fffef5!important;border-color:#c8cdd2!important;}
+        div[data-testid="stExpander"]{background:#fffef5!important;border-color:#9F8C76!important;}
         div[data-testid="stExpander"] summary p,
         div[data-testid="stExpander"] summary span{color:#1f2933!important;}
-        div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p{color:#3f4a56!important;}
+        div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p{color:#1f2933!important;}
 
         /* Roadmap Page Specific Overrides */
         /* SVG Journey Map */
-        #journey-svg .track-bg{stroke:#4b5563!important;}
-        #journey-svg .track-rail{stroke:#4b5563!important;}
-        #journey-svg .station-done .s-circle{fill:#fffef5!important;stroke:#4b5563!important;}
-        #journey-svg .station-active .s-circle{fill:#fffef5!important;stroke:#4b5563!important;}
-        #journey-svg .station-upcoming .s-circle{fill:#fffef5!important;stroke:#4b5563!important;}
+        #journey-svg .track-bg{stroke:#9F8C76!important;}
+        #journey-svg .track-rail{stroke:#9F8C76!important;}
+        #journey-svg .station-done .s-circle{fill:#fffef5!important;stroke:#9F8C76!important;}
+        #journey-svg .station-active .s-circle{fill:#fffef5!important;stroke:#9F8C76!important;}
+        #journey-svg .station-upcoming .s-circle{fill:#fffef5!important;stroke:#9F8C76!important;}
         #journey-svg .s-icon{fill:#1f2933!important;}
         #journey-svg .station-upcoming .s-icon{fill:#1f2933!important;}
         #journey-svg .s-label{fill:#1f2933!important;}
-        #journey-svg .s-weeks{fill:#52606d!important;}
+        #journey-svg .s-weeks{fill:#1f2933!important;}
         #journey-svg #train-glow{filter:none!important;}
-        #journey-svg #train-body{fill:#4b5563!important;}
+        #journey-svg #train-body{fill:#9F8C76!important;}
         #journey-svg #train-dot{fill:#fffef5!important;}
-        #journey-svg .flag-pole{stroke:#4b5563!important;}
-        #journey-svg .flag-rect{fill:#4b5563!important;}
+        #journey-svg .flag-pole{stroke:#9F8C76!important;}
+        #journey-svg .flag-rect{fill:#9F8C76!important;}
         #journey-svg .goal-lbl{fill:#1f2933!important;}
 
         /* Detail Panel */
-        #detail{background:#fffef5!important;border:2px solid #4b5563!important;box-shadow:none!important;}
+        #detail{background:#fffef5!important;border:2px solid #9F8C76!important;box-shadow:none!important;}
         #detail .d-title{color:#1f2933!important;}
-        #detail .d-close{background:#fffef5!important;color:#1f2933!important;border:1px solid #4b5563!important;}
-        #detail .badge-done, #detail .badge-active, #detail .badge-upcoming{background:#fffef5!important;color:#1f2933!important;border:1.5px solid #4b5563!important;}
-        #detail .d-meta{color:#52606d!important;}
+        #detail .d-close{background:#fffef5!important;color:#1f2933!important;border:1px solid #9F8C76!important;}
+        #detail .badge-done, #detail .badge-active, #detail .badge-upcoming{background:#fffef5!important;color:#1f2933!important;border:1.5px solid #9F8C76!important;}
+        #detail .d-meta{color:#1f2933!important;}
         #detail .ph-row{color:#1f2933!important;}
-        #detail .ph-badge{background:#fffef5!important;color:#1f2933!important;border:1px solid #4b5563!important;}
-        #detail .d-section{color:#4b5563!important;text-decoration:underline;}
+        #detail .ph-badge{background:#fffef5!important;color:#1f2933!important;border:1px solid #9F8C76!important;}
+        #detail .d-section{color:#1f2933!important;text-decoration:underline;text-decoration-color:#9F8C76!important;}
         #detail .d-resources li{color:#1f2933!important;}
-        #detail .d-project{background:#fffef5!important;border:2px solid #4b5563!important;color:#1f2933!important;}
+        #detail .d-project{background:#fffef5!important;border:2px solid #9F8C76!important;color:#1f2933!important;}
         #overlay{background:rgba(255,255,240,0.72)!important;backdrop-filter:blur(2px)!important;}
 
         /* Progress Bar */
         #prog-wrap .prog-label{color:#1f2933!important;}
-        #prog-wrap .prog-bar{background:#fffef5!important;border:1px solid #4b5563!important;}
-        #prog-wrap .prog-fill{background:#4b5563!important;}
+        #prog-wrap .prog-bar{background:#fffef5!important;border:1px solid #9F8C76!important;}
+        #prog-wrap .prog-fill{background:#9F8C76!important;}
 
         /* Achievements */
         .ba-grid h2{color:#1f2933!important;}
-        .ba-card{background:#fffef5!important;border:2px solid #4b5563!important;}
-        .ba-on{background:#fffef5!important;border:2px solid #4b5563!important;box-shadow:none!important;}
-        .ba-off{background:#fffef5!important;border:1px solid #c8cdd2!important;opacity:0.4!important;}
+        .ba-card{background:#fffef5!important;border:2px solid #9F8C76!important;}
+        .ba-on{background:#fffef5!important;border:2px solid #9F8C76!important;box-shadow:none!important;}
+        .ba-off{background:#fffef5!important;border:1px solid #9F8C76!important;opacity:0.4!important;}
         .ba-icon{color:#1f2933!important;}
         .ba-title{color:#1f2933!important;}
         .ba-on .ba-title{color:#1f2933!important;font-weight:800!important;}
-        .ba-desc{color:#52606d!important;}
+        .ba-desc{color:#1f2933!important;}
         .ba-status{color:#1f2933!important;}
         .ba-on .ba-status{color:#1f2933!important;font-weight:700!important;}
         /* Ensure the HTML component's body background is light */
@@ -137,28 +137,28 @@ def show_navbar(active="Dashboard"):
 
 
         /* File Uploader and Buttons */
-        div[data-testid="stFileUploader"] section {background-color:#fffef5!important; border:1px dashed #c8cdd2!important;}
+        div[data-testid="stFileUploader"] section {background-color:#fffef5!important; border:1px dashed #9F8C76!important;}
         div[data-testid="stFileUploader"] label, div[data-testid="stFileUploader"] p, div[data-testid="stFileUploader"] small {color:#1f2933!important;}
-        div[data-testid="stFileUploader"] button {background-color:#fffef5!important; color:#1f2933!important; border:1px solid #c8cdd2!important;}
-        div[data-testid="stButton"] button:not([kind="primary"]), div[data-testid="stDownloadButton"] button {background:#fffef5!important; border:1px solid #c8cdd2!important; color:#1f2933!important;}
+        div[data-testid="stFileUploader"] button {background-color:#fffef5!important; color:#1f2933!important; border:1px solid #9F8C76!important;}
+        div[data-testid="stButton"] button:not([kind="primary"]), div[data-testid="stDownloadButton"] button {background:#fffef5!important; border:1px solid #9F8C76!important; color:#1f2933!important;}
 
         /* Tabs */
-        .stTabs [data-baseweb="tab-list"]{background:#f3edcf!important;border-radius:12px;}
-        .stTabs [data-baseweb="tab"]{color:#52606d!important;}
-        .stTabs [aria-selected="true"]{background:#4b5563!important;color:#FFFFF0!important;border-radius:10px;}
+        .stTabs [data-baseweb="tab-list"]{background:rgba(159,140,118,0.18)!important;border-radius:12px;}
+        .stTabs [data-baseweb="tab"]{color:#1f2933!important;}
+        .stTabs [aria-selected="true"]{background:#9F8C76!important;color:#1f2933!important;border-radius:10px;}
         .stTabs [data-baseweb="tab-panel"]{background:transparent!important;}
 
         /* Cards */
-        .stat-card{background:#fffef5!important;border-color:#c8cdd2!important;}
+        .stat-card{background:#fffef5!important;border-color:#9F8C76!important;}
         .sc-val{color:#1f2933!important;}
-        .sc-lbl{color:#52606d!important;}
+        .sc-lbl{color:#1f2933!important;}
         .feat-card,.fc-wrap,.score-card,.ats-card,.suggestion-card,
         .roadmap-card,.customize-card,.customize-box,
-        .auth-card{background:#fffef5!important;border-color:#c8cdd2!important;
+        .auth-card{background:#fffef5!important;border-color:#9F8C76!important;
                    backdrop-filter:none!important;box-shadow:0 10px 25px -5px rgba(0,0,0,0.05)!important;}
         .fct{color:#1f2933!important;}
-        .fcd{color:#52606d!important;}
-        .fcb{background:rgba(75,85,99,0.10)!important;color:#4b5563!important;}
+        .fcd{color:#1f2933!important;}
+        .fcb{background:rgba(159,140,118,0.18)!important;color:#1f2933!important;border-color:#9F8C76!important;}
 
         /* Force all inline white text inside cards to dark */
         .fc-wrap div, .fc-wrap p, .fc-wrap span,
@@ -172,15 +172,15 @@ def show_navbar(active="Dashboard"):
         .auth-card div, .auth-card p, .auth-card span,
         .auth-title, .prog-lbl, .auth-card h1, .auth-card h2, .auth-card h3, .auth-card h4
         {color:#1f2933!important;}
-        .auth-sub, .prog-lbl{color:#3f4a56!important;}
-        .auth-card div[style*="color:#c4b5fd"] {color:#4b5563!important;}
-        .prog-step{background:#9aa3ad!important;}
+        .auth-sub, .prog-lbl{color:#1f2933!important;}
+        .auth-card div[style*="color:#c4b5fd"] {color:#1f2933!important;}
+        .prog-step{background:#9F8C76!important;}
         .prog-done{background:#000000!important;}
-        .prog-active{background:#4b5563!important;}
+        .prog-active{background:#9F8C76!important;}
         .fc-wrap div[style*="rgba(255,255,255,0.55)"],
         .fc-wrap div[style*="color:#fff"],
         .feat-card div[style*="color:#fff"]
-        {color:#52606d!important;}
+        {color:#1f2933!important;}
 
         /* Section titles and headings in page body */
         .page-body h1,.page-body h2,.page-body h3,
@@ -193,12 +193,12 @@ def show_navbar(active="Dashboard"):
         .chip-r{background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;}
 
         /* Progress / Skills boxes */
-        .progress-box{background:#fffef5!important;border-color:#c8cdd2!important;}
+        .progress-box{background:#fffef5!important;border-color:#9F8C76!important;}
         .box-title{color:#1f2933!important;}
-        .empty-msg{color:#52606d!important;}
-        .ats-box{background:#fffef5!important;border-color:#c8cdd2!important;}
+        .empty-msg{color:#1f2933!important;}
+        .ats-box{background:#fffef5!important;border-color:#9F8C76!important;}
         .ats-label{color:#1f2933!important;}
-        .prog-bg{background:#e1e4e8!important;}
+        .prog-bg{background:rgba(159,140,118,0.22)!important;}
 
         /* Alerts / info boxes */
         div[data-testid="stAlert"]{background:#fffef5!important;color:#1f2933!important;}
@@ -212,7 +212,7 @@ def show_navbar(active="Dashboard"):
         .page-body{background:""" + COLOR_BG_LIGHT + """!important;}
 
         /* Progress bars */
-        .prog-bg{background:#e1e4e8!important;}
+        .prog-bg{background:rgba(159,140,118,0.22)!important;}
 
         /* Roadmap SVG background */
         body{background:""" + COLOR_BG_LIGHT + """!important;}
@@ -227,8 +227,8 @@ def show_navbar(active="Dashboard"):
         [style*="rgba(51,63,99"],
         [style*="rgba(124,58,237"],
         [style*="rgba(167,139,250"]{
-            color:#4b5563!important;
-            border-color:#c8cdd2!important;
+            color:#1f2933!important;
+            border-color:#9F8C76!important;
         }
         [style*="background:#333F63"],
         [style*="background: #333F63"],
@@ -243,7 +243,7 @@ def show_navbar(active="Dashboard"):
             background:#fffef5!important;
             background-color:#fffef5!important;
             color:#1f2933!important;
-            border-color:#c8cdd2!important;
+            border-color:#9F8C76!important;
         }
         [style*="color:#fff"],
         [style*="color: #fff"],

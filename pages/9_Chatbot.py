@@ -22,9 +22,9 @@ div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;
 .user-msg{background:rgba(0,0,0,0.24);color:#fff;
     border-radius:16px 16px 4px 16px;padding:0.7rem 1rem;margin:0.5rem 0 0.5rem auto;
     max-width:70%;font-size:0.9rem;line-height:1.5;width:fit-content;}
-.bot-msg{background:#f7f6f3;color:#1e293b;
+.bot-msg{background:#fffef5;color:#1e293b;
     border-radius:16px 16px 16px 4px;padding:0.7rem 1rem;margin:0.5rem auto 0.5rem 0;
-    max-width:75%;font-size:0.9rem;line-height:1.6;width:fit-content;border:1px solid #e8e6e1;}
+    max-width:75%;font-size:0.9rem;line-height:1.6;width:fit-content;border:1px solid #9F8C76;}
 html,body,.stApp{color:#FFFFF0!important;}
 div[data-testid="stButton"] button[kind="primary"]{background:#333F63!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.18)!important;box-shadow:none!important;}
 .user-msg,.bot-msg{background:rgba(0,0,0,0.24)!important;color:#FFFFF0!important;border:1px solid rgba(255,255,240,0.14)!important;box-shadow:none!important;backdrop-filter:none!important;}

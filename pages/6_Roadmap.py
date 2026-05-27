@@ -15,17 +15,18 @@ is_light = theme == "light"
 
 page_bg = "#fffff0" if is_light else "#333F63"
 page_text = "#1f2933" if is_light else "#FFFFF0"
-page_muted = "#52606d" if is_light else "rgba(255,255,240,0.62)"
+page_muted = "#1f2933" if is_light else "rgba(255,255,240,0.62)"
 card_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-card_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.14)"
+card_border = "#9F8C76" if is_light else "rgba(255,255,240,0.14)"
 input_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-input_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.16)"
-prefill_bg = "rgba(75,85,99,0.10)" if is_light else "rgba(0,0,0,0.24)"
+input_border = "#9F8C76" if is_light else "rgba(255,255,240,0.16)"
+prefill_bg = "rgba(159,140,118,0.18)" if is_light else "rgba(0,0,0,0.24)"
 prefill_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
 prefill_text = "#1f2933" if is_light else "#FFFFF0"
 prefill_strong = "#1f2933" if is_light else "#FFFFF0"
-primary_bg = "#4b5563" if is_light else "#333F63"
-primary_text = "#FFFFF0"
+primary_bg = "#9F8C76" if is_light else "#333F63"
+primary_text = "#1f2933" if is_light else "#FFFFF0"
+primary_border = "#9F8C76" if is_light else "rgba(255,255,240,0.18)"
 
 st.markdown(f"""
 <style>
@@ -36,7 +37,7 @@ st.markdown(f"""
 html,body,.stApp{{margin:0!important;padding:0!important;background:{page_bg}!important;color:{page_text}!important;}}
 .block-container{{padding:1rem 2rem!important;max-width:100%!important;}}
 div[data-testid="stButton"] button{{font-weight:700!important;border-radius:10px!important;}}
-div[data-testid="stButton"] button[kind="primary"]{{background:{primary_bg}!important;color:{primary_text}!important;border:1px solid rgba(75,85,99,0.28)!important;box-shadow:none!important;}}
+div[data-testid="stButton"] button[kind="primary"]{{background:{primary_bg}!important;color:{primary_text}!important;border:1px solid {primary_border}!important;box-shadow:none!important;}}
 div[data-testid="stMetric"]{{background:{card_bg}!important;border-radius:12px;padding:0.8rem 1rem;border:1px solid {card_border}!important;}}
 div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricLabel"] p{{color:{page_muted}!important;}}
 div[data-testid="stMetric"] div, div[data-testid="stMetric"] [data-testid="stMetricValue"]{{color:{page_text}!important;}}
@@ -90,7 +91,7 @@ div[role="option"]:hover,
 li[role="option"]:hover,
 div[aria-selected="true"],
 li[aria-selected="true"] {{
-    background:{"rgba(75,85,99,0.10)" if is_light else "#333F63"}!important;
+    background:{"rgba(159,140,118,0.18)" if is_light else "#333F63"}!important;
     color:{page_text}!important;
 }}
 .roadmap-prefill{{
@@ -192,7 +193,7 @@ div[data-testid="stExpander"] summary svg {{
     color:{page_text if is_light else "#FFFFF0"}!important;
 }}
 div[data-testid="stExpander"] summary:hover {{
-    background:{"rgba(75,85,99,0.10)" if is_light else "rgba(0,0,0,0.22)"}!important;
+    background:{"rgba(159,140,118,0.18)" if is_light else "rgba(0,0,0,0.22)"}!important;
 }}
 div[data-testid="stCaptionContainer"],
 div[data-testid="stCaptionContainer"] * {{
@@ -405,29 +406,29 @@ svg_width     = max(900, n_stations * 120)
 map_body_bg = "#fffff0" if is_light else "#333F63"
 map_text = "#1f2933" if is_light else "#FFFFF0"
 map_label = "#1f2933" if is_light else "rgba(255,255,240,0.14)"
-map_muted = "#52606d" if is_light else "#94a3b8"
-map_track = "#c8cdd2" if is_light else "#333F63"
-map_rail = "rgba(75,85,99,0.18)" if is_light else "rgba(0,0,0,0.30)"
+map_muted = "#1f2933" if is_light else "#94a3b8"
+map_track = "#9F8C76" if is_light else "#333F63"
+map_rail = "rgba(159,140,118,0.22)" if is_light else "rgba(0,0,0,0.30)"
 map_upcoming_fill = "#fffef5" if is_light else "#333F63"
-map_upcoming_stroke = "#4b5563" if is_light else "#FFFFF0"
-map_upcoming_icon = "#4b5563" if is_light else "#6366f1"
+map_upcoming_stroke = "#9F8C76" if is_light else "#FFFFF0"
+map_upcoming_icon = "#1f2933" if is_light else "#6366f1"
 detail_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
-detail_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.18)"
+detail_border = "#9F8C76" if is_light else "rgba(255,255,240,0.18)"
 detail_shadow = "0 20px 48px rgba(15,23,42,0.16)" if is_light else "none"
 overlay_bg = "rgba(255,255,240,0.72)" if is_light else "rgba(0,0,0,0.6)"
 close_bg = "#fffef5" if is_light else "rgba(255,255,240,0.14)"
-close_hover = "rgba(75,85,99,0.10)" if is_light else "rgba(255,255,240,0.16)"
-project_bg = "rgba(75,85,99,0.10)" if is_light else "rgba(0,0,0,0.24)"
+close_hover = "rgba(159,140,118,0.18)" if is_light else "rgba(255,255,240,0.16)"
+project_bg = "rgba(159,140,118,0.18)" if is_light else "rgba(0,0,0,0.24)"
 project_border = "rgba(255,255,240,0.18)" if is_light else "rgba(255,255,240,0.18)"
 project_text = "#1f2933" if is_light else "#FFFFF0"
-progress_bar_bg = "#e1e4e8" if is_light else "rgba(255,255,240,0.14)"
-scrollbar_track = "#e1e4e8" if is_light else "rgba(0,0,0,0.22)"
-scrollbar_thumb = "#4b5563" if is_light else "#FFFFF0"
+progress_bar_bg = "rgba(159,140,118,0.22)" if is_light else "rgba(255,255,240,0.14)"
+scrollbar_track = "rgba(159,140,118,0.22)" if is_light else "rgba(0,0,0,0.22)"
+scrollbar_thumb = "#9F8C76" if is_light else "#FFFFF0"
 badge_upcoming_bg = "#fffef5" if is_light else "#333F63"
-badge_upcoming_text = "#4b5563" if is_light else "#6366f1"
-phase_advanced_bg = "rgba(75,85,99,0.10)" if is_light else "#333F6322"
-phase_advanced_text = "#4b5563" if is_light else "#FFFFF0"
-detail_section_text = "#4b5563" if is_light else "#6366f1"
+badge_upcoming_text = "#1f2933" if is_light else "#6366f1"
+phase_advanced_bg = "rgba(159,140,118,0.18)" if is_light else "#333F6322"
+phase_advanced_text = "#1f2933" if is_light else "#FFFFF0"
+detail_section_text = "#1f2933" if is_light else "#6366f1"
 
 # ── HTML/SVG Journey Map ──────────────────────────────────────────────────────
 html = f"""
@@ -829,12 +830,12 @@ ach_bg = "#fffff0" if is_light else "#333F63"
 ach_text = "#1f2933" if is_light else "#FFFFF0"
 ach_card_on_bg = "#fffef5" if is_light else "rgba(0,0,0,0.24)"
 ach_card_off_bg = "#fffef5" if is_light else "rgba(0,0,0,0.18)"
-ach_card_on_border = "#c8cdd2" if is_light else "rgba(255,255,240,0.28)"
-ach_card_off_border = "#c8cdd2" if is_light else "rgba(0,0,0,0.26)"
+ach_card_on_border = "#9F8C76" if is_light else "rgba(255,255,240,0.28)"
+ach_card_off_border = "#9F8C76" if is_light else "rgba(0,0,0,0.26)"
 ach_title = "#1f2933" if is_light else "rgba(255,255,240,0.14)"
 ach_title_on = "#1f2933" if is_light else "#FFFFF0"
-ach_desc = "#52606d" if is_light else "rgba(255,255,240,0.46)"
-ach_status = "#52606d" if is_light else "#4b5563"
+ach_desc = "#1f2933" if is_light else "rgba(255,255,240,0.46)"
+ach_status = "#1f2933" if is_light else "#4b5563"
 ach_status_on = "#047857" if is_light else "#FFFFF0"
 ach_shadow = "0 8px 22px rgba(15,23,42,0.08)" if is_light else "none"
 
